@@ -1,28 +1,28 @@
 # 카페24 디자인 복구 파일 만들기 (신규 스킨 작업.md 9-2)
 #   python3 docs/pack.py <내려받은 백업.tar.gz> <이미지 서버 번호 pg…>
-#   python3 docs/pack.py <백업.tar.gz> <파일업로더 주소 https://…/food/> <쇼핑몰 아이디>   ← 디자인센터 샘플몰처럼 pg 번호가 없는 쇼핑몰
-#   → _deploy/<백업과 같은 이름>.tar.gz  (쇼핑몰 아이디가 food902 가 아니면 _deploy/<아이디>/ 에)
+#   python3 docs/pack.py <백업.tar.gz> <파일업로더 주소 https://…/wear/> <쇼핑몰 아이디>   ← 디자인센터 샘플몰처럼 pg 번호가 없는 쇼핑몰
+#   → _deploy/<백업과 같은 이름>.tar.gz  (쇼핑몰 아이디가 wear902 가 아니면 _deploy/<아이디>/ 에)
 # 원본 백업의 폴더 · 주문서 바로가기(심볼릭 링크)는 그대로 두고, 파일은 우리 스킨(skin1)으로 바꾼다.
-# 스킨 이미지(/SkinImg/food/)는 복구 파일에서 빼고, 파일업로더 주소로 바꿔 쓴다.
+# 스킨 이미지(/SkinImg/wear/)는 복구 파일에서 빼고, 파일업로더 주소로 바꿔 쓴다.
 import io, os, re, sys, tarfile, time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SKIN = os.path.join(ROOT, 'food902_s2_260925195134_d_skin1_E', 'skin1')
+SKIN = os.path.join(ROOT, 'wear902_s2_260925195134_d_skin1_E', 'skin1')
 ORIG, PG = sys.argv[1], sys.argv[2]
-MALL = sys.argv[3] if len(sys.argv) > 3 else 'food902'
+MALL = sys.argv[3] if len(sys.argv) > 3 else 'wear902'
 if PG.startswith('http'):            # 파일업로더가 쇼핑몰 주소로 바로 열리는 경우 (pg 번호 없음)
     IMG = PG if PG.endswith('/') else PG + '/'
     PG_HOST = '//' + IMG.split('//', 1)[1].split('/', 1)[0]
 else:
-    IMG = 'https://ecimg.cafe24img.com/%s/%s/food/' % (PG, MALL)
+    IMG = 'https://ecimg.cafe24img.com/%s/%s/wear/' % (PG, MALL)
     PG_HOST = '//ecimg.cafe24img.com/%s/%s' % (PG, MALL)
 TEXT = ('.html', '.js', '.css', '.json', '.txt', '.xml')
-SKIP_DIR = 'SkinImg/food/'          # 파일업로더에 따로 올림
+SKIP_DIR = 'SkinImg/wear/'          # 파일업로더에 따로 올림
 
 src = tarfile.open(ORIG)
 members = src.getmembers()
 TOP = members[0].name.split('/')[0]   # 원본 최상위 폴더 이름 (새 계정은 base)
-out_dir = os.path.join(ROOT, '_deploy', *([] if MALL == 'food902' else [MALL])); os.makedirs(out_dir, exist_ok=True)
+out_dir = os.path.join(ROOT, '_deploy', *([] if MALL == 'wear902' else [MALL])); os.makedirs(out_dir, exist_ok=True)
 out_path = os.path.join(out_dir, os.path.basename(ORIG).split('-', 1)[-1] if re.match(r'^[0-9a-f]{8}-', os.path.basename(ORIG)) else os.path.basename(ORIG))
 
 ours = {}
@@ -33,11 +33,11 @@ for d, _, fs in os.walk(SKIN):
         data = open(os.path.join(d, f), 'rb').read()
         if rel.endswith(TEXT):
             t = data.decode('utf-8')
-            # jsDelivr 주소(…/skin1/SkinImg/food/)는 그대로 두고, 스킨 경로만 파일업로더 주소로
-            t = re.sub(r'(?<!skin1)/SkinImg/food/', IMG, t)
-            t = t.replace('//ecimg.cafe24img.com/PG_NUMBER/food902', PG_HOST)   # ez 설정 등에 남겨 둔 이미지 서버 자리
-            if MALL != 'food902':            # 다른 쇼핑몰(샘플몰)에 올릴 때 : 쇼핑몰 아이디 · 주소만 바꾼다 (브랜드 이름 food902 는 그대로)
-                t = t.replace('"mall_id":"food902"', '"mall_id":"%s"' % MALL).replace('food902.cafe24.com', MALL + '.cafe24.com')
+            # jsDelivr 주소(…/skin1/SkinImg/wear/)는 그대로 두고, 스킨 경로만 파일업로더 주소로
+            t = re.sub(r'(?<!skin1)/SkinImg/wear/', IMG, t)
+            t = t.replace('//ecimg.cafe24img.com/PG_NUMBER/wear902', PG_HOST)   # ez 설정 등에 남겨 둔 이미지 서버 자리
+            if MALL != 'wear902':            # 다른 쇼핑몰(샘플몰)에 올릴 때 : 쇼핑몰 아이디 · 주소만 바꾼다 (브랜드 이름 wear902 는 그대로)
+                t = t.replace('"mall_id":"wear902"', '"mall_id":"%s"' % MALL).replace('wear902.cafe24.com', MALL + '.cafe24.com')
             data = t.encode('utf-8')
         ours[rel] = data
 

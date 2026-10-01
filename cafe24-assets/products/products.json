@@ -4,25 +4,39 @@
   "product_no_temp": 12,
   "group": "rec",
   "cates": [
-   24
+   24,
+   27
   ],
-  "name": "제철 채소 꾸러미",
-  "price": 24000,
-  "retail": null,
-  "img": "p01.jpg"
+  "name": "울 블렌드 벨티드 롱코트",
+  "price": 189000,
+  "retail": 229000,
+  "img": "p01.jpg",
+  "draw": {
+   "type": "coat",
+   "color": "camel",
+   "opt": {
+    "belt": true
+   }
+  }
  },
  {
   "code": "p02",
   "product_no_temp": 13,
   "group": "new",
   "cates": [
-   24,
-   27
+   24
   ],
-  "name": "오늘의 과일 박스",
-  "price": 39000,
-  "retail": 45000,
-  "img": "p02.jpg"
+  "name": "싱글 브레스티드 트렌치코트",
+  "price": 159000,
+  "retail": null,
+  "img": "p02.jpg",
+  "draw": {
+   "type": "coat",
+   "color": "sand",
+   "opt": {
+    "belt": true
+   }
+  }
  },
  {
   "code": "p03",
@@ -31,10 +45,15 @@
   "cates": [
    24
   ],
-  "name": "NFC 착즙 오렌지 주스 1L",
-  "price": 9800,
+  "name": "캐시미어 터치 핸드메이드 코트",
+  "price": 249000,
   "retail": null,
-  "img": "p03.jpg"
+  "img": "p03.jpg",
+  "draw": {
+   "type": "coat",
+   "color": "charcoal",
+   "opt": {}
+  }
  },
  {
   "code": "p04",
@@ -44,10 +63,15 @@
    24,
    27
   ],
-  "name": "그릴드 치킨 샐러드",
-  "price": 8900,
-  "retail": 11000,
-  "img": "p04.jpg"
+  "name": "크롭 트위드 재킷",
+  "price": 129000,
+  "retail": 149000,
+  "img": "p04.jpg",
+  "draw": {
+   "type": "coat",
+   "color": "ecru",
+   "opt": {}
+  }
  },
  {
   "code": "p05",
@@ -56,10 +80,15 @@
   "cates": [
    24
   ],
-  "name": "대추 방울토마토 1kg",
-  "price": 12900,
+  "name": "라이트 울 하프코트",
+  "price": 139000,
   "retail": null,
-  "img": "p05.jpg"
+  "img": "p05.jpg",
+  "draw": {
+   "type": "coat",
+   "color": "navy",
+   "opt": {}
+  }
  },
  {
   "code": "p06",
@@ -68,10 +97,15 @@
   "cates": [
    24
   ],
-  "name": "아보카도 3입",
-  "price": 8900,
+  "name": "오버핏 테일러드 재킷",
+  "price": 119000,
   "retail": null,
-  "img": "p06.jpg"
+  "img": "p06.jpg",
+  "draw": {
+   "type": "coat",
+   "color": "grey",
+   "opt": {}
+  }
  },
  {
   "code": "p07",
@@ -81,10 +115,17 @@
    24,
    27
   ],
-  "name": "설향 딸기 500g",
-  "price": 15900,
-  "retail": 19000,
-  "img": "p07.jpg"
+  "name": "소프트 니트 롱 가디건",
+  "price": 69000,
+  "retail": 85000,
+  "img": "p07.jpg",
+  "draw": {
+   "type": "knit",
+   "color": "olive",
+   "opt": {
+    "open": true
+   }
+  }
  },
  {
   "code": "p08",
@@ -93,10 +134,15 @@
   "cates": [
    24
   ],
-  "name": "생 블루베리 250g",
-  "price": 9900,
+  "name": "퀼팅 경량 패딩 베스트",
+  "price": 79000,
   "retail": null,
-  "img": "p08.jpg"
+  "img": "p08.jpg",
+  "draw": {
+   "type": "coat",
+   "color": "cocoa",
+   "opt": {}
+  }
  },
  {
   "code": "p09",
@@ -105,10 +151,15 @@
   "cates": [
    24
   ],
-  "name": "복숭아 아이스티 베이스",
-  "price": 12000,
+  "name": "린넨 블렌드 셔츠 재킷",
+  "price": 89000,
   "retail": null,
-  "img": "p09.jpg"
+  "img": "p09.jpg",
+  "draw": {
+   "type": "blouse",
+   "color": "ecru",
+   "opt": {}
+  }
  },
  {
   "code": "p10",
@@ -118,10 +169,15 @@
    24,
    27
   ],
-  "name": "수제 딸기잼 240g",
-  "price": 8500,
-  "retail": 11000,
-  "img": "p10.jpg"
+  "name": "울 체크 블레이저",
+  "price": 139000,
+  "retail": 165000,
+  "img": "p10.jpg",
+  "draw": {
+   "type": "coat",
+   "color": "wine",
+   "opt": {}
+  }
  },
  {
   "code": "p11",
@@ -130,10 +186,17 @@
   "cates": [
    25
   ],
-  "name": "허브 연어 스테이크 밀키트",
-  "price": 16900,
+  "name": "코튼 스트라이프 셔츠",
+  "price": 49000,
   "retail": null,
-  "img": "p11.jpg"
+  "img": "p11.jpg",
+  "draw": {
+   "type": "blouse",
+   "color": "white",
+   "opt": {
+    "stripe": "#5d7590"
+   }
+  }
  },
  {
   "code": "p12",
@@ -143,10 +206,15 @@
    25,
    27
   ],
-  "name": "브리오슈 프렌치토스트 키트",
-  "price": 11900,
-  "retail": 14900,
-  "img": "p12.jpg"
+  "name": "퍼프 소매 블라우스",
+  "price": 59000,
+  "retail": 69000,
+  "img": "p12.jpg",
+  "draw": {
+   "type": "blouse",
+   "color": "blush",
+   "opt": {}
+  }
  },
  {
   "code": "p13",
@@ -155,10 +223,15 @@
   "cates": [
    25
   ],
-  "name": "요거트 베리 그래놀라 볼",
-  "price": 6900,
+  "name": "메리노 울 라운드 니트",
+  "price": 79000,
   "retail": null,
-  "img": "p13.jpg"
+  "img": "p13.jpg",
+  "draw": {
+   "type": "knit",
+   "color": "cream",
+   "opt": {}
+  }
  },
  {
   "code": "p14",
@@ -168,10 +241,17 @@
    25,
    27
   ],
-  "name": "닭 칼국수 밀키트 2인",
-  "price": 12900,
-  "retail": 15900,
-  "img": "p14.jpg"
+  "name": "보트넥 스트라이프 니트",
+  "price": 69000,
+  "retail": 85000,
+  "img": "p14.jpg",
+  "draw": {
+   "type": "knit",
+   "color": "cream",
+   "opt": {
+    "stripe": "#2f3b52"
+   }
+  }
  },
  {
   "code": "p15",
@@ -180,10 +260,15 @@
   "cates": [
    25
   ],
-  "name": "햄 치즈 샌드위치",
-  "price": 6500,
+  "name": "실크 터치 새틴 블라우스",
+  "price": 65000,
   "retail": null,
-  "img": "p15.jpg"
+  "img": "p15.jpg",
+  "draw": {
+   "type": "blouse",
+   "color": "butter",
+   "opt": {}
+  }
  },
  {
   "code": "p16",
@@ -192,10 +277,15 @@
   "cates": [
    25
   ],
-  "name": "얼큰 우육면 밀키트 2인",
-  "price": 15900,
+  "name": "캐시미어 블렌드 크루넥",
+  "price": 99000,
   "retail": null,
-  "img": "p16.jpg"
+  "img": "p16.jpg",
+  "draw": {
+   "type": "knit",
+   "color": "wine",
+   "opt": {}
+  }
  },
  {
   "code": "p17",
@@ -205,10 +295,15 @@
    25,
    27
   ],
-  "name": "퀴노아 치킨 샐러드볼",
-  "price": 9900,
-  "retail": 12000,
-  "img": "p17.jpg"
+  "name": "베이직 코튼 티셔츠 2팩",
+  "price": 35000,
+  "retail": 42000,
+  "img": "p17.jpg",
+  "draw": {
+   "type": "blouse",
+   "color": "sky",
+   "opt": {}
+  }
  },
  {
   "code": "p18",
@@ -217,10 +312,17 @@
   "cates": [
    25
   ],
-  "name": "오트 그래놀라 500g",
-  "price": 11000,
+  "name": "케이블 니트 가디건",
+  "price": 89000,
   "retail": null,
-  "img": "p18.jpg"
+  "img": "p18.jpg",
+  "draw": {
+   "type": "knit",
+   "color": "sage",
+   "opt": {
+    "open": true
+   }
+  }
  },
  {
   "code": "p19",
@@ -229,10 +331,15 @@
   "cates": [
    25
   ],
-  "name": "펜네 파스타 500g",
-  "price": 4900,
+  "name": "린넨 스탠드카라 셔츠",
+  "price": 55000,
   "retail": null,
-  "img": "p19.jpg"
+  "img": "p19.jpg",
+  "draw": {
+   "type": "blouse",
+   "color": "sand",
+   "opt": {}
+  }
  },
  {
   "code": "p20",
@@ -241,35 +348,52 @@
   "cates": [
    25
   ],
-  "name": "주말 브런치 세트",
-  "price": 29000,
+  "name": "소프트 모크넥 니트",
+  "price": 59000,
   "retail": null,
-  "img": "p20.jpg"
+  "img": "p20.jpg",
+  "draw": {
+   "type": "knit",
+   "color": "grey",
+   "opt": {}
+  }
  },
  {
   "code": "p21",
   "product_no_temp": 32,
   "group": "best",
   "cates": [
-   26
+   26,
+   27
   ],
-  "name": "천연발효 캄파뉴",
-  "price": 8500,
-  "retail": null,
-  "img": "p21.jpg"
+  "name": "플로럴 미디 원피스",
+  "price": 89000,
+  "retail": 109000,
+  "img": "p21.jpg",
+  "draw": {
+   "type": "dress",
+   "color": "rose",
+   "opt": {
+    "dots": true
+   }
+  }
  },
  {
   "code": "p22",
   "product_no_temp": 33,
   "group": "rec",
   "cates": [
-   26,
-   27
+   26
   ],
-  "name": "버터 크루아상 4입",
-  "price": 12000,
-  "retail": 15000,
-  "img": "p22.jpg"
+  "name": "린넨 셔츠 원피스",
+  "price": 79000,
+  "retail": null,
+  "img": "p22.jpg",
+  "draw": {
+   "type": "dress",
+   "color": "ecru",
+   "opt": {}
+  }
  },
  {
   "code": "p23",
@@ -278,10 +402,17 @@
   "cates": [
    26
   ],
-  "name": "초콜릿 가나슈 케이크",
-  "price": 32000,
+  "name": "도트 랩 원피스",
+  "price": 85000,
   "retail": null,
-  "img": "p23.jpg"
+  "img": "p23.jpg",
+  "draw": {
+   "type": "dress",
+   "color": "navy",
+   "opt": {
+    "dots": true
+   }
+  }
  },
  {
   "code": "p24",
@@ -290,10 +421,15 @@
   "cates": [
    26
   ],
-  "name": "초콜릿 레이어 케이크 조각",
-  "price": 7500,
+  "name": "니트 롱 원피스",
+  "price": 99000,
   "retail": null,
-  "img": "p24.jpg"
+  "img": "p24.jpg",
+  "draw": {
+   "type": "dress",
+   "color": "cocoa",
+   "opt": {}
+  }
  },
  {
   "code": "p25",
@@ -303,10 +439,15 @@
    26,
    27
   ],
-  "name": "숙성 하드 치즈 200g",
-  "price": 14900,
-  "retail": 18000,
-  "img": "p25.jpg"
+  "name": "플리츠 미디 스커트",
+  "price": 59000,
+  "retail": 72000,
+  "img": "p25.jpg",
+  "draw": {
+   "type": "skirt",
+   "color": "navy",
+   "opt": {}
+  }
  },
  {
   "code": "p26",
@@ -315,10 +456,17 @@
   "cates": [
    26
   ],
-  "name": "데일리 믹스넛 500g",
-  "price": 13900,
+  "name": "울 체크 A라인 스커트",
+  "price": 69000,
   "retail": null,
-  "img": "p26.jpg"
+  "img": "p26.jpg",
+  "draw": {
+   "type": "skirt",
+   "color": "camel",
+   "opt": {
+    "check": "#6e5242"
+   }
+  }
  },
  {
   "code": "p27",
@@ -327,10 +475,17 @@
   "cates": [
    26
   ],
-  "name": "엑스트라버진 올리브오일 500ml",
-  "price": 19800,
+  "name": "하이웨스트 와이드 데님",
+  "price": 69000,
   "retail": null,
-  "img": "p27.jpg"
+  "img": "p27.jpg",
+  "draw": {
+   "type": "pants",
+   "color": "denim",
+   "opt": {
+    "denim": true
+   }
+  }
  },
  {
   "code": "p28",
@@ -339,10 +494,15 @@
   "cates": [
    26
   ],
-  "name": "프리미엄 식탁 선물세트",
-  "price": 49000,
+  "name": "세미 와이드 슬랙스",
+  "price": 59000,
   "retail": null,
-  "img": "p28.jpg"
+  "img": "p28.jpg",
+  "draw": {
+   "type": "pants",
+   "color": "charcoal",
+   "opt": {}
+  }
  },
  {
   "code": "p29",
@@ -351,10 +511,15 @@
   "cates": [
    26
   ],
-  "name": "델리 팬트리 세트",
-  "price": 39000,
+  "name": "레더 숄더백",
+  "price": 129000,
   "retail": null,
-  "img": "p29.jpg"
+  "img": "p29.jpg",
+  "draw": {
+   "type": "bag",
+   "color": "cocoa",
+   "opt": {}
+  }
  },
  {
   "code": "p30",
@@ -364,9 +529,16 @@
    26,
    27
   ],
-  "name": "치즈 & 델리 기프트 박스",
-  "price": 69000,
-  "retail": 82000,
-  "img": "p30.jpg"
+  "name": "캐시미어 머플러 & 기프트 박스",
+  "price": 79000,
+  "retail": 95000,
+  "img": "p30.jpg",
+  "draw": {
+   "type": "scarf",
+   "color": "wine",
+   "opt": {
+    "stripe": "#f6f0e2"
+   }
+  }
  }
 ]

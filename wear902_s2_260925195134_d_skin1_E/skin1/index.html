@@ -1,0 +1,445 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--@css(/layout/basic/css/wear-editorial.css)-->
+<!--@css(/layout/basic/css/wear-modern.css)-->
+<!--@css(/layout/basic/css/wear-cozy-home.css)-->
+<!--@js(/layout/basic/js/wear-cozy-home.js)-->
+<!-- wear902 여성 의류 메인. 기존 스킨 레이아웃을 그대로 쓰고 사진 · 문구만 여성 패션 쇼핑몰로 바꿨다. -->
+<main id="lw-home" class="wear-cozy" data-cms-sortable="섹션 순서">
+  <svg class="cz-sprite" aria-hidden="true" focusable="false">
+    <symbol id="cz-spark" viewBox="0 0 24 24"><path d="M12 2.5c.7 4.6 2.9 6.8 7.5 7.5-4.6.7-6.8 2.9-7.5 7.5-.7-4.6-2.9-6.8-7.5-7.5 4.6-.7 6.8-2.9 7.5-7.5z"/><path d="M19 15.5c.3 1.8 1.2 2.7 3 3-1.8.3-2.7 1.2-3 3-.3-1.8-1.2-2.7-3-3 1.8-.3 2.7-1.2 3-3z"/></symbol>
+    <symbol id="cz-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="cz-truck" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5h10.5v8.5H3zM13.5 10.5h4l3 3v2.5h-7z"/><circle cx="7" cy="17.5" r="1.7"/><circle cx="17" cy="17.5" r="1.7"/></g></symbol>
+    <symbol id="cz-return" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 0 1 13-5.1M19.5 12a7.5 7.5 0 0 1-13 5.1"/><path d="M17.8 3.6v3.6h-3.6M6.2 20.4v-3.6h3.6"/></g></symbol>
+    <symbol id="cz-heart" viewBox="0 0 24 24"><path d="M12 19.5s-7.5-4.4-7.5-9.7A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.4c0 5.3-7.5 9.7-7.5 9.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="cz-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5h15v10.5h-9.5l-5.5 4z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></g></symbol>
+  </svg>
+
+  <!-- 1. HERO : 스크롤 히어로 (영상 또는 사진 + 3장면) -->
+  <div class="pe-hero-track" data-scroll-hero data-cms="첫 화면" data-cms-help="스크롤하면 1번→2번→3번 장면이 차례로 나와요. 1번은 영상 주소가 있으면 영상, 비어 있으면 사진이 나와요. [사진 바꾸기]로 사진을 올리면 영상 주소는 알아서 비워져요.">
+  <section class="pe-hero" aria-labelledby="pe-title">
+    <div class="pe-hero__copy pe-world-copy" data-world-copy="0" data-cms-item="copy">
+      <p class="pe-eyebrow" data-cms-text="작은 글"><span class="pe-live-dot"></span> NEW SEASON, EVERY DAY</p>
+      <p class="pe-display" aria-hidden="true" data-cms-text="영문 큰 글">Wear it softly.<br><em>Live it daily.</em></p>
+      <h1 id="pe-title" data-cms-text="제목">매일 손이 가는 옷이<br>좋은 하루를 만듭니다.</h1>
+      <p class="pe-description" data-cms-text="설명">출근길 셔츠부터 주말 원피스까지.<br>오래 입을수록 좋아지는 옷, wear902.</p>
+      <a class="pe-button" href="#cz-styles" data-cms-text="버튼" data-cms-href="버튼 링크">오늘의 스타일 고르기 <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="pe-hero__visual">
+      <video class="pe-world-image pe-world-video" data-world-image="0" data-cms-item="media" data-cms-src="사진" data-cms-video="영상 주소" data-cms-poster="/SkinImg/wear/hero-wear902-poster.webp" data-cms-size="1920x1080" poster="/SkinImg/wear/hero-wear902-poster.webp" muted loop autoplay playsinline preload="auto" disablepictureinpicture aria-label="행거에 걸린 카멜 코트 · 로즈 원피스 · 크림 니트 · 하늘색 블라우스"></video>
+      <img class="pe-world-image" data-world-image="1" data-cms-item="media" data-cms-src="사진" src="/SkinImg/wear/scene-rack.webp" alt="행거에 걸린 이번 시즌 코트 · 니트 · 원피스 · 블라우스" width="1672" height="941" loading="lazy">
+      <img class="pe-world-image" data-world-image="2" data-cms-item="media" data-cms-src="사진" src="/SkinImg/wear/scene-coat.webp" alt="아치 벽 앞에 걸린 카멜 벨티드 코트" width="1672" height="941" loading="lazy">
+      <span class="pe-image-label" data-cms-text="사진 위 작은 글">wear902 STUDIO / 01</span>
+    </div>
+    <div class="pe-hero__copy pe-world-copy" data-world-copy="1" aria-hidden="true" inert data-cms-item="copy"><p class="pe-eyebrow" data-cms-text="작은 글">02 / THE OUTER EDIT</p><p class="pe-display" aria-hidden="true" data-cms-text="영문 큰 글">Layer up.<br><em>Stay light.</em></p><h2 data-cms-text="제목">가볍게 걸쳐도<br>단정한 실루엣.</h2><p class="pe-description" data-cms-text="설명">코트 · 트렌치 · 재킷까지<br>계절이 바뀌어도 꺼내 입는 아우터.</p><a class="pe-button" href="/product/list.html?cate_no=24" data-cms-text="버튼" data-cms-href="버튼 링크">아우터 둘러보기 <span>↗</span></a></div>
+    <div class="pe-hero__copy pe-world-copy" data-world-copy="2" aria-hidden="true" inert data-cms-item="copy"><p class="pe-eyebrow" data-cms-text="작은 글">03 / EVERYDAY TOPS</p><p class="pe-display" aria-hidden="true" data-cms-text="영문 큰 글">Easy tops.<br><em>Busy days.</em></p><h2 data-cms-text="제목">바쁜 아침에도<br>고민 없이 완성.</h2><p class="pe-description" data-cms-text="설명">셔츠 한 장, 니트 한 벌로<br>매일의 코디가 쉬워지는 상의.</p><a class="pe-button" href="/product/list.html?cate_no=25" data-cms-text="버튼" data-cms-href="버튼 링크">상의 둘러보기 <span>↗</span></a></div>
+    <nav class="pe-world-route" aria-label="히어로 장면 선택"><button type="button" data-world-jump="0" aria-pressed="true" data-cms-item="route">01 <span data-cms-text="아래 메뉴 이름">새 시즌</span></button><button type="button" data-world-jump="1" aria-pressed="false" data-cms-item="route">02 <span data-cms-text="아래 메뉴 이름">아우터</span></button><button type="button" data-world-jump="2" aria-pressed="false" data-cms-item="route">03 <span data-cms-text="아래 메뉴 이름">데일리 상의</span></button></nav>
+    <a class="pe-hero-discover" href="#cz-picks" data-cms-href="오른쪽 아래 링크"><span data-cms-text="오른쪽 아래 작은 글">THIS MONTH’S EDIT</span><strong data-cms-text="오른쪽 아래 제목">이달의 시즌 셀렉션</strong><span aria-hidden="true">↗</span></a>
+    <div class="pe-hero-scroll"><span>SCROLL TO EXPLORE</span><i></i><span>↓</span></div>
+  </section>
+  </div>
+
+  <!-- 2. 이용 안내 -->
+  <section class="cz-perks cz-wrap" aria-label="wear902 이용 안내" data-cms="이용 안내" data-cms-grow>
+    <a href="/shopinfo/guide.html" class="cz-perk cz-perk--butter" data-cms-item data-cms-href="링크"><i><svg><use href="#cz-truck"/></svg></i><span><strong data-cms-text="제목">배송 안내</strong><small data-cms-text="설명"><b data-free-over>5만원 이상 무료배송 · </b>배송비와 도착 일정을 확인하세요</small></span></a>
+    <a href="/shopinfo/guide.html" class="cz-perk cz-perk--peach" data-cms-item data-cms-href="링크"><i><svg><use href="#cz-return"/></svg></i><span><strong data-cms-text="제목">교환 · 반품</strong><small data-cms-text="설명">사이즈 교환 · 반품 기준을 살펴보세요</small></span></a>
+    <a href="/board/product/list.html?board_no=4" class="cz-perk cz-perk--mint" data-cms-item data-cms-href="링크"><i><svg><use href="#cz-heart"/></svg></i><span><strong data-cms-text="제목">착용 리뷰</strong><small data-cms-text="설명">직접 입어 본 후기를 읽어보세요</small></span></a>
+    <a href="/board/product/list.html?board_no=6" class="cz-perk cz-perk--sky" data-cms-item data-cms-href="링크"><i><svg><use href="#cz-chat"/></svg></i><span><strong data-cms-text="제목">무엇이든 물어보세요</strong><small data-cms-text="설명">사이즈 · 상품 · 배송 문의</small></span></a>
+  </section>
+
+
+  <!-- 3. 오늘은 어떤 스타일인가요 (아우터 · 상의) -->
+  <section class="cz-sec cz-wrap" id="cz-styles" aria-labelledby="cz-styles-title" data-cms="스타일 고르기">
+    <header class="cz-head"><div><p class="cz-kicker" data-cms-text="작은 제목">What will you wear today?</p><h2 id="cz-styles-title" data-cms-text="제목">오늘은 어떤 옷을 입을까요?</h2></div><p data-cms-text="설명">출근하는 날도, 쉬는 날도 wear902 와 함께.</p></header>
+    <div class="cz-styles">
+      <article class="cz-wear cz-wear--outer" data-cms-item>
+        <div class="cz-wear__copy">
+          <p class="cz-wear__en" data-cms-text="영문">Outer edit</p>
+          <h3 data-cms-text="제목">한 벌로 완성하는 아우터</h3>
+          <p data-cms-text="설명">울 코트와 트렌치, 가벼운 재킷까지<br> 계절을 넘나드는 겉옷.</p>
+          <ul class="cz-chips" data-cms-links="바로가기">
+            <li><a href="/product/search.html?keyword=코트">코트</a></li>
+            <li><a href="/product/search.html?keyword=트렌치">트렌치</a></li>
+            <li><a href="/product/search.html?keyword=재킷">재킷</a></li>
+            <li><a href="/product/search.html?keyword=가디건">가디건</a></li>
+            <li><a href="/product/search.html?keyword=베스트">베스트</a></li>
+          </ul>
+          <a class="cz-btn" href="/product/list.html?cate_no=24" data-cms-text="버튼" data-cms-href="버튼 링크">아우터 전체 보기<span><svg><use href="#cz-arrow"/></svg></span></a>
+        </div>
+        <img class="cz-wear__photo" data-cms-src="사진" src="/SkinImg/wear/card-outer.webp" alt="아치 벽 앞 옷걸이에 걸린 카멜 벨티드 코트" width="1086" height="1448" loading="lazy">
+      </article>
+      <article class="cz-wear cz-wear--tops" data-cms-item>
+        <div class="cz-wear__copy">
+          <p class="cz-wear__en" data-cms-text="영문">Easy tops</p>
+          <h3 data-cms-text="제목">매일 입는 데일리 상의</h3>
+          <p data-cms-text="설명">구김 걱정 없는 셔츠부터<br> 부드러운 니트 · 블라우스까지.</p>
+          <ul class="cz-chips" data-cms-links="바로가기">
+            <li><a href="/product/search.html?keyword=셔츠">셔츠</a></li>
+            <li><a href="/product/search.html?keyword=블라우스">블라우스</a></li>
+            <li><a href="/product/search.html?keyword=니트">니트</a></li>
+            <li><a href="/product/search.html?keyword=티셔츠">티셔츠</a></li>
+            <li><a href="/product/search.html?keyword=가디건">가디건</a></li>
+          </ul>
+          <a class="cz-btn" href="/product/list.html?cate_no=25" data-cms-text="버튼" data-cms-href="버튼 링크">상의 전체 보기<span><svg><use href="#cz-arrow"/></svg></span></a>
+        </div>
+        <img class="cz-wear__photo" data-cms-src="사진" src="/SkinImg/wear/card-top.webp" alt="세이지 벽 앞에 걸린 크림 니트" width="1086" height="1448" loading="lazy">
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. 카테고리 -->
+  <section class="cz-sec cz-wrap" aria-labelledby="cz-cats-title" data-cms="카테고리" data-cms-grow data-cms-help="동그라미에는 정사각형 사진이 가장 잘 맞아요.">
+    <header class="cz-head"><div><p class="cz-kicker" data-cms-text="작은 제목">Shop by category</p><h2 id="cz-cats-title" data-cms-text="제목">오늘은 무엇을 찾으세요?</h2></div><a class="cz-link" href="/product/list.html?cate_no=28" data-cms-text="전체 보기 글자" data-cms-href="전체 보기 링크">전체 상품 보기<svg aria-hidden="true"><use href="#cz-arrow"/></svg></a></header>
+    <ul class="cz-cats">
+      <li data-cms-item><a href="/product/search.html?keyword=니트" data-cms-href="링크"><span class="cz-cat__img" style="--bg:var(--cz-peach)"><img src="/SkinImg/wear/sq-knit.webp" alt="" width="1254" height="1254" loading="lazy" style="--ox:50%;--oy:50%;--z:1" data-cms-src="사진" data-cms-reset data-cms-size="800x800"></span><strong data-cms-text="이름">니트</strong></a></li>
+      <li data-cms-item><a href="/product/search.html?keyword=코트" data-cms-href="링크"><span class="cz-cat__img" style="--bg:var(--cz-butter)"><img src="/SkinImg/wear/sq-coat.webp" alt="" width="1254" height="1254" loading="lazy" style="--ox:50%;--oy:50%;--z:1" data-cms-src="사진" data-cms-reset data-cms-size="800x800"></span><strong data-cms-text="이름">코트</strong></a></li>
+      <li data-cms-item><a href="/product/search.html?keyword=스커트" data-cms-href="링크"><span class="cz-cat__img" style="--bg:var(--cz-mint)"><img src="/SkinImg/wear/sq-skirt.webp" alt="" width="1254" height="1254" loading="lazy" style="--ox:50%;--oy:50%;--z:1" data-cms-src="사진" data-cms-reset data-cms-size="800x800"></span><strong data-cms-text="이름">스커트</strong></a></li>
+      <li data-cms-item><a href="/product/search.html?keyword=블라우스" data-cms-href="링크"><span class="cz-cat__img" style="--bg:var(--cz-sky)"><img src="/SkinImg/wear/sq-blouse.webp" alt="" width="1254" height="1254" loading="lazy" style="--ox:50%;--oy:50%;--z:1" data-cms-src="사진" data-cms-reset data-cms-size="800x800"></span><strong data-cms-text="이름">셔츠 · 블라우스</strong></a></li>
+      <li data-cms-item><a href="/product/search.html?keyword=데님" data-cms-href="링크"><span class="cz-cat__img" style="--bg:var(--cz-peach)"><img src="/SkinImg/wear/sq-denim.webp" alt="" width="1254" height="1254" loading="lazy" style="--ox:50%;--oy:50%;--z:1" data-cms-src="사진" data-cms-reset data-cms-size="800x800"></span><strong data-cms-text="이름">데님 · 팬츠</strong></a></li>
+      <li data-cms-item><a href="/product/search.html?keyword=원피스" data-cms-href="링크"><span class="cz-cat__img" style="--bg:var(--cz-lilac)"><img src="/SkinImg/wear/sq-dress.webp" alt="" width="1254" height="1254" loading="lazy" style="--ox:50%;--oy:50%;--z:1" data-cms-src="사진" data-cms-reset data-cms-size="800x800"></span><strong data-cms-text="이름">원피스</strong></a></li>
+      <li data-cms-item><a href="/product/search.html?keyword=머플러" data-cms-href="링크"><span class="cz-cat__img" style="--bg:var(--cz-butter)"><img src="/SkinImg/wear/sq-scarf.webp" alt="" width="1254" height="1254" loading="lazy" style="--ox:50%;--oy:50%;--z:1" data-cms-src="사진" data-cms-reset data-cms-size="800x800"></span><strong data-cms-text="이름">액세서리</strong></a></li>
+      <li data-cms-item><a href="/product/search.html?keyword=가디건" data-cms-href="링크"><span class="cz-cat__img" style="--bg:var(--cz-lilac)"><img src="/SkinImg/wear/sq-cardigan.webp" alt="" width="1254" height="1254" loading="lazy" style="--ox:50%;--oy:50%;--z:1" data-cms-src="사진" data-cms-reset data-cms-size="800x800"></span><strong data-cms-text="이름">가디건</strong></a></li>
+    </ul>
+  </section>
+
+  <!-- 5. 추천 상품 -->
+  <section id="cz-picks" class="cz-sec cz-wrap cz-products" aria-labelledby="cz-picks-title" data-cms="추천 상품 제목" data-cms-help="상품은 관리자 › 상품 › 메인 진열(추천상품)에서 골라요. 여기서는 제목만 바꿔요.">
+    <header class="cz-head"><div><p class="cz-kicker" data-cms-text="작은 제목">Curated for you</p><h2 id="cz-picks-title" data-cms-text="제목">이번 주, 옷장에 들이고 싶은 것들</h2></div><a class="cz-link" href="/product/list.html?cate_no=28" data-cms-text="전체 보기 글자" data-cms-href="전체 보기 링크">추천 상품 더 보기<svg aria-hidden="true"><use href="#cz-arrow"/></svg></a></header>
+    <div module="product_listmain_1" class="ec-base-product">
+      <!--
+      $count = 10
+      $basket_result = /product/add_basket.html
+      $basket_option = /product/basket_option.html
+      $cache = yes
+      -->
+      <ul class="prdList grid4"><!--@import(/product/list_product.html)--></ul>
+    </div>
+    <div class="cz-placeholder" data-cz-placeholder hidden></div>
+  </section>
+
+
+  <!-- 6. 스타일 찾기 -->
+  <section class="cz-finder cz-wrap" id="cz-finder" aria-labelledby="cz-finder-title" data-cms="스타일 찾기" data-cms-help="1·2번은 종류(아우터 · 상의), 3~5번은 입고 갈 자리 선택지 사진이에요. 선택지 이름과 추천 결과 문장은 코드에 연결되어 있어 사진과 안내 글자만 바꿔요.">
+    <div class="cz-finder__intro">
+      <p class="cz-kicker" data-cms-text="작은 제목">Find your style</p>
+      <h2 id="cz-finder-title" data-cms-text="제목">오늘 나에게<br>어울리는 옷은?</h2>
+      <p data-cms-text="설명">두 가지만 골라주세요.<br>어울리는 옷을 바로 찾아드려요.</p>
+      <svg class="cz-finder__paw" aria-hidden="true"><use href="#cz-spark"/></svg>
+    </div>
+    <form class="cz-finder__form" action="/product/search.html" method="get">
+      <fieldset class="cz-finder__styles"><legend><span>1</span>무엇을 찾으세요?</legend>
+        <label data-cms-item data-cms-item-label="아우터"><input type="radio" name="wear" value="outer" checked><span class="cz-opt"><img data-cms-src="사진" data-cms-size="1280x720" src="/SkinImg/wear/sq-coat.webp" alt="" width="1254" height="1254" loading="lazy"><b>아우터</b></span></label>
+        <label data-cms-item data-cms-item-label="상의"><input type="radio" name="wear" value="tops"><span class="cz-opt"><img data-cms-src="사진" data-cms-size="1280x720" src="/SkinImg/wear/sq-blouse.webp" alt="" width="1254" height="1254" loading="lazy"><b>상의</b></span></label>
+      </fieldset>
+      <fieldset class="cz-finder__moments"><legend><span>2</span>어디에 입고 가세요?</legend>
+        <label data-cms-item data-cms-item-label="출근길"><input type="radio" name="moment" value="office" checked><span class="cz-opt"><img data-cms-src="사진" data-cms-size="1200x900" src="/SkinImg/wear/sq-trench.webp" alt="" width="1254" height="1254" loading="lazy"><b>출근길</b></span></label>
+        <label data-cms-item data-cms-item-label="주말 나들이"><input type="radio" name="moment" value="weekend"><span class="cz-opt"><img data-cms-src="사진" data-cms-size="1200x900" src="/SkinImg/wear/sq-denim.webp" alt="" width="1254" height="1254" loading="lazy"><b>주말 나들이</b></span></label>
+        <label data-cms-item data-cms-item-label="특별한 약속"><input type="radio" name="moment" value="special"><span class="cz-opt"><img data-cms-src="사진" data-cms-size="1200x900" src="/SkinImg/wear/sq-atelier.webp" alt="" width="1254" height="1254" loading="lazy"><b>특별한 약속</b></span></label>
+      </fieldset>
+      <input type="hidden" name="keyword" value="트렌치">
+      <div class="cz-finder__result">
+        <p aria-live="polite" data-finder-result>아우터에서 출근길을 위한 <b>트렌치</b>를 추천해요.</p>
+        <button class="cz-btn" type="submit" data-cms-text="버튼">추천 스타일 보기<span><svg><use href="#cz-arrow"/></svg></span></button>
+      </div>
+    </form>
+  </section>
+
+  <!-- 7. 신상품 (가로 스크롤) -->
+  <!-- 7. 신상품 : 스크롤하면 섹션이 멈추고 상품 줄이 가로로 이동한다 (wear-cozy-home.js initRailPin) -->
+  <section id="cz-new" class="cz-sec cz-wrap cz-products cz-products--rail cz-products--pin" aria-labelledby="cz-new-title" data-cms="신상품 제목" data-cms-help="상품은 관리자 › 상품 › 메인 진열(신상품)에서 골라요. 여기서는 제목만 바꿔요.">
+   <div class="cz-pin" data-rail-pin>
+   <div class="cz-pin__stage">
+    <header class="cz-head"><div><p class="cz-kicker" data-cms-text="작은 제목">Just arrived</p><h2 id="cz-new-title" data-cms-text="제목">새로 들어왔어요</h2></div>
+      <div class="cz-pin__meter" aria-hidden="true"><span class="cz-pin__count"><b data-rail-now>01</b> / <span data-rail-total>10</span></span><span class="cz-pin__bar"><i></i></span></div>
+      <div class="cz-rail-nav"><button type="button" data-rail="-1" aria-label="이전 상품"><svg><use href="#cz-arrow"/></svg></button><button type="button" data-rail="1" aria-label="다음 상품"><svg><use href="#cz-arrow"/></svg></button></div>
+    </header>
+    <div module="product_listmain_2" class="ec-base-product">
+      <!--
+      $count = 10
+      $basket_result = /product/add_basket.html
+      $basket_option = /product/basket_option.html
+      $cache = yes
+      -->
+      <ul class="prdList grid4"><!--@import(/product/list_product.html)--></ul>
+    </div>
+    <div class="cz-placeholder" data-cz-placeholder hidden></div>
+   </div>
+   </div>
+  </section>
+
+
+  <!-- 8. 사이즈 가이드 : 1·2·3 재는 곳 (그림의 번호와 오른쪽 설명이 짝) -->
+  <section class="cz-size cz-wrap" aria-labelledby="cz-size-title" data-cms="사이즈 가이드" data-cms-help="1·2·3번은 그림 위 번호와 짝이라 3칸으로 정해져 있어요.">
+    <div class="cz-size__art">
+      <svg viewBox="74 40 308 250" class="cz-size__kit" aria-hidden="true">
+        <ellipse cx="228" cy="280" rx="130" ry="8" class="s-shadow"/>
+        <path class="s-body" d="M186 62 L160 72 L132 82 L108 210 L128 216 L150 116 L152 270 L304 270 L306 116 L328 216 L348 210 L324 82 L296 72 L270 62 L228 92 Z"/>
+        <path class="s-cap" d="M186 62 L228 92 L206 150 L180 96 Z M270 62 L228 92 L250 150 L276 96 Z"/>
+        <path class="s-line" d="M228 92 V270 M168 200 h34 M254 200 h34"/>
+        <circle cx="238" cy="160" r="3.5" class="s-cap s-cap--gold"/><circle cx="238" cy="196" r="3.5" class="s-cap s-cap--gold"/><circle cx="238" cy="232" r="3.5" class="s-cap s-cap--gold"/>
+        <path class="s-measure" d="M160 72 H296 M152 128 H304 M318 92 V270"/>
+        <g class="s-pin"><circle cx="228" cy="72" r="14"/><text x="228" y="77">1</text></g>
+        <g class="s-pin"><circle cx="152" cy="128" r="14"/><text x="152" y="133">2</text></g>
+        <g class="s-pin"><circle cx="318" cy="182" r="14"/><text x="318" y="187">3</text></g>
+      </svg>
+      <!-- 3D 보기 (wear-cozy-home.js initSize3D) : data-size-3d-model 에 GLB 주소를 넣으면 위 SVG 대신 보인다 -->
+      <div class="cz-size__3d" data-size-3d data-size-3d-model=""></div>
+      <span class="cz-size__pin" data-pin="1">1</span><span class="cz-size__pin" data-pin="2">2</span><span class="cz-size__pin" data-pin="3">3</span>
+      <p class="cz-size__hint">끌어서 돌려 보세요</p>
+    </div>
+    <div class="cz-size__copy">
+      <p class="cz-kicker" data-cms-text="작은 제목">Find your fit</p>
+      <h2 id="cz-size-title" data-cms-text="제목">내 사이즈 찾는 법</h2>
+      <p class="cz-size__lead" data-cms-text="설명">가장 잘 맞는 옷을 펼쳐 놓고 재 보세요.<br>세 곳만 비교하면 실패가 줄어요.</p>
+      <ol class="cz-size__steps">
+        <li data-cms-item><b>1</b><div><strong data-cms-text="이름">어깨너비</strong><p data-cms-text="바르는 법">어깨 솔기 끝에서 끝까지 일자로 재요. 상세페이지 실측과 1~2cm 안이면 잘 맞아요.</p></div></li>
+        <li data-cms-item><b>2</b><div><strong data-cms-text="이름">가슴단면</strong><p data-cms-text="바르는 법">겨드랑이 아래 끝에서 끝까지 잰 길이예요. 니트 위에 입을 코트라면 3~4cm 여유를 두세요.</p></div></li>
+        <li data-cms-item><b>3</b><div><strong data-cms-text="이름">총장</strong><p data-cms-text="바르는 법">뒷목 중심에서 밑단까지의 길이예요. 키에 따라 엉덩이 · 무릎 · 종아리 중 어디까지 오는지 확인하세요.</p></div></li>
+      </ol>
+      <div class="cz-size__actions"><a class="cz-btn cz-btn--soft" href="/wear/guide.html#outer" data-cms-text="버튼" data-cms-href="버튼 링크">사이즈 · 소재 가이드<span><svg><use href="#cz-arrow"/></svg></span></a><a class="cz-link" href="/board/product/list.html?board_no=6" data-cms-text="문의 글자" data-cms-href="문의 링크">사이즈 문의하기<svg aria-hidden="true"><use href="#cz-arrow"/></svg></a></div>
+    </div>
+  </section>
+
+  <!-- 9. 장면 속 상품 (Shop the look) : 스크롤하면 장면이 한 장씩 옆으로 넘어가고, 사진 속 + 를 누르면 상품 구매 레이어가 열린다 (wear-cozy-home.js initLooks)
+       + 위치(--x/--y)는 사진 원본 비율 기준 %, 상품 정보는 아래 cz-looks-data 에 있다.
+       data-prd 는 임시 번호(p01 = 11 … p30 = 40, products.json 의 product_no_temp − 1). 카페24 상품 등록 후 실제 상품번호로 바꾼다 -->
+  <section class="cz-looks" id="cz-looks" aria-labelledby="cz-looks-title" data-cms="장면 속 상품" data-cms-help="상품 점은 한 줄에 하나씩 「상품번호 가로% 세로%」로 써요. 상품번호만 적으면 이름·가격·사진은 쇼핑몰 상품에서 자동으로 가져와요. 메인 편집 모드에서 사진을 누르면 그 자리의 가로·세로 %가 복사돼요.">
+   <div class="cz-looks__pin" data-looks-pin>
+    <div class="cz-looks__stage">
+     <header class="cz-head cz-wrap"><div><p class="cz-kicker" data-cms-text="작은 제목">Shop the look</p><h2 id="cz-looks-title" data-cms-text="제목">장면 속 그 상품</h2></div>
+      <p class="cz-looks__count" aria-hidden="true"><b data-looks-now>01</b> / <span>04</span></p></header>
+     <div class="cz-looks__track" data-looks-track>
+      <article class="cz-look" aria-label="01 새 시즌" style="--ar:1.777" data-cms-item data-cms-spots="상품 점" data-cms-ar>
+       <div class="cz-look__info">
+        <p class="cz-look__no">01</p>
+        <h3 data-cms-text="제목">새 시즌의 시작,<br>행거 한 줄로 충분해요</h3>
+        <p class="cz-look__meta" data-cms-text="설명">가을 출근 · 데일리 · 3벌 코디</p>
+        <ul class="cz-look__list">
+         <li><button type="button" data-prd="11"><span>울 블렌드 벨티드 롱코트</span><b>189,000원</b></button></li>
+         <li><button type="button" data-prd="31"><span>플로럴 미디 원피스</span><b>89,000원</b></button></li>
+         <li><button type="button" data-prd="23"><span>메리노 울 라운드 니트</span><b>79,000원</b></button></li>
+        </ul>
+        <a class="cz-btn cz-btn--soft" href="/product/list.html?cate_no=24" data-cms-text="버튼" data-cms-href="버튼 링크">아우터 더 보기<span><svg><use href="#cz-arrow"/></svg></span></a>
+       </div>
+       <figure class="cz-look__media">
+        <img data-cms-src="사진" src="/SkinImg/wear/scene-atelier.webp" alt="행거에 걸린 카멜 코트 · 로즈 원피스 · 크림 니트 · 하늘색 블라우스" width="1672" height="941" loading="lazy">
+        <button class="cz-look__spot" type="button" data-prd="11" style="--x:41%;--y:45%" aria-label="울 블렌드 벨티드 롱코트 보기"></button>
+        <button class="cz-look__spot" type="button" data-prd="31" style="--x:52%;--y:52%" aria-label="플로럴 미디 원피스 보기"></button>
+        <button class="cz-look__spot" type="button" data-prd="23" style="--x:63%;--y:38%" aria-label="메리노 울 라운드 니트 보기"></button>
+       </figure>
+      </article>
+      <article class="cz-look" aria-label="02 옷장" style="--ar:1.777" data-cms-item data-cms-spots="상품 점" data-cms-ar>
+       <div class="cz-look__info">
+        <p class="cz-look__no">02</p>
+        <h3 data-cms-text="제목">손이 먼저 가는<br>기본 아이템</h3>
+        <p class="cz-look__meta" data-cms-text="설명">매일 입는 옷 · 출근 · 주말</p>
+        <ul class="cz-look__list">
+         <li><button type="button" data-prd="13"><span>캐시미어 터치 핸드메이드 코트</span><b>249,000원</b></button></li>
+         <li><button type="button" data-prd="21"><span>코튼 스트라이프 셔츠</span><b>49,000원</b></button></li>
+         <li><button type="button" data-prd="12"><span>싱글 브레스티드 트렌치코트</span><b>159,000원</b></button></li>
+        </ul>
+        <a class="cz-btn cz-btn--soft" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">전체 상품 보기<span><svg><use href="#cz-arrow"/></svg></span></a>
+       </div>
+       <figure class="cz-look__media">
+        <img data-cms-src="사진" src="/SkinImg/wear/scene-rack.webp" alt="행거에 걸린 차콜 코트 · 니트 · 세이지 원피스 · 셔츠 · 트렌치" width="1672" height="941" loading="lazy">
+        <button class="cz-look__spot" type="button" data-prd="13" style="--x:30%;--y:42%" aria-label="캐시미어 터치 핸드메이드 코트 보기"></button>
+        <button class="cz-look__spot" type="button" data-prd="21" style="--x:66%;--y:36%" aria-label="코튼 스트라이프 셔츠 보기"></button>
+        <button class="cz-look__spot" type="button" data-prd="12" style="--x:78%;--y:45%" aria-label="싱글 브레스티드 트렌치코트 보기"></button>
+       </figure>
+      </article>
+      <article class="cz-look" aria-label="03 출근룩" style="--ar:1.777" data-cms-item data-cms-spots="상품 점" data-cms-ar>
+       <div class="cz-look__info">
+        <p class="cz-look__no">03</p>
+        <h3 data-cms-text="제목">블라우스와 플리츠,<br>단정한 출근룩</h3>
+        <p class="cz-look__meta" data-cms-text="설명">오전 9시 · 사무실 · 미팅 있는 날</p>
+        <ul class="cz-look__list">
+         <li><button type="button" data-prd="22"><span>퍼프 소매 블라우스</span><b>59,000원</b></button></li>
+         <li><button type="button" data-prd="35"><span>플리츠 미디 스커트</span><b>59,000원</b></button></li>
+        </ul>
+        <a class="cz-btn cz-btn--soft" href="/product/list.html?cate_no=25" data-cms-text="버튼" data-cms-href="버튼 링크">상의 더 보기<span><svg><use href="#cz-arrow"/></svg></span></a>
+       </div>
+       <figure class="cz-look__media">
+        <img data-cms-src="사진" src="/SkinImg/wear/scene-skirt.webp" alt="크림 블라우스와 네이비 플리츠 스커트" width="1672" height="941" loading="lazy">
+        <button class="cz-look__spot" type="button" data-prd="22" style="--x:42%;--y:38%" aria-label="퍼프 소매 블라우스 보기"></button>
+        <button class="cz-look__spot" type="button" data-prd="35" style="--x:66%;--y:52%" aria-label="플리츠 미디 스커트 보기"></button>
+       </figure>
+      </article>
+      <article class="cz-look" aria-label="04 주말" style="--ar:.8" data-cms-item data-cms-spots="상품 점" data-cms-ar>
+       <div class="cz-look__info">
+        <p class="cz-look__no">04</p>
+        <h3 data-cms-text="제목">주말엔 스트라이프<br>니트 하나로</h3>
+        <p class="cz-look__meta" data-cms-text="설명">주말 오후 · 카페 · 산책</p>
+        <ul class="cz-look__list">
+         <li><button type="button" data-prd="24"><span>보트넥 스트라이프 니트</span><b>69,000원</b></button></li>
+         <li><button type="button" data-prd="37"><span>하이웨스트 와이드 데님</span><b>69,000원</b></button></li>
+        </ul>
+        <a class="cz-btn cz-btn--soft" href="/product/list.html?cate_no=26" data-cms-text="버튼" data-cms-href="버튼 링크">원피스 · 스커트 더 보기<span><svg><use href="#cz-arrow"/></svg></span></a>
+       </div>
+       <figure class="cz-look__media">
+        <img data-cms-src="사진" src="/SkinImg/wear/portrait-knit.webp" alt="하늘색 아치 앞에 걸린 버터색 스트라이프 니트" width="1122" height="1402" loading="lazy">
+        <button class="cz-look__spot" type="button" data-prd="24" style="--x:50%;--y:42%" aria-label="보트넥 스트라이프 니트 보기"></button>
+        <button class="cz-look__spot" type="button" data-prd="37" style="--x:50%;--y:88%" aria-label="하이웨스트 와이드 데님 보기"></button>
+       </figure>
+      </article>
+     </div>
+    </div>
+   </div>
+   <!-- 상품 구매 레이어 -->
+   <div class="cz-qv" id="cz-qv" hidden>
+    <div class="cz-qv__box" role="dialog" aria-modal="true" aria-labelledby="cz-qv-name">
+     <button class="cz-qv__close" type="button" data-qv-close aria-label="닫기"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/></svg></button>
+     <figure class="cz-qv__img"><img src="" alt=""></figure>
+     <div class="cz-qv__body">
+      <p class="cz-qv__cat"></p>
+      <h3 id="cz-qv-name"></h3>
+      <p class="cz-qv__review" hidden></p>
+      <p class="cz-qv__price"></p>
+      <p class="cz-qv__desc"></p>
+      <div class="cz-qv__actions"><a class="cz-btn" data-qv-buy href="#">구매하러 가기<span><svg><use href="#cz-arrow"/></svg></span></a><a class="cz-qv__more" data-qv-more href="#">상품 상세 보기</a></div>
+     </div>
+    </div>
+   </div>
+   <script type="application/json" id="cz-looks-data">{
+    "11":{"name":"울 블렌드 벨티드 롱코트","cat":"OUTER · 코트 · 재킷","img":"p01","price":189000,"retail":229000,"desc":"울 블렌드 원단에 벨트를 더한 롱코트. 허리를 묶으면 단정하고, 풀면 여유 있는 실루엣."},
+    "31":{"name":"플로럴 미디 원피스","cat":"DRESS · 원피스","img":"p21","price":89000,"retail":109000,"desc":"잔꽃무늬가 흩어진 미디 원피스. 가디건만 걸치면 가을까지 입을 수 있어요."},
+    "23":{"name":"메리노 울 라운드 니트","cat":"TOP · 니트","img":"p13","price":79000,"desc":"까슬거림이 적은 메리노 울 라운드 니트. 셔츠 위에 겹쳐 입기 좋은 두께."},
+    "13":{"name":"캐시미어 터치 핸드메이드 코트","cat":"OUTER · 코트 · 재킷","img":"p03","price":249000,"desc":"캐시미어처럼 부드러운 터치의 핸드메이드 코트. 가볍고 따뜻해요."},
+    "21":{"name":"코튼 스트라이프 셔츠","cat":"TOP · 셔츠 · 블라우스","img":"p11","price":49000,"desc":"도톰한 코튼으로 만든 스트라이프 셔츠. 단독으로도, 니트 안에도."},
+    "12":{"name":"싱글 브레스티드 트렌치코트","cat":"OUTER · 코트 · 재킷","img":"p02","price":159000,"desc":"싱글 브레스티드 트렌치코트. 봄 · 가을 출근길 기본 아우터."},
+    "22":{"name":"퍼프 소매 블라우스","cat":"TOP · 셔츠 · 블라우스","img":"p12","price":59000,"retail":69000,"desc":"어깨를 살짝 부풀린 퍼프 소매 블라우스. 스커트 · 슬랙스 어디에나."},
+    "35":{"name":"플리츠 미디 스커트","cat":"DRESS · 스커트","img":"p25","price":59000,"retail":72000,"desc":"잔 주름이 흐르듯 떨어지는 플리츠 미디 스커트. 허리는 편한 밴딩."},
+    "24":{"name":"보트넥 스트라이프 니트","cat":"TOP · 니트","img":"p14","price":69000,"retail":85000,"desc":"보트넥 라인의 스트라이프 니트. 데님과 함께 가장 쉬운 주말룩."},
+    "37":{"name":"하이웨스트 와이드 데님","cat":"DRESS · 팬츠","img":"p27","price":69000,"desc":"다리가 길어 보이는 하이웨스트 와이드 데님. 신축성 있는 원단."}
+   }</script>
+  </section>
+
+  <!-- 10. 인기 상품 -->
+  <section id="cz-best" class="cz-sec cz-wrap cz-products cz-products--best" aria-labelledby="cz-best-title" data-cms="인기 상품 제목" data-cms-help="상품은 관리자 › 상품 › 메인 진열(인기상품)에서 골라요. 여기서는 제목만 바꿔요.">
+    <header class="cz-head"><div><p class="cz-kicker" data-cms-text="작은 제목">Everyday favourites</p><h2 id="cz-best-title" data-cms-text="제목">모두가 자꾸 꺼내 입는 인기 상품</h2></div><a class="cz-link" href="/product/list.html?cate_no=28" data-cms-text="전체 보기 글자" data-cms-href="전체 보기 링크">인기 상품 더 보기<svg aria-hidden="true"><use href="#cz-arrow"/></svg></a></header>
+    <div module="product_listmain_3" class="ec-base-product">
+      <!--
+      $count = 10
+      $basket_result = /product/add_basket.html
+      $basket_option = /product/basket_option.html
+      $cache = yes
+      -->
+      <ul class="prdList grid4"><!--@import(/product/list_product.html)--></ul>
+    </div>
+    <div class="cz-placeholder" data-cz-placeholder hidden></div>
+  </section>
+
+
+  <!-- 11. 기획전 -->
+  <section class="cz-duo cz-wrap" aria-label="이달의 기획전" data-cms="기획전">
+    <a class="cz-duo__card cz-duo__card--lilac" href="/product/search.html?keyword=머플러" data-cms-item data-cms-href="링크">
+      <div><p class="cz-kicker" data-cms-text="작은 제목">A gift to wear</p><h2 data-cms-text="제목">소중한 사람에게,<br> 따뜻한 마음을</h2><p data-cms-text="설명">생일에도, 고마운 날에도.<br> 포장까지 예쁜 머플러 · 가방 선물.</p><span class="cz-btn cz-btn--soft" data-cms-text="버튼">선물 아이템 보기<span><svg><use href="#cz-arrow"/></svg></span></span></div>
+      <img data-cms-src="사진" src="/SkinImg/wear/scene-gift.webp" alt="와인색 머플러와 리본을 묶은 선물 상자" width="1672" height="941" loading="lazy">
+    </a>
+    <a class="cz-duo__card cz-duo__card--sage" href="/product/list.html?cate_no=27" data-cms-item data-cms-href="링크">
+      <div><p class="cz-kicker" data-cms-text="작은 제목">The good finds</p><h2 data-cms-text="제목">좋은 발견,<br> 반가운 가격</h2><p data-cms-text="설명">지금 만나볼 수 있는<br> 시즌 오프 세일 컬렉션.</p><span class="cz-btn cz-btn--soft" data-cms-text="버튼">세일 보러 가기<span><svg><use href="#cz-arrow"/></svg></span></span></div>
+      <img data-cms-src="사진" src="/SkinImg/wear/scene-dress.webp" alt="세이지 벽 앞에 걸린 크림 원피스" width="1672" height="941" loading="lazy">
+    </a>
+  </section>
+
+  <!-- 12. 이번 시즌 옷장 체크리스트 -->
+  <section class="cz-starter cz-wrap" id="cz-starter" aria-labelledby="cz-starter-title" data-cms="체크리스트" data-cms-help="준비물은 한 줄에 하나씩 써요. 준비물마다 붙는 [보러 가기]는 그 이름으로 상품을 검색해요.">
+    <div class="cz-starter__photo"><img data-cms-src="사진" src="/SkinImg/wear/portrait-atelier.webp" alt="아치 벽 앞에 걸린 와인색 원피스" width="1122" height="1402" loading="lazy"><span class="cz-starter__sticker" data-cms-text="사진 위 스티커">Hello,<br><em>closet!</em></span></div>
+    <div class="cz-starter__card">
+      <p class="cz-kicker" data-cms-text="작은 제목">Your season list</p>
+      <h2 id="cz-starter-title" data-cms-text="제목">이번 시즌 옷장,<br>하나씩 채워요</h2>
+      <p data-cms-text="설명">옷장에 있는 것부터 체크하고, 빠진 것만 담아 보세요.</p>
+      <div class="cz-toggle" role="group" aria-label="옷장 종류"><button type="button" data-starter-wear="outer" aria-pressed="true">아우터</button><button type="button" data-starter-wear="tops" aria-pressed="false">상의</button></div>
+      <div class="cz-progress" aria-hidden="true"><i data-starter-bar></i></div>
+      <div class="cz-checklist" data-starter-list></div>
+      <span hidden data-starter-items="outer" data-cms-lines="아우터 목록">트렌치코트
+울 롱코트
+테일러드 재킷
+롱 가디건
+경량 패딩 베스트
+머플러</span>
+      <span hidden data-starter-items="tops" data-cms-lines="상의 목록">화이트 셔츠
+스트라이프 셔츠
+라운드 니트
+블라우스
+베이직 티셔츠
+카디건</span>
+      <noscript><p><a href="/wear/guide.html#first-day">옷장 정리 가이드 보기</a></p></noscript>
+      <div class="cz-checklist__foot"><span data-starter-status aria-live="polite">옷장에 있는 것을 체크해주세요.</span><button type="button" data-starter-reset>다시 시작</button></div>
+      <a class="cz-link" href="/wear/guide.html#first-day" data-cms-text="아래 링크 글자" data-cms-href="아래 링크">옷장 정리 가이드 읽기<svg aria-hidden="true"><use href="#cz-arrow"/></svg></a>
+    </div>
+  </section>
+
+  <!-- 13-1. 최신 포토리뷰 8개 : 상품 사용후기(board_no=4)의 최신 사진 후기를 wear-reviews.js 가 채운다 -->
+  <section class="cz-sec cz-wrap cz-live" aria-labelledby="cz-live-title" data-cms="포토리뷰 제목" data-cms-help="리뷰 카드는 상품 사용후기 게시판의 사진 후기가 자동으로 나와요. 여기서는 제목과 버튼 글자만 바꿔요.">
+    <header class="cz-head"><div><p class="cz-kicker" data-cms-text="작은 제목">Photo reviews</p><h2 id="cz-live-title" data-cms-text="제목">직접 입어 본 포토리뷰</h2></div>
+      <div class="cz-head__links"><a class="cz-link" href="/board/product/list.html?board_no=4">리뷰 전체 보기<svg aria-hidden="true"><use href="#cz-arrow"/></svg></a><a class="cz-btn cz-btn--soft" href="/board/product/list.html?board_no=4" data-cms-text="버튼">포토리뷰 쓰고 3,000P<span><svg><use href="#cz-arrow"/></svg></span></a></div>
+    </header>
+    <div class="pr-grid" data-wear-photoreviews></div>
+    <p class="pr-empty" data-cms-text="후기가 없을 때 글">아직 등록된 포토리뷰가 없어요. 첫 포토리뷰를 남겨 주세요.</p>
+  </section>
+
+  <!-- 14. 가이드 -->
+  <section class="cz-sec cz-wrap" aria-labelledby="cz-journal-title" data-cms="스타일 노트" data-cms-grow>
+    <header class="cz-head"><div><p class="cz-kicker" data-cms-text="작은 제목">Style notes</p><h2 id="cz-journal-title" data-cms-text="제목">옷이 오래가는 작은 습관</h2></div><p data-cms-text="설명">매일의 코디가 한결 쉬워지는 작은 메모.</p></header>
+    <div class="cz-journal">
+      <a class="cz-note cz-note--peach" href="/wear/guide.html#outer" data-cms-item data-cms-href="링크"><figure><img data-cms-src="사진" src="/SkinImg/wear/scene-knit.webp" alt="행거에 걸린 크림 · 와인 · 세이지 니트" width="1672" height="941" loading="lazy"></figure><span class="cz-tag" data-cms-text="태그">Knit care</span><h3 data-cms-text="제목">니트, 늘어나지 않게 보관하는 법</h3><p data-cms-text="설명">옷걸이 대신 접어서, 세탁은 손빨래 코스로. 보풀까지 줄이는 방법을 알려 드려요.</p></a>
+      <a class="cz-note cz-note--mint" href="/wear/guide.html#first-day" data-cms-item data-cms-href="링크"><figure><img data-cms-src="사진" src="/SkinImg/wear/scene-trench.webp" alt="회색 아치 앞에 걸린 베이지 트렌치코트" width="1672" height="941" loading="lazy"></figure><span class="cz-tag" data-cms-text="태그">Closet</span><h3 data-cms-text="제목">계절 옷장 정리하는 법</h3><p data-cms-text="설명">자주 입는 옷부터 앞으로. 한 시즌을 버틸 기본 아이템 10가지를 정리했어요.</p></a>
+      <a class="cz-note cz-note--butter" href="/wear/guide.html#tops" data-cms-item data-cms-href="링크"><figure><img data-cms-src="사진" src="/SkinImg/wear/scene-skirt.webp" alt="크림 블라우스와 네이비 플리츠 스커트" width="1672" height="941" loading="lazy"></figure><span class="cz-tag" data-cms-text="태그">Styling</span><h3 data-cms-text="제목">원피스 · 스커트, 계절별로 입는 법</h3><p data-cms-text="설명">가디건과 부츠만 바꿔도 봄 원피스를 가을까지. 길이별 코디 팁을 모았어요.</p></a>
+    </div>
+  </section>
+
+  <!-- 15. 회원 · 자주 묻는 질문 -->
+  <section class="cz-help cz-wrap" aria-labelledby="cz-help-title" data-cms-order="회원 안내 · 자주 묻는 질문">
+    <div class="cz-help__member" data-cms="회원 안내" data-cms-help="관심상품·주문·쿠폰 링크는 카페24 기본 주소라 글자만 바꿔요.">
+      <div class="cz-help__body">
+        <p class="cz-kicker" data-cms-text="작은 제목">Your wear, in one place</p>
+        <h2 id="cz-help-title" data-cms-text="제목">다음 쇼핑도,<br>조금 더 편하게</h2>
+        <p data-cms-text="설명">관심상품부터 주문 내역, 보유 쿠폰까지 한곳에서 챙겨보세요.</p>
+        <ul class="cz-help__links">
+          <li data-cms-item><a href="/myshop/wish_list.html"><i><svg><use href="#cz-heart"/></svg></i><span><strong data-cms-text="제목">관심상품</strong><small data-cms-text="설명">마음에 담아둔 상품 모아보기</small></span><svg class="cz-help__go" aria-hidden="true"><use href="#cz-arrow"/></svg></a></li>
+          <li data-cms-item><a href="/myshop/order/list.html"><i><svg><use href="#cz-truck"/></svg></i><span><strong data-cms-text="제목">주문 · 배송</strong><small data-cms-text="설명">지난 주문과 배송 상태 확인</small></span><svg class="cz-help__go" aria-hidden="true"><use href="#cz-arrow"/></svg></a></li>
+          <li data-cms-item><a href="/myshop/coupon/coupon.html"><i><svg><use href="#cz-spark"/></svg></i><span><strong data-cms-text="제목">나의 쿠폰</strong><small data-cms-text="설명">사용할 수 있는 혜택 찾기</small></span><svg class="cz-help__go" aria-hidden="true"><use href="#cz-arrow"/></svg></a></li>
+        </ul>
+        <a class="cz-btn" href="/member/agreement.html" data-cms-text="버튼" data-cms-href="버튼 링크">wear902 회원가입<span><svg><use href="#cz-arrow"/></svg></span></a>
+      </div>
+      <figure class="cz-help__photo"><img data-cms-src="사진" src="/SkinImg/wear/scene-blouse.webp" alt="하늘색 아치 앞에 걸린 화이트 블라우스" width="1672" height="941" loading="lazy"></figure>
+    </div>
+    <div class="cz-help__faq" data-cms="자주 묻는 질문" data-cms-grow>
+      <p class="cz-kicker" data-cms-text="작은 제목">A little help</p>
+      <h3 data-cms-text="제목">자주 묻는 질문</h3>
+      <details data-cms-item><summary data-cms-text="질문">주문하면 언제 도착하나요?</summary><p data-cms-text="답변">평일 오후 2시 전 주문은 당일 출고해 1~2일 안에 받아 보실 수 있어요. 주문 제작 상품은 상세페이지의 출고 일정을 확인해 주세요.</p></details>
+      <details data-cms-item><summary data-cms-text="질문">사이즈가 고민돼요. 어떻게 고르나요?</summary><p data-cms-text="답변">상품 상세페이지의 실측 사이즈(어깨 · 가슴 · 총장)를 가지고 계신 옷과 비교해 보세요. 모델 착용 사이즈와 키도 함께 적어 두었어요. 궁금한 점은 상품 문의로 남겨 주세요.</p></details>
+      <details data-cms-item><summary data-cms-text="질문">선물할 상품을 찾고 있어요.</summary><p data-cms-text="답변">사이즈 걱정 없는 머플러 · 가방 · 가디건을 추천해요. 선물 포장을 선택하면 받는 분 주소로 바로 보낼 수 있어요. <a href="/product/search.html?keyword=머플러">선물 아이템 보기</a></p></details>
+      <details data-cms-item><summary data-cms-text="질문">사이즈 교환 · 반품은 어떻게 하나요?</summary><p data-cms-text="답변">받으신 날부터 7일 안에, 착용 흔적 · 택 제거가 없는 상품이면 교환 · 반품할 수 있어요. 불량이나 오배송은 사진과 함께 고객센터 게시판에 남겨 주세요. 확인 후 다시 보내 드리거나 환불해 드려요. <a href="/board/product/list.html?board_no=6">고객센터 문의</a></p></details>
+    </div>
+  </section>
+
+
+  <!-- 16. 브랜드 각인 : wear902 글자 이미지 -->
+  <section class="cz-brand" aria-label="wear902" data-cms="맨 아래 브랜드">
+    <div class="cz-brand__top">
+      <div><p class="cz-brand__title" data-cms-text="제목">아우터부터 원피스까지,<br>매일의 옷장은 wear902에서</p><p class="cz-brand__sub" data-cms-text="설명">고르고, 입고, 오래 아끼는 데 필요한 옷을 한곳에 모았어요.</p></div>
+      <a class="cz-btn cz-btn--soft" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">wear902 둘러보기<span><svg><use href="#cz-arrow"/></svg></span></a>
+    </div>
+    <div class="cz-brand__stage">
+      <img data-cms-src="사진" src="/SkinImg/wear/wordmark-wear902.webp" alt="wear902" width="2146" height="724" loading="lazy">
+    </div>
+  </section>
+
+  <!-- 이벤트 레이어 팝업 : 2장이 4초마다 넘어간다. 오늘 하루 닫기는 그날 자정까지 다시 뜨지 않는다 -->
+  <div class="cz-pop" id="cz-pop" data-cms="이벤트 팝업" data-cms-adapter="popup" role="dialog" aria-modal="true" aria-label="wear902 이벤트" hidden>
+    <div class="cz-pop__box">
+      <div class="cz-pop__track">
+        <a class="cz-pop__slide" href="/product/list.html?cate_no=27">
+          <div class="cz-pop__img"><img src="/SkinImg/wear/scene-dress.webp" alt="세이지 벽 앞에 걸린 크림 원피스" width="1672" height="941" style="object-position:50% 50%"><span class="cz-pop__badge">SALE EVENT</span></div>
+          <div class="cz-pop__txt"><small>Lucky coupon</small><strong>최대 50% 쿠폰 뽑기</strong><p>세일 기간, 쿠폰을 뽑아 최대 50% 할인 혜택을 받아 보세요.</p><em>쿠폰 뽑으러 가기 →</em></div>
+        </a>
+        <a class="cz-pop__slide" href="/board/product/list.html?board_no=4">
+          <div class="cz-pop__img"><img src="/SkinImg/wear/scene-atelier.webp" alt="행거에 걸린 이번 시즌 옷들" width="1672" height="941" style="object-position:50% 50%"><span class="cz-pop__badge">REVIEW EVENT</span></div>
+          <div class="cz-pop__txt"><small>Share your look</small><strong>포토리뷰 쓰면 3,000P</strong><p>착용 사진과 함께 후기를 남기면 적립금 3,000원을 드려요.</p><em>포토리뷰 쓰러 가기 →</em></div>
+        </a>
+      </div>
+      <div class="cz-pop__dots"><button type="button" aria-label="1번 이벤트" aria-current="true"></button><button type="button" aria-label="2번 이벤트" aria-current="false"></button></div>
+      <div class="cz-pop__bar"><button type="button" data-pop-today>오늘 하루 닫기</button><button type="button" data-pop-close>닫기</button></div>
+    </div>
+  </div>
+</main>
