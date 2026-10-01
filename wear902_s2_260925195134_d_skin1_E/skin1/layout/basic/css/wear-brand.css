@@ -1,11 +1,11 @@
 /* Content identity only: keep original header/footer layout and spacing. */
-#header .inner .top_nav_box .top_logo a::before,#footer .bt_logo a::before{content:'wear902';color:#352d36}
+#header .inner .top_nav_box .top_logo a::before,#footer .bt_logo a::before{content:'wear902';color:#232323}
 #header .inner .top_nav_box .top_logo a::after,#footer .bt_logo a::after{content:none;display:none}
-.main_top_banner{background:#3f3641!important}
-#header{background:#f6f1fe!important}
-#header .inner .top_nav_box .top_category>ul>li>a{color:#352d36!important}
-body{background:#f6f1fe}
-#contents>.titleArea h2{color:#3d333f;font-family:'Pretendard Variable','Pretendard',sans-serif!important;font-weight:500!important;letter-spacing:-.045em;font-size:32px!important}
-#aside .navigation-menu__category .view{color:#3d333f}
+.main_top_banner{background:#242424!important}
+#header{background:#ffffff!important}
+#header .inner .top_nav_box .top_category>ul>li>a{color:#232323!important}
+body{background:#ffffff}
+#contents>.titleArea h2{color:#242424;font-family:'Pretendard Variable','Pretendard',sans-serif!important;font-weight:500!important;letter-spacing:-.045em;font-size:32px!important}
+#aside .navigation-menu__category .view{color:#242424}
 #header .count:has(span:empty){display:none!important}
-#header .count{background:#3d333f!important}
+#header .count{background:#242424!important}

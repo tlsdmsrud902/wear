@@ -29,7 +29,7 @@
 	transition:opacity .35s ease, transform .45s cubic-bezier(.16,1,.3,1), visibility .35s, background .25s ease;
 }
 .st-totop.is-show { opacity:1; visibility:visible; transform:none; }
-.st-totop:hover, .st-totop:focus-visible { background:#e93781; outline:0; }
+.st-totop:hover, .st-totop:focus-visible { background:#111111; outline:0; }
 .st-totop svg { display:block; width:20px; height:20px; transition:transform .35s cubic-bezier(.16,1,.3,1); }
 .st-totop:hover svg { transform:translateY(-3px); }
 @media all and (max-width:1024px) {
@@ -92,9 +92,9 @@
 		<div module="Layout_Info" class="bt_cscenter st-footer__column" data-ez-group="cs">
 			<h2 class="title" data-ez-role="title">Customer center</h2>
 			<div data-ez-role="list">
-				<div data-ez-item="phone" class="bt_txt01"><span data-ez-role="value">{$phone}</span></div>
+				<div data-ez-item="phone" class="bt_txt01"><span data-ez-role="value" class="wear-blur" aria-hidden="true">{$phone}</span></div>
 				<div data-ez-item="runtime" class="bt_txt02"><span data-ez-role="value">{$runtime}</span></div>
-				<div data-ez-item="email" class="bt_txt02"><span data-ez-role="value">{$inquiry_email}</span></div>
+				<div data-ez-item="email" class="bt_txt02"><span data-ez-role="value" class="wear-blur" aria-hidden="true">{$inquiry_email}</span></div>
 			</div>
 		</div>
 

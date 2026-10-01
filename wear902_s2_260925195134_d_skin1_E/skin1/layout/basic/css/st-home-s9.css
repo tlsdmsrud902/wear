@@ -550,10 +550,10 @@ ul.prdList > li .prdList__item .thumbnail, .detailArea .imgArea .prdImg .thumbna
 @media (max-width:640px) { .st-rvpromo { flex-direction:column; align-items:stretch; text-align:center; } }
 
 /* 26. 편의 기능 프리미엄 디자인 (2026-09-25) — 타임세일 · 무료배송 진행바 · 재고 임박 · 후기 유도. 앞선 23·24·25번 블록을 덮어쓴다 */
-@keyframes stPulse { 0% { box-shadow:0 0 0 0 rgba(255,90,95,.55); } 70% { box-shadow:0 0 0 8px rgba(255,90,95,0); } 100% { box-shadow:0 0 0 0 rgba(255,90,95,0); } }
+@keyframes stPulse { 0% { box-shadow:0 0 0 0 rgba(17,17,17,.55); } 70% { box-shadow:0 0 0 8px rgba(17,17,17,0); } 100% { box-shadow:0 0 0 0 rgba(17,17,17,0); } }
 @keyframes stSweep { 0% { transform:translateX(-120%); } 55%,100% { transform:translateX(120%); } }
 @keyframes stShine { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
-.st-dot { display:inline-block; flex:none; width:7px; height:7px; border-radius:50%; background:#ff5a5f; animation:stPulse 1.6s infinite; }
+.st-dot { display:inline-block; flex:none; width:7px; height:7px; border-radius:50%; background:#111111; animation:stPulse 1.6s infinite; }
 
 /* 타임세일 상세 배너 : 초 단위 카운트다운 카드 */
 .st-tsb { position:relative; overflow:hidden; margin:0 0 14px; padding:18px 14px 16px; border-radius:16px; background:linear-gradient(135deg,#20212c 0%,#2f3042 55%,#45465c 100%); color:#fff; text-align:center; box-shadow:0 14px 30px -14px rgba(32,33,44,.6); font-weight:400; }
