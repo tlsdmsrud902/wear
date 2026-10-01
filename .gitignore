@@ -3,3 +3,4 @@ _deploy/
 /photos/
 /*.jpg
 .claude/
+node_modules/

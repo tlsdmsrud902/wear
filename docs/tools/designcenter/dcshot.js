@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer-core');
-const OUT = 'D:/1. 클라우드 작업폴더/4. food902/_deploy/dc/';
+const OUT = require('path').resolve(__dirname, '../../../_deploy/dc') + '/';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 (async () => {
   const b = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: 'new' });
@@ -7,7 +7,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   await pg.setUserAgent((await b.userAgent()).replace('HeadlessChrome', 'Chrome'));
   for (const [name, vp, t] of [['desk', { width: 1280, height: 820 }, 1.2], ['mobile', { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true }, 1.2], ['desk-sale', { width: 1280, height: 820 }, 0]]) {
     await pg.setViewport(vp);
-    await pg.goto('https://ecudemo408987.cafe24.com/' + (name === 'desk-sale' ? 'product/list.html?cate_no=27' : ''), { waitUntil: 'networkidle2', timeout: 90000 });
+    await pg.goto('https://ecudemo409091.cafe24.com/' + (name === 'desk-sale' ? 'product/list.html?cate_no=27' : ''), { waitUntil: 'networkidle2', timeout: 90000 });
     if (/challenge/.test(pg.url())) { console.log('CHALLENGE'); break; }
     await sleep(4000);
     await pg.addStyleTag({ content: '*,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important} #cz-pop,.cz-pop{display:none!important}' });

@@ -1,9 +1,9 @@
 const fs = require('fs');
-// food902 설명서용 쇼핑몰 화면 캡처 (로그인 없이 보이는 편집 모드 화면만)
-// node shoot.js [이름,이름…]
+// wear902 설명서 · 디자인센터 상세용 쇼핑몰 화면 캡처 (로그인 없이 보이는 편집 모드 화면만)
+// node manual-shoot.js [이름,이름…]   (OUT · BASE 는 환경변수로 바꿀 수 있다)
 const puppeteer = require('puppeteer-core');
-const OUT = 'D:/1. 클라우드 작업폴더/4. food902/manual-cms/shots/';
-const BASE = 'https://food902.cafe24.com';
+const OUT = process.env.OUT || 'D:/1. 클라우드 작업폴더/5. wear902/manual-cms/shots/';
+const BASE = process.env.BASE || 'https://wear902.cafe24.com';
 const only = process.argv[2] ? process.argv[2].split(',') : null;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function open(pg, url, vp, keepBar) {
@@ -41,7 +41,7 @@ const shots = {
   'cms-bar-go': async pg => { await open(pg, '/?edit=1', { width: 1280, height: 820 }, true); return { el: '.cms-bar' }; },
   'cms-before': async pg => { await open(pg, '/?edit=1', { width: 1280, height: 820 }); },
   'cms-after': async pg => { await open(pg, '/?edit=1', { width: 1280, height: 820 });
-    await pg.evaluate(() => { const h = document.getElementById('pe-title'); if (h) h.innerHTML = '매일 아침 문 앞에<br>신선한 식탁을 배달해요.'; }); },
+    await pg.evaluate(() => { const h = document.getElementById('pe-title'); if (h) h.innerHTML = '출근길에도 주말에도<br>가볍게 입는 새 시즌.'; }); },
   'step-edit': async pg => { await open(pg, '/?edit=1', { width: 640, height: 480, deviceScaleFactor: 2 }); return secClip(pg, '카테고리', 640, 480); },
   'feat-hidden': async pg => { await open(pg, '/?edit=1', { width: 640, height: 480, deviceScaleFactor: 2 });
     await pg.evaluate(() => { const s = [...document.querySelectorAll('[data-cms]')].find(e => e.getAttribute('data-cms') === '맨 아래 브랜드'); s.classList.add('cms-off'); const v = document.createElement('div'); v.className = 'cms-off-veil'; s.appendChild(v); const t = document.createElement('div'); t.className = 'cms-off-tag'; t.textContent = '숨김 · 방문자에게 안 보여요'; s.appendChild(t); });
@@ -52,7 +52,7 @@ const shots = {
   'cms-sale': async pg => { await open(pg, '/product/list.html?cate_no=27&edit=1', { width: 1280, height: 820 }); },
   'cms-list': async pg => { await open(pg, '/product/list.html?cate_no=24&edit=1', { width: 1280, height: 820 }); },
   'cms-board': async pg => { await open(pg, '/board/product/list.html?board_no=4&edit=1', { width: 1280, height: 820 }); },
-  'cms-guide': async pg => { await open(pg, '/food/guide.html?edit=1', { width: 1280, height: 820 }); },
+  'cms-guide': async pg => { await open(pg, '/wear/guide.html?edit=1', { width: 1280, height: 820 }); },
   'story-1': async pg => { await open(pg, '/?edit=1', { width: 1100, height: 680 }); },
   'kakao-win': async pg => { await open(pg, '/?edit=1', { width: 1280, height: 900 }, true);
     await pg.evaluate(() => { const b = [...document.querySelectorAll('.cms-bar button, .cms-bar a')].find(x => /카카오톡 상담 연결/.test(x.textContent)); b.click(); }); await sleep(1500); },

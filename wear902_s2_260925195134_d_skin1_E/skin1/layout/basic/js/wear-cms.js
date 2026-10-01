@@ -728,6 +728,7 @@
     + '@keyframes cmsPulse{50%{box-shadow:0 0 0 8px rgba(17,17,17,.25)}}'
     + '.cms-off-tag{position:absolute;z-index:61;top:58px;right:10px;padding:8px 14px;border-radius:999px;background:#161616;color:#fff;font:700 14px/1.2 Pretendard,system-ui,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25);pointer-events:none}'
     + '.cms-btn{position:absolute;z-index:60;top:10px;left:10px;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:0;border-radius:999px;background:#111111;color:#fff;font:700 14px/1.2 Pretendard,system-ui,sans-serif;font-style:normal;letter-spacing:0;text-transform:none;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer}'
+    + '#lw-home .cms-btn{color:#fff}'
     // 버튼이 놓인 영역의 글꼴 규칙(예: 배너의 small 기울임체)이 스며들지 않게
     + '.cms-btn small{display:inline;margin:0;font:500 12px/1.2 Pretendard,system-ui,sans-serif;font-style:normal;letter-spacing:0;text-transform:none;color:inherit;opacity:.9}'
     + '.pe-hero-track>.cms-btn{top:96px}.cms-bar .cms-btn{position:static;box-shadow:none}'
@@ -749,7 +750,7 @@
     var st = document.createElement('style'); st.textContent = EDIT_CSS; document.head.appendChild(st);
     html.classList.add('cms-edit');
     var bar = document.createElement('div'); bar.className = 'cms-bar';
-    bar.innerHTML = '<div><button type="button" class="cms-bar__min">접기</button><b>화면 편집 모드</b> · 바꾸고 싶은 영역의 주황 버튼을 누르면 편집 창이 열려요. 저장한 뒤 이 화면을 <b>새로고침</b>하면 바로 보여요.</div>'
+    bar.innerHTML = '<div><button type="button" class="cms-bar__min">접기</button><b>화면 편집 모드</b> · 바꾸고 싶은 영역의 [고치기] 버튼을 누르면 편집 창이 열려요. 저장한 뒤 이 화면을 <b>새로고침</b>하면 바로 보여요.</div>'
       + '<div class="cms-bar__sub">화면에 바로 안 보이는 영역 <span class="cms-bar__hidden"></span></div><div class="cms-bar__warnbox"></div>'
       + '<div class="cms-bar__go">다른 페이지 고치기 <a href="/?edit=1">메인</a><a href="/product/list.html?cate_no=' + ((SC.sale || {}).categoryNo || 27) + '&edit=1">세일 페이지</a><a href="/product/list.html?cate_no=28&edit=1">상품 목록</a><a href="/board/product/list.html?board_no=4&edit=1">게시판</a><a href="/wear/guide.html?edit=1">가이드</a></div>'
       + '<div><a href="/board/free/list.html?board_no=' + BOARD + '" target="_blank" rel="noopener">화면 관리 게시판 열기</a><a data-cms-exit href="' + esc(location.pathname + location.search.replace(/([?&])edit=1(&|$)/, function (m, a, b) { return b ? a : ''; }) + location.hash) + '">편집 모드 끄기</a></div>';

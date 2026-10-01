@@ -1,12 +1,14 @@
 // 디자인센터 상세페이지용 : 섹션마다 「화면」 캡처 + 「편집 창」 캡처, 같은 번호 배지를 붙인다
 const puppeteer = require('puppeteer-core');
 const fs = require('fs');
-const DIR = 'D:/1. 클라우드 작업폴더/4. food902/_deploy/dc/';
+const DIR = 'D:/1. 클라우드 작업폴더/5. wear902/_deploy/dc/';
 const OUT = DIR + 'shots/'; fs.mkdirSync(OUT, { recursive: true });
-const ED = JSON.parse(fs.readFileSync(DIR + 'editors.json', 'utf8'));
-const CSS = fs.readFileSync(DIR + 'editor.css', 'utf8');
-const SITE = 'https://ecudemo408987.cafe24.com/?edit=1';
-const SECTIONS = ['첫 화면', '이용 안내', '식탁 고르기', '카테고리', '추천 상품 제목', '메뉴 찾기', '장보기 가이드', '장면 속 상품', '기획전', '체크리스트', '푸드 노트', '회원 안내', '자주 묻는 질문', '맨 아래 브랜드', '이벤트 팝업'];
+// editors.json(편집 창 HTML)이 있으면 편집 창도 여기서 그린다. 없으면 labels.json(칸 이름)만으로 화면 쪽만 찍고, 편집 창은 로그인한 브라우저에서 따로 찍는다
+const ED = fs.existsSync(DIR + 'editors.json') ? JSON.parse(fs.readFileSync(DIR + 'editors.json', 'utf8')) : null;
+const LABELS = fs.existsSync(DIR + 'labels.json') ? JSON.parse(fs.readFileSync(DIR + 'labels.json', 'utf8')) : {};
+const CSS = ED ? fs.readFileSync(DIR + 'editor.css', 'utf8') : '';
+const SITE = 'https://ecudemo409091.cafe24.com/?edit=1';
+const SECTIONS = ['첫 화면', '이용 안내', '스타일 고르기', '카테고리', '추천 상품 제목', '스타일 찾기', '사이즈 가이드', '장면 속 상품', '기획전', '체크리스트', '스타일 노트', '회원 안내', '자주 묻는 질문', '맨 아래 브랜드', '이벤트 팝업'];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const BADGE = 'position:absolute;z-index:99999;width:30px;height:30px;border-radius:50%;background:#e5383b;color:#fff;font:800 16px/30px Arial,sans-serif;text-align:center;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.45)';
 
@@ -39,7 +41,9 @@ function editorLabels(html, name) {
   for (let y = 0; y < 30000; y += 700) { await pg.evaluate(y => window.scrollTo(0, y), y); await sleep(120); }
   await sleep(2500);
     }
-    const want = editorLabels(ED[name] || '', name);
+    // 첫 화면 다음부터는 위에 붙는 머리글(고정 · sticky)이 섹션 제목을 덮지 않게 숨긴다
+    if (i === 1) await pg.evaluate(() => { window.__hideBars = 1; [...document.querySelectorAll('body *')].forEach(e => { const c = getComputedStyle(e); if ((c.position === 'fixed' || c.position === 'sticky') && e.getBoundingClientRect().top < 40 && e.offsetWidth > 900) e.style.setProperty('visibility', 'hidden', 'important'); }); });
+    const want = ED ? editorLabels(ED[name] || '', name) : (LABELS[name] || []);
     // 화면 : 섹션 안에서 같은 이름의 칸을 찾아 배지
     const r = await pg.evaluate((name, want, BADGE) => {
       document.querySelectorAll('.__bdg').forEach(e => e.remove());
@@ -72,6 +76,9 @@ function editorLabels(html, name) {
     const clip = name === '이벤트 팝업' ? { x: r.left - 10, y: r.top - 10, width: r.w + 20, height: r.h + 20 } : { x: 0, y: r.top, width: 1200, height: clipH };
     if (name === '첫 화면') { await pg.screenshot({ path: OUT + 'tmp.png' }); require('child_process').execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', OUT + 'tmp.png', '-vf', 'crop=1200:860:0:0', '-q:v', '4', OUT + 'walk-' + id + '-page.jpg']); }
     else { await pg.evaluate(y => window.scrollTo(0, y), r.top - 70); await sleep(1000); const sy = await pg.evaluate(() => scrollY); const off = Math.max(0, Math.round(r.top - sy) - 40); await pg.screenshot({ path: OUT + 'tmp.png' }); require('child_process').execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', OUT + 'tmp.png', '-vf', 'crop=1200:' + Math.min(Math.round(clipH) + 40, 1240 - off) + ':0:' + off, '-q:v', '4', OUT + 'walk-' + id + '-page.jpg']);  }
+    meta.push({ id, name, title: r.title, kicker: r.kicker, found: r.found });
+    console.log(id, name, '|', r.title, '|', r.found.join(', '));
+    if (!ED) continue;
     // 편집 창 : 같은 칸에 같은 번호
     const html = ED[name];
     const cards = html.split('<div class="pcms__card">');
@@ -99,8 +106,6 @@ function editorLabels(html, name) {
     }, r.found, BADGE);
     await sleep(600);
     await (await ep.$('#wrap')).screenshot({ path: OUT + 'walk-' + id + '-edit.jpg', type: 'jpeg', quality: 86 });
-    meta.push({ id, name, title: r.title, kicker: r.kicker, found: r.found });
-    console.log(id, name, '|', r.title, '|', r.found.join(', '));
   }
   fs.writeFileSync(DIR + 'walk-meta.json', JSON.stringify(meta, null, 1));
   await b.close();

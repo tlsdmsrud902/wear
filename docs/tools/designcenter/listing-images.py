@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFilter
 DC = os.path.join(os.path.dirname(__file__), '..', '..', '..', '_deploy', 'dc')
 desk = Image.open(os.path.join(DC, 'desk.png')).convert('RGB')
 mob = Image.open(os.path.join(DC, 'mobile.png')).convert('RGB')
-BG = (245, 239, 230, 255)          # 바탕색 (브랜드 크림색)
+BG = (240, 240, 240, 255)          # 바탕색 (연회색 — 쇼핑몰 흑백 톤)
 
 def rr(im, r):
     m = Image.new('L', im.size, 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, im.size[0] - 1, im.size[1] - 1], r, fill=255); return m
@@ -25,7 +25,7 @@ dw = 330; dh = int(dw * desk.height / desk.width); d = desk.resize((dw, dh), Ima
 dx, dy = 12, 40; shadow(c, (dx, dy, dx + dw, dy + dh), 8); c.paste(d, (dx, dy), rr(d, 8))
 mw = 112; mh = int(mw * 1.95); m = mob.crop((0, 0, mob.width, int(mob.width * 1.95))).resize((mw, mh), Image.LANCZOS)
 mx, my = W - mw - 14, W - mh - 14; shadow(c, (mx - 4, my - 4, mx + mw + 4, my + mh + 4), 16, 12, (0, 8), 90)
-frame = Image.new('RGBA', (mw + 8, mh + 8), (34, 30, 26, 255)); c.paste(frame, (mx - 4, my - 4), rr(frame, 16)); c.paste(m, (mx, my), rr(m, 12))
+frame = Image.new('RGBA', (mw + 8, mh + 8), (17, 17, 17, 255)); c.paste(frame, (mx - 4, my - 4), rr(frame, 16)); c.paste(m, (mx, my), rr(m, 12))
 c.convert('RGB').save(os.path.join(DC, 'main.jpg'), quality=90)
 
 # 진열 330×489 · 썸네일 330×450 : 휴대폰 화면 윗부분
