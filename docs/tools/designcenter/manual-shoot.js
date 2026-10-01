@@ -49,6 +49,10 @@ const shots = {
   'feat-order-save': async pg => { await open(pg, '/?edit=1', { width: 1100, height: 640 }); await toSec(pg, '카테고리', 60);
     const ok = await pg.evaluate(() => { const s = [...document.querySelectorAll('[data-cms]')].find(e => e.getAttribute('data-cms') === '카테고리'); const b = [...s.querySelectorAll('.cms-order button, .cms-order a')].find(x => /↑/.test(x.textContent)); if (b) { b.click(); return true; } return false; });
     if (!ok) console.log('  (순서 버튼 못 찾음)'); await sleep(1200); await toSec(pg, '카테고리', 200); },
+  // 디자인센터 상세 「먼저 딱 한 번 해 볼까요?」 : 메인 첫 화면 대신 SALE 큰 화면으로 (첫 화면 사진이 상세 위쪽에 되풀이되지 않게)
+  'sale-edit': async pg => { await open(pg, '/product/list.html?cate_no=27&edit=1', { width: 1280, height: 820 }); },
+  'sale-after': async pg => { await open(pg, '/product/list.html?cate_no=27&edit=1', { width: 1280, height: 820 });
+    await pg.evaluate(() => { const s = [...document.querySelectorAll('[data-cms]')].find(e => e.getAttribute('data-cms') === '세일 큰 화면'); const t = s && s.querySelector('[data-cms-text="제목"]'); if (t) t.innerHTML = 'Fall outer.<br>Warm deals.'; }); },
   'cms-sale': async pg => { await open(pg, '/product/list.html?cate_no=27&edit=1', { width: 1280, height: 820 }); },
   'cms-list': async pg => { await open(pg, '/product/list.html?cate_no=24&edit=1', { width: 1280, height: 820 }); },
   'cms-board': async pg => { await open(pg, '/board/product/list.html?board_no=4&edit=1', { width: 1280, height: 820 }); },

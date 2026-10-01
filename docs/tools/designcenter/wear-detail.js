@@ -30,6 +30,12 @@ const TEXT = [
   ['싱그러운 색과<br>정돈된 구성', '깨끗한 흑백과<br>정돈된 구성'],
   ['차콜과 로즈우드 톤, 옷이 돋보이는 스타일 사진', '화이트 바탕에 블랙 · 그레이 모노톤, 옷이 돋보이는 스타일 사진'],
   ['음식 영상 · 사진 메인 비주얼', '패션 영상 · 사진 메인 비주얼'],
+  // 「먼저 딱 한 번 해 볼까요?」 예시를 메인 첫 화면 → SALE 큰 화면으로 (첫 화면 사진이 상세 위쪽에 여러 번 나오지 않게)
+  ['메인 문구를 우리 가게 문구로', '세일 배너 문구를 우리 가게 문구로'],
+  ['<img src="shots/cms-home.jpg" alt="고치기 버튼이 생긴 메인 첫 화면">', '<img src="shots/sale-edit.jpg" alt="고치기 버튼이 생긴 SALE 페이지">'],
+  ['<img src="shots/walk-01-edit.jpg" alt="첫 화면 편집 창" class="narrow"', '<img src="shots/sale-editor.jpg" alt="세일 큰 화면 편집 창" class="narrow"'],
+  ['<img src="shots/cms-after.jpg" alt="새 문구로 바뀐 메인 첫 화면">', '<img src="shots/sale-after.jpg" alt="새 문구로 바뀐 SALE 큰 화면">'],
+  [' class="narrow" style="max-height:760px;object-fit:cover;object-position:top"', ' class="narrow"'],
   ['https://ecudemo408987.cafe24.com/', SAMPLE],
 ];
 const miss = [];

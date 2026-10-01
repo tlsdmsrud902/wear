@@ -1,6 +1,7 @@
 # 디자인센터 등록 이미지 3장 만들기 (파트너센터 규격)
 #   py docs/tools/designcenter/listing-images.py
-# 입력 : _deploy/dc/desk.png (PC 1280×820 캡처), _deploy/dc/mobile.png (휴대폰 390×844 @2x 캡처) — dcshot.js 로 찍는다
+# 입력 : _deploy/dc/desk.png (PC 1280×820) · mobile-list / mobile-sale / mobile-style.png (휴대폰 390×844 @2x) — dcshot.js 로 찍는다
+#        3장이 서로 다른 화면이 되게 : 대표 = PC 첫 화면 + 휴대폰 상품 목록, 진열 = 휴대폰 SALE, 썸네일 = 휴대폰 스타일 고르기
 # 출력 : _deploy/dc/main.jpg 372×372 (대표) · display.jpg 330×489 (진열) · thumb.jpg 330×450 (썸네일)
 #        파일 이름에 한글·숫자를 넣지 않는다 (파트너센터 안내 : 안 보일 수 있음)
 import os
@@ -8,7 +9,8 @@ from PIL import Image, ImageDraw, ImageFilter
 
 DC = os.path.join(os.path.dirname(__file__), '..', '..', '..', '_deploy', 'dc')
 desk = Image.open(os.path.join(DC, 'desk.png')).convert('RGB')
-mob = Image.open(os.path.join(DC, 'mobile.png')).convert('RGB')
+mob = Image.open(os.path.join(DC, 'mobile-list.png')).convert('RGB')
+MOB = {'display': 'mobile-sale.png', 'thumb': 'mobile-style.png'}
 BG = (240, 240, 240, 255)          # 바탕색 (연회색 — 쇼핑몰 흑백 톤)
 
 def rr(im, r):
@@ -28,10 +30,11 @@ mx, my = W - mw - 14, W - mh - 14; shadow(c, (mx - 4, my - 4, mx + mw + 4, my + 
 frame = Image.new('RGBA', (mw + 8, mh + 8), (17, 17, 17, 255)); c.paste(frame, (mx - 4, my - 4), rr(frame, 16)); c.paste(m, (mx, my), rr(m, 12))
 c.convert('RGB').save(os.path.join(DC, 'main.jpg'), quality=90)
 
-# 진열 330×489 · 썸네일 330×450 : 휴대폰 화면 윗부분
+# 진열 330×489 · 썸네일 330×450 : 휴대폰 화면 윗부분 (각각 다른 화면)
 for name, (w, h) in [('display', (330, 489)), ('thumb', (330, 450))]:
-    ch = int(mob.width * h / w)
-    mob.crop((0, 0, mob.width, ch)).resize((w, h), Image.LANCZOS).save(os.path.join(DC, name + '.jpg'), quality=90)
+    src = Image.open(os.path.join(DC, MOB[name])).convert('RGB')
+    ch = int(src.width * h / w)
+    src.crop((0, 0, src.width, ch)).resize((w, h), Image.LANCZOS).save(os.path.join(DC, name + '.jpg'), quality=90)
 
 for f in ['main.jpg', 'display.jpg', 'thumb.jpg']:
     p = os.path.join(DC, f); print(f, Image.open(p).size, os.path.getsize(p))
