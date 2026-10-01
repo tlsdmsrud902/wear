@@ -1,0 +1,56 @@
+<section class="food-page-hero food-menu-hero" aria-label="컬렉션 안내" data-cms="목록 위 큰 배너" data-cms-adapter="menuHero" data-cms-page="목록 공통">
+ <img src="/SkinImg/food/scene-pantry.webp" alt="견과 · 파스타 · 올리브오일이 놓인 주방 팬트리" width="1600" height="900" fetchpriority="high">
+ <div><small>THE EVERYDAY COLLECTION</small><h1>Good food.<br>For every day.</h1><p>장보고, 차리고, 나누는 하루.<br>우리 집 식탁에 꼭 맞는 먹거리를 찾아보세요.</p>
+ <nav aria-label="컬렉션 메뉴"><a data-food-menu="all" href="/product/list.html?cate_no=28">전체상품</a><a data-food-menu="fresh" href="/product/list.html?cate_no=24">신선식품</a><a data-food-menu="meal" href="/product/list.html?cate_no=25">간편식</a><a data-food-menu="bakery" href="/product/list.html?cate_no=26">베이커리/팬트리</a><a data-food-menu="review" href="/board/product/list.html?board_no=4">리뷰</a></nav></div>
+</section>
+<!-- 상품분류 목록에서만 보이는 검색창 (상품검색 페이지는 자체 검색창이 있다) -->
+<form class="food-list-search" action="/product/search.html" method="get" role="search" hidden>
+ <label for="foodListKeyword" class="displaynone">상품 검색</label>
+ <input id="foodListKeyword" name="keyword" type="search" placeholder="찾으시는 상품을 검색해 보세요" autocomplete="off">
+ <button type="submit" aria-label="검색"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5" stroke-linecap="round"></path></svg></button>
+</form>
+<script>
+(function(){
+ var hero=document.querySelector('.food-menu-hero');if(!hero)return;
+ var params=new URLSearchParams(location.search),word=params.get('keyword')||'',path=location.pathname,board=path.indexOf('/board/')===0;
+ var catm=path.match(/\/category\/[^\/]+\/(\d+)/),cate=String(params.get('cate_no')||(catm&&catm[1])||'');
+ var list=/\/product\/list\.html$/.test(path)||!!catm;
+ // 게시판 : 리뷰(4) · 공지사항(1) · 자주묻는질문(3) · 상품문의(6) 은 같은 배너를 쓴다
+ var boardKey={'4':'review','1':'notice','3':'faq','6':'qna'}[params.get('board_no')];
+ if(board&&!boardKey){hero.remove();return;}
+ // SALE(27)은 전용 세일 화면이 따로 있다
+ if(list&&cate==='27'){hero.remove();return;}
+ // 상품분류 번호 : 28 전체 상품 · 24 신선식품 · 25 간편식 · 26 베이커리/팬트리 (관리자 대분류)
+ var byCate={'28':'all','24':'fresh','25':'meal','26':'bakery'};
+ var key=board?boardKey:list?(byCate[cate]||'all'):/빵|베이커리|케이크|크루아상|캄파뉴|치즈|오일|견과|선물/.test(word)?'bakery':/밀키트|간편|샐러드볼|샌드위치|토스트|그래놀라|파스타|칼국수|우육면|브런치/.test(word)?'meal':/채소|과일|토마토|딸기|블루베리|아보카도|주스|잼|샐러드/.test(word)?'fresh':'all';
+ // 배너 내용 : 게시판 화면 관리의 '목록 위 큰 배너' 글로 바꿀 수 있다 (food-cms.js 가 window.FOOD902_MENU_HERO 를 덮어쓴다)
+ var banners=window.FOOD902_MENU_HERO=window.FOOD902_MENU_HERO||{
+  all:['scene-pantry.webp','견과 · 파스타 · 올리브오일이 놓인 주방 팬트리','THE EVERYDAY COLLECTION','Good food.<br>For every day.','장보고, 차리고, 나누는 하루.<br>우리 집 식탁에 꼭 맞는 먹거리를 찾아보세요.'],
+  fresh:['scene-market.webp','토마토 · 당근 · 아보카도 등 제철 채소','THE FRESH COLLECTION','Fresh picks.<br>Honest taste.','제철 채소와 과일, 갓 짠 주스까지.<br>가장 신선할 때 식탁으로.'],
+  meal:['scene-salmon.webp','아스파라거스를 곁들인 허브 연어 스테이크','THE EASY MEAL COLLECTION','Easy meals.<br>Busy days.','데우기만 하면 완성되는 밀키트부터<br>든든한 브런치까지.'],
+  bakery:['scene-bakery.webp','나무 식탁 위의 캄파뉴와 크루아상','THE BAKERY &amp; PANTRY COLLECTION','Baked today.<br>Stocked well.','오늘 구운 빵과 케이크,<br>식탁의 기본이 되는 오일 · 견과 · 치즈.'],
+  review:['scene-tea.webp','복숭아와 민트를 넣은 아이스티','FOOD, SHARED','Real reviews.<br>Real taste.','직접 먹어 본 경험이 더 좋은 선택으로.<br>food902 고객의 맛 후기를 만나보세요.'],
+  notice:['scene-sandwich.webp','햄과 치즈, 채소를 넉넉히 넣은 샌드위치','NEWS &amp; NOTICE','Little news.<br>From food902.','food902의 새로운 소식과<br>꼭 알아 두실 안내를 전해 드려요.'],
+  faq:['scene-sandwich.webp','햄과 치즈, 채소를 넉넉히 넣은 샌드위치','GOOD TO KNOW','Questions?<br>We have answers.','주문 · 배송 · 교환 · 반품에 대해<br>자주 묻는 질문을 모았어요.'],
+  qna:['scene-sandwich.webp','햄과 치즈, 채소를 넉넉히 넣은 샌드위치','ASK US','Ask anything.<br>We are here to help.','상품과 보관 방법에 대해 궁금한 점을 남겨 주세요.<br>꼼꼼히 확인하고 답변드릴게요.']
+ },img=hero.querySelector('img');
+ var C=window.FOOD902_CMS;
+ // 배경색은 게시판 글과 상관없으므로 기다리지 않고 바로 정한다
+ hero.dataset.collection=key;
+ function reveal(){hero.classList.add('is-ready')}
+ function fill(){
+  var data=banners[key]||banners.all;
+  // 게시판을 아직 읽는 중이면 채우기만 하고 가려 둔다 (food-cms.js 의 cms-wait)
+  if(!C||!C.holding||!C.holding())hero.classList.add('is-filled');
+  img.alt=data[1];hero.querySelector('small').textContent=data[2];hero.querySelector('h1').innerHTML=data[3];hero.querySelector('p').innerHTML=data[4];
+  var src=/^(https?:)?\/\/|^\//.test(data[0])?data[0]:'/SkinImg/food/'+data[0];
+  if(img.getAttribute('src')!==src){hero.classList.remove('is-ready');img.src=src}
+  img.addEventListener('load',reveal,{once:true});img.addEventListener('error',reveal,{once:true});if(img.complete&&img.naturalWidth)reveal();
+ }
+ // 기억해 둔 최신 내용이 있으면 페이지를 다 읽기 전에 바로 그린다.
+ // 없으면 게시판 글이 다 읽힐 때까지 기다렸다가 그리고, 나중에 새 글이 오면 다시 그린다
+ if(C){if(C.applyCachedSection&&C.applyCachedSection(hero))fill();C.ready(fill,1200);document.addEventListener('food902:cms',fill)}else fill();
+ var cur=hero.querySelector('[data-food-menu="'+key+'"]');if(cur)cur.setAttribute('aria-current','page');
+ var form=document.querySelector('.food-list-search');if(form&&list)form.hidden=false;
+}());
+</script>

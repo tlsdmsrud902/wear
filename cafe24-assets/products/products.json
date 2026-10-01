@@ -1,0 +1,372 @@
+[
+ {
+  "code": "p01",
+  "product_no_temp": 12,
+  "group": "rec",
+  "cates": [
+   24
+  ],
+  "name": "제철 채소 꾸러미",
+  "price": 24000,
+  "retail": null,
+  "img": "p01.jpg"
+ },
+ {
+  "code": "p02",
+  "product_no_temp": 13,
+  "group": "new",
+  "cates": [
+   24,
+   27
+  ],
+  "name": "오늘의 과일 박스",
+  "price": 39000,
+  "retail": 45000,
+  "img": "p02.jpg"
+ },
+ {
+  "code": "p03",
+  "product_no_temp": 14,
+  "group": "best",
+  "cates": [
+   24
+  ],
+  "name": "NFC 착즙 오렌지 주스 1L",
+  "price": 9800,
+  "retail": null,
+  "img": "p03.jpg"
+ },
+ {
+  "code": "p04",
+  "product_no_temp": 15,
+  "group": "rec",
+  "cates": [
+   24,
+   27
+  ],
+  "name": "그릴드 치킨 샐러드",
+  "price": 8900,
+  "retail": 11000,
+  "img": "p04.jpg"
+ },
+ {
+  "code": "p05",
+  "product_no_temp": 16,
+  "group": "new",
+  "cates": [
+   24
+  ],
+  "name": "대추 방울토마토 1kg",
+  "price": 12900,
+  "retail": null,
+  "img": "p05.jpg"
+ },
+ {
+  "code": "p06",
+  "product_no_temp": 17,
+  "group": "best",
+  "cates": [
+   24
+  ],
+  "name": "아보카도 3입",
+  "price": 8900,
+  "retail": null,
+  "img": "p06.jpg"
+ },
+ {
+  "code": "p07",
+  "product_no_temp": 18,
+  "group": "rec",
+  "cates": [
+   24,
+   27
+  ],
+  "name": "설향 딸기 500g",
+  "price": 15900,
+  "retail": 19000,
+  "img": "p07.jpg"
+ },
+ {
+  "code": "p08",
+  "product_no_temp": 19,
+  "group": "new",
+  "cates": [
+   24
+  ],
+  "name": "생 블루베리 250g",
+  "price": 9900,
+  "retail": null,
+  "img": "p08.jpg"
+ },
+ {
+  "code": "p09",
+  "product_no_temp": 20,
+  "group": "best",
+  "cates": [
+   24
+  ],
+  "name": "복숭아 아이스티 베이스",
+  "price": 12000,
+  "retail": null,
+  "img": "p09.jpg"
+ },
+ {
+  "code": "p10",
+  "product_no_temp": 21,
+  "group": "rec",
+  "cates": [
+   24,
+   27
+  ],
+  "name": "수제 딸기잼 240g",
+  "price": 8500,
+  "retail": 11000,
+  "img": "p10.jpg"
+ },
+ {
+  "code": "p11",
+  "product_no_temp": 22,
+  "group": "new",
+  "cates": [
+   25
+  ],
+  "name": "허브 연어 스테이크 밀키트",
+  "price": 16900,
+  "retail": null,
+  "img": "p11.jpg"
+ },
+ {
+  "code": "p12",
+  "product_no_temp": 23,
+  "group": "best",
+  "cates": [
+   25,
+   27
+  ],
+  "name": "브리오슈 프렌치토스트 키트",
+  "price": 11900,
+  "retail": 14900,
+  "img": "p12.jpg"
+ },
+ {
+  "code": "p13",
+  "product_no_temp": 24,
+  "group": "rec",
+  "cates": [
+   25
+  ],
+  "name": "요거트 베리 그래놀라 볼",
+  "price": 6900,
+  "retail": null,
+  "img": "p13.jpg"
+ },
+ {
+  "code": "p14",
+  "product_no_temp": 25,
+  "group": "new",
+  "cates": [
+   25,
+   27
+  ],
+  "name": "닭 칼국수 밀키트 2인",
+  "price": 12900,
+  "retail": 15900,
+  "img": "p14.jpg"
+ },
+ {
+  "code": "p15",
+  "product_no_temp": 26,
+  "group": "best",
+  "cates": [
+   25
+  ],
+  "name": "햄 치즈 샌드위치",
+  "price": 6500,
+  "retail": null,
+  "img": "p15.jpg"
+ },
+ {
+  "code": "p16",
+  "product_no_temp": 27,
+  "group": "rec",
+  "cates": [
+   25
+  ],
+  "name": "얼큰 우육면 밀키트 2인",
+  "price": 15900,
+  "retail": null,
+  "img": "p16.jpg"
+ },
+ {
+  "code": "p17",
+  "product_no_temp": 28,
+  "group": "new",
+  "cates": [
+   25,
+   27
+  ],
+  "name": "퀴노아 치킨 샐러드볼",
+  "price": 9900,
+  "retail": 12000,
+  "img": "p17.jpg"
+ },
+ {
+  "code": "p18",
+  "product_no_temp": 29,
+  "group": "best",
+  "cates": [
+   25
+  ],
+  "name": "오트 그래놀라 500g",
+  "price": 11000,
+  "retail": null,
+  "img": "p18.jpg"
+ },
+ {
+  "code": "p19",
+  "product_no_temp": 30,
+  "group": "rec",
+  "cates": [
+   25
+  ],
+  "name": "펜네 파스타 500g",
+  "price": 4900,
+  "retail": null,
+  "img": "p19.jpg"
+ },
+ {
+  "code": "p20",
+  "product_no_temp": 31,
+  "group": "new",
+  "cates": [
+   25
+  ],
+  "name": "주말 브런치 세트",
+  "price": 29000,
+  "retail": null,
+  "img": "p20.jpg"
+ },
+ {
+  "code": "p21",
+  "product_no_temp": 32,
+  "group": "best",
+  "cates": [
+   26
+  ],
+  "name": "천연발효 캄파뉴",
+  "price": 8500,
+  "retail": null,
+  "img": "p21.jpg"
+ },
+ {
+  "code": "p22",
+  "product_no_temp": 33,
+  "group": "rec",
+  "cates": [
+   26,
+   27
+  ],
+  "name": "버터 크루아상 4입",
+  "price": 12000,
+  "retail": 15000,
+  "img": "p22.jpg"
+ },
+ {
+  "code": "p23",
+  "product_no_temp": 34,
+  "group": "new",
+  "cates": [
+   26
+  ],
+  "name": "초콜릿 가나슈 케이크",
+  "price": 32000,
+  "retail": null,
+  "img": "p23.jpg"
+ },
+ {
+  "code": "p24",
+  "product_no_temp": 35,
+  "group": "best",
+  "cates": [
+   26
+  ],
+  "name": "초콜릿 레이어 케이크 조각",
+  "price": 7500,
+  "retail": null,
+  "img": "p24.jpg"
+ },
+ {
+  "code": "p25",
+  "product_no_temp": 36,
+  "group": "rec",
+  "cates": [
+   26,
+   27
+  ],
+  "name": "숙성 하드 치즈 200g",
+  "price": 14900,
+  "retail": 18000,
+  "img": "p25.jpg"
+ },
+ {
+  "code": "p26",
+  "product_no_temp": 37,
+  "group": "new",
+  "cates": [
+   26
+  ],
+  "name": "데일리 믹스넛 500g",
+  "price": 13900,
+  "retail": null,
+  "img": "p26.jpg"
+ },
+ {
+  "code": "p27",
+  "product_no_temp": 38,
+  "group": "best",
+  "cates": [
+   26
+  ],
+  "name": "엑스트라버진 올리브오일 500ml",
+  "price": 19800,
+  "retail": null,
+  "img": "p27.jpg"
+ },
+ {
+  "code": "p28",
+  "product_no_temp": 39,
+  "group": "rec",
+  "cates": [
+   26
+  ],
+  "name": "프리미엄 식탁 선물세트",
+  "price": 49000,
+  "retail": null,
+  "img": "p28.jpg"
+ },
+ {
+  "code": "p29",
+  "product_no_temp": 40,
+  "group": "new",
+  "cates": [
+   26
+  ],
+  "name": "델리 팬트리 세트",
+  "price": 39000,
+  "retail": null,
+  "img": "p29.jpg"
+ },
+ {
+  "code": "p30",
+  "product_no_temp": 41,
+  "group": "best",
+  "cates": [
+   26,
+   27
+  ],
+  "name": "치즈 & 델리 기프트 박스",
+  "price": 69000,
+  "retail": 82000,
+  "img": "p30.jpg"
+ }
+]
