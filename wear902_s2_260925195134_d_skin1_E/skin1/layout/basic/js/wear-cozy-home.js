@@ -682,7 +682,7 @@
       // 바닥 그림자 (부드러운 원)
       var cv = document.createElement('canvas'); cv.width = cv.height = 128;
       var g2 = cv.getContext('2d'), grd = g2.createRadialGradient(64, 64, 4, 64, 64, 62);
-      grd.addColorStop(0, 'rgba(150,196,164,.75)'); grd.addColorStop(1, 'rgba(150,196,164,0)');
+      grd.addColorStop(0, 'rgba(37,75,228,.75)'); grd.addColorStop(1, 'rgba(37,75,228,0)');
       g2.fillStyle = grd; g2.fillRect(0, 0, 128, 128);
       var shadow = new THREE.Mesh(new THREE.PlaneGeometry(4.2, 1.6), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(cv), transparent: true, depthWrite: false }));
       shadow.rotation.x = -Math.PI / 2; shadow.position.y = -1.005; scene.add(shadow);

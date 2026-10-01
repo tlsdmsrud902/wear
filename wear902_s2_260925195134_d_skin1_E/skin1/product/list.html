@@ -211,10 +211,10 @@ html.st-sale-on [data-st-sale] { display:block; }
 /* ── 토큰 : SALE 에서만 흰 바탕 + Anton(헤드라인) / Archivo(그 외) ── */
 html.st-sale-on {
 	--st-bg:#fff;
-	--st-bg-alt:#f4f2f0;
+	--st-bg-alt:#fde7ee;
 	--sl-display:'Anton', 'Archivo', sans-serif;	/* 헤드라인 */
 	--sl-text:'Archivo', sans-serif;			/* 나머지 전부 */
-	--sl-wine:#8c2a3f;
+	--sl-wine:#ae1354;
 	--sl-line:rgba(0,0,0,.14);
 	--sl-pad:clamp(20px, 5.7vw, 96px);
 	--sl-gap:clamp(56px, 8vw, 128px);
@@ -790,7 +790,7 @@ html.st-sale-on #contents .sl-banner {
 	box-sizing:border-box;
 	overflow:hidden;
 	isolation:isolate;
-	background:#6c6c6e;
+	background:#6e6c6e;
 	color:#fff;
 	text-align:right;
 }
@@ -941,7 +941,7 @@ html.st-sale-on #contents .sl-real__list img {
 html.st-sale-on #contents .sl-real__list a:hover img { transform:scale(1.05); }
 
 /* ══ 08. BE YOURSELF ══
-   원래는 화면 끝까지 닿는 어두운 먹판(#161519) 위에 흰 글자였다.
+   원래는 화면 끝까지 닿는 어두운 먹판(#181519) 위에 흰 글자였다.
    페이지 나머지가 전부 아이보리 배경이라 이 구간만 검게 끊겨 보였다.
    먹판을 걷어 페이지 배경에 자연스럽게 녹이고, 글자는 다른 섹션 제목들과
    같은 먹색(--st-ink)으로 바꾼다. 가로 폭도 다른 섹션과 같은 --sl-max 안에
@@ -985,7 +985,7 @@ html.st-sale-on #contents .sl-end__sub {
 @media all and (max-width:767px) {
 	html.st-sale-on #contents .sl-hero { height:clamp(540px, 148vw, 680px); justify-content:flex-end; padding-bottom:clamp(40px, 12vw, 64px); }
 	html.st-sale-on #contents .sl-hero__img { width:100%; object-position:50% 20%; -webkit-mask-image:none; mask-image:none; }
-	html.st-sale-on #contents .sl-hero::after { background:linear-gradient(0deg, rgba(20,16,16,.78) 0%, rgba(20,16,16,.35) 55%, rgba(20,16,16,.1) 100%); }
+	html.st-sale-on #contents .sl-hero::after { background:linear-gradient(0deg, rgba(19,16,20,.78) 0%, rgba(19,16,20,.35) 55%, rgba(19,16,20,.1) 100%); }
 	html.st-sale-on #contents .sl-hero__tag { display:none; }
 	html.st-sale-on #contents .sl-hero__eyebrow { font-size:11px; }
 	html.st-sale-on #contents .sl-hero__date { font-size:12px; }
@@ -1001,7 +1001,7 @@ html.st-sale-on #contents .sl-end__sub {
 
 	html.st-sale-on #contents .sl-banner { height:auto; min-height:0; aspect-ratio:auto; padding:0; flex-direction:column; justify-content:flex-end; text-align:left; height:clamp(420px, 118vw, 520px); }
 	html.st-sale-on #contents .sl-banner__img { width:100%; -webkit-mask-image:none; mask-image:none; }
-	html.st-sale-on #contents .sl-banner::after { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(0deg, rgba(20,16,16,.75), rgba(20,16,16,0) 65%); }
+	html.st-sale-on #contents .sl-banner::after { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(0deg, rgba(19,16,20,.75), rgba(19,16,20,0) 65%); }
 	html.st-sale-on #contents .sl-banner__copy { width:100%; padding:0 var(--sl-pad) clamp(30px, 9vw, 46px); box-sizing:border-box; }
 
 	html.st-sale-on #contents .sl-duo { grid-template-columns:1fr; }
@@ -1024,7 +1024,7 @@ html.st-sale-on #contents .sl-end__sub {
 <div class="section st-sale-event" id="stSaleEvent" data-st-cate="27" hidden>
 	<div class="sl-timer" id="stSaleTimer" data-cms="세일 타이머" data-cms-adapter="saleTimer" hidden></div>
 	<a class="sl-hero" href="#stSaleItems" data-st-href="sale.hero.buttonLink" data-cms="세일 큰 화면" data-cms-href="링크" data-cms-help="큰 화면 전체가 링크예요. 링크에 #stSaleItems 를 쓰면 아래 세일 상품 목록으로 내려가요.">
-		<img class="sl-hero__img" data-cms-src="사진" data-cms-keep-alt src="/SkinImg/wear/scene-dress.webp" data-st-src="sale.hero.image" data-st-attr="alt:sale.hero.alt" alt="세이지 벽 앞에 걸린 크림 원피스" width="1672" height="941" fetchpriority="high">
+		<img class="sl-hero__img" data-cms-src="사진" data-cms-keep-alt src="/SkinImg/wear/scene-dress.webp" data-st-src="sale.hero.image" data-st-attr="alt:sale.hero.alt" alt="창가 빛 속에 선 아이보리 실크 슬립 원피스 차림의 모델" width="1672" height="941" fetchpriority="high">
 		<p class="sl-hero__eyebrow sl-rv" data-cms-text="작은 글" data-st-text="sale.hero.eyebrow">Wear Essentials Edit</p>
 		<h3 class="sl-hero__title sl-rv" data-cms-text="제목" data-st-html="sale.hero.titleHtml">wear902<br>Season Sale</h3>
 		<p class="sl-hero__lead sl-rv" data-cms-text="설명" data-st-text="sale.hero.lead">Good pieces to wear, at a special price</p>

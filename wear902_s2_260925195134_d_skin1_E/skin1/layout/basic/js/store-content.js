@@ -99,7 +99,7 @@ window.STORE_CONTENT = {
 	   2-1. 타임세일 기본 색 (메인 상품 카드 · 상세 페이지 카운트다운)          BUYER EDITABLE
 	   비워 두면('') 기본 색(짙은 녹색 배너 · 흰색 배지)이 나옵니다. #색코드 또는 색 이름(빨강 등)을 넣으세요.
 	   타임세일을 쓰는 상품의 '상품 요약설명'에  #타임세일 2026-10-31 23:59  형식으로 종료 시각(한국시간)을 적습니다.
-	   상품마다 색을 따로 주려면 뒤에  배경:#e11d48 글자:#ffffff  를 덧붙이면 그 상품은 이 기본 색보다 우선합니다.
+	   상품마다 색을 따로 주려면 뒤에  배경:#e5196e 글자:#ffffff  를 덧붙이면 그 상품은 이 기본 색보다 우선합니다.
 	   한 줄 만들기 : 스킨 패키지의 tools/timesale-helper.html 을 브라우저로 열어 색을 고르고 복사
 	   --------------------------------------------------------------------- */
 	timesale: {
@@ -136,7 +136,7 @@ window.STORE_CONTENT = {
 	   시작·종료 시각(한국시간)만 적어 두면 그 기간에만 띠배너 문구가 바뀌고, 끝나면 원래 띠배너로 돌아옵니다.
 	   start/end 는 '2026-10-01 00:00' 형식이며 비우면 각각 '바로 시작' '계속'입니다.
 	   bg/fg 는 #색코드(선택). 여러 개를 적으면 위에서부터 처음 맞는 하나가 쓰입니다.
-	   예) { text:'가을 세일 최대 30%', link:'/product/list.html?cate_no=27', start:'2026-10-01 00:00', end:'2026-10-07 23:59', bg:'#e11d48', fg:'#ffffff' }
+	   예) { text:'가을 세일 최대 30%', link:'/product/list.html?cate_no=27', start:'2026-10-01 00:00', end:'2026-10-07 23:59', bg:'#e5196e', fg:'#ffffff' }
 	   --------------------------------------------------------------------- */
 	banners: [
 	],
@@ -271,7 +271,7 @@ window.STORE_CONTENT = {
 				button: '쿠폰 뽑으러 가기 →',
 				link: '/product/list.html?cate_no=27',
 				image: '/SkinImg/wear/scene-dress.webp',
-				imageAlt: '세이지 벽 앞에 걸린 크림 원피스',
+				imageAlt: '창가 빛 속에 선 아이보리 실크 슬립 원피스 차림의 모델',
 				imagePosition: '40% 70%',
 				timerLabel: '이벤트 마감까지',
 				endAt: '',
@@ -286,7 +286,7 @@ window.STORE_CONTENT = {
 				button: '포토리뷰 쓰러 가기 →',
 				link: '/board/product/list.html?board_no=4',
 				image: '/SkinImg/wear/scene-atelier.webp',
-				imageAlt: '행거에 걸린 이번 시즌 옷들',
+				imageAlt: '스튜디오에서 차콜 니트 원피스로 포즈를 잡은 모델',
 				imagePosition: '66% 40%'
 			}
 		]
@@ -374,7 +374,7 @@ window.STORE_CONTENT = {
 
 		hero: {
 			image: '/SkinImg/wear/scene-atelier.webp',
-			alt: '행거에 걸린 이번 시즌 옷들',
+			alt: '아침 돌길을 걷는 카멜 트렌치코트 차림의 모델',
 			eyebrow: 'Wear Essentials Edit',
 			titleHtml: 'wear902<br>Season Sale',
 			lead: 'Good pieces to wear, at a special price',
@@ -398,7 +398,7 @@ window.STORE_CONTENT = {
 
 		banner: {
 			image: '/SkinImg/wear/scene-rack.webp',
-			alt: '행거에 걸린 코트 · 니트 · 원피스',
+			alt: '밤거리 불빛 아래 롱코트를 입은 모델',
 			titleHtml: 'Season Off<br>Special Price',
 			subHtml: 'Everyday favourites<br>at a lighter price.',
 			buttonText: 'Shop Sale',
