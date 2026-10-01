@@ -120,3 +120,10 @@
   | 5% | 6086397028300006751 |
 - 샘플 사이트라 푸터 고객센터 전화 · 이메일과 회사소개 전화에 `.wear-blur`(blur 5px). 실제 판매용이면 `wear-cozy-global.css` 맨 아래 줄과 `footer.html` · `shopinfo/company.html` 의 `wear-blur` 를 지운다
 - 반영 : 2차 디자인 복구(새 백업 이름 `…261002005038…`, 원본은 1차 백업 재사용) + 코드 편집기(index.html · seraphin.css · st-world.css · seraphin.js · layout.html)
+
+## 11. 히어로 1번 영상 (2026-10-02, Google Flow)
+- Flow 에이전트에 Veo 3.1 Lite 8초 영상 5개 요청 (50 크레딧 = 하루 무료분 전부). 카메라 워크를 모두 다르게 :
+  1 파리 돌길 트렌치 — 트래킹 · 2 화이트 스튜디오 실크 슬립 — 오빗 · 3 카페 창가 니트 — 돌리 인 · 4 유리 빌딩 블랙 수트 — 틸트 업 · 5 바닷가 데크 화이트 린넨 — 크레인 다운
+- 원본 : `_deploy/flow/wear/1-paris … 5-beach.mp4` (720p). 파리 컷은 5초에 장면이 튀어서 0 ~ 4.5초만, 해변은 4.4초까지만
+- 편집 : 파리 → 카페 → 스튜디오 → 빌딩 → 해변, 각 4.4 ~ 4.5초, 0.6초 디졸브(`xfade fade`) 4번 → **정확히 20초**. 가운데 94% 로 잘라 Veo 워터마크 제거, 1280×720 · H.264 CRF 23 · faststart · 소리 없음 → 4.5MB
+- 넣기 : `video/hero-wear902.mp4` → `https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@d6f4d7e/video/hero-wear902.mp4`, 포스터는 첫 프레임 `hero-wear902-poster-v2.webp` (파일업로더에도). 실제 쇼핑몰은 코드 편집기로 index.html 만 고침
