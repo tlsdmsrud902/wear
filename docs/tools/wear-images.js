@@ -215,7 +215,7 @@ const BG = [[C.ecru, C.sand], [C.blush, shade(C.blush, -.1)], [C.sage, shade(C.s
   if (what === 'all' || what === 'logo') {
     const word = (w, h, size, color, ls) => `<div style="width:${w}px;height:${h}px;display:flex;align-items:center;justify-content:center;font:italic 600 ${size}px/1 'Liberation Serif','DejaVu Serif',serif;letter-spacing:${ls}em;color:${color}">wear<span style="font-style:normal;font-weight:400">902</span></div>`;
     await put('logo-wear902', 560, 200, word(560, 200, 128, '#2c2926', -.02), path.join(OUT, 'logo-wear902.webp'), true);
-    await put('wordmark-wear902', 2146, 724, word(2146, 724, 520, '#c98b80', -.03), path.join(OUT, 'wordmark-wear902.webp'), true);
+    await put('wordmark-wear902-v2', 2146, 724, word(2146, 724, 520, '#d4d4d4', -.03), path.join(OUT, 'wordmark-wear902-v2.webp'), true);
   }
   if (what === 'all' || what === 'products') {
     for (const [i, p] of PRODUCTS.entries()) {
