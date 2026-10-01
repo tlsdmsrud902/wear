@@ -1280,7 +1280,7 @@
 							cover = svgNode('svg', { 'class': 'st-type__cover', 'aria-hidden': 'true', 'focusable': 'false' });
 							letterPath = sourcePath.getAttribute('d');
 							// An even-odd path cuts out the letters without any SVG filter/mask surface.
-							coverPath = svgNode('path', { fill: 'var(--st-bg, #fff9f7)', 'fill-rule': 'evenodd' });
+							coverPath = svgNode('path', { fill: 'var(--st-bg, #ffffff)', 'fill-rule': 'evenodd' });
 							cover.appendChild(coverPath);
 							stage.insertBefore(cover, stage.firstChild);
 							shade = doc.createElement('div');

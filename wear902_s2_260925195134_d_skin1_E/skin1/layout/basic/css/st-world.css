@@ -691,7 +691,7 @@ html.st-motion .st-film__frame.is-in { margin:0; }
 	justify-content:space-between;
 	padding:clamp(70px, 12vh, 140px) var(--st-gutter) clamp(30px, 6vh, 72px);
 	box-sizing:border-box;
-	background:var(--st-bg, #fff9f7);
+	background:var(--st-bg, #ffffff);
 }
 /* 마스크용 SVG 는 무대와 같은 크기여야 한다.
    width/height 가 0 이면 그 안의 x="50%" 가 '0 의 50%' = 0 으로 풀려

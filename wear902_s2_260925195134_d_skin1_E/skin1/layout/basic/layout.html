@@ -86,7 +86,7 @@
 		.st-intro{display:none}
 		html.st-intro-on .st-intro{--e:cubic-bezier(.33,0,.2,1);--x:cubic-bezier(.45,0,.25,1);display:flex;align-items:center;justify-content:center;position:fixed;inset:0;z-index:4000;color:#6d6760;animation:st-intro-failsafe 1.5s var(--e) 12s forwards}
 		@keyframes st-intro-failsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
-		html.st-intro-on .st-intro::before{content:'';position:absolute;inset:0;background:#fff9f7;transition:opacity var(--st-intro-out,3s) var(--x)}
+		html.st-intro-on .st-intro::before{content:'';position:absolute;inset:0;background:#ffffff;transition:opacity var(--st-intro-out,3s) var(--x)}
 		html.st-intro-on .st-intro.is-out{pointer-events:none}
 		html.st-intro-on .st-intro.is-out::before{opacity:0}
 		html.st-intro-on .st-intro.is-out .st-intro__logo{opacity:0;filter:blur(3px);transform:scale(1.015);transition:opacity calc(var(--st-intro-out,3s) * .8) var(--x) calc(var(--st-intro-out,3s) * .2),filter calc(var(--st-intro-out,3s) * .8) var(--x) calc(var(--st-intro-out,3s) * .2),transform var(--st-intro-out,3s) var(--x)}

@@ -14,13 +14,13 @@
    -------------------------------------------------------------------------- */
 :root {
 	/* 컬러 */
-	--st-bg:#fff9f7;			/* 웜 아이보리 배경 */
-	--st-bg-alt:#f2ece9;		/* 섹션 대비용 */
+	--st-bg:#ffffff;			/* 화이트 배경 */
+	--st-bg-alt:#f5f5f5;		/* 섹션 대비용 */
 	--st-ink:#000000;			/* 본문 먹색 */
 	--st-ink-60:rgba(0,0,0,.6);
 	--st-ink-35:rgba(0,0,0,.35);
 	--st-ink-12:rgba(0,0,0,.12);
-	--st-red:#ed3833;			/* 포인트 레드 */
+	--st-red:#111111;			/* 포인트 (모노톤) */
 	--st-invert:#ffffff;
 
 	/* 타이포 패밀리 */
@@ -1020,7 +1020,7 @@ html.st-motion [data-st-cursor] a { cursor:none; }
 	   모바일은 사진이 화면 끝까지 차서 먹색 아이콘이 사진에 묻힌다.
 	   밝은 구간(= 어두운 영상 구간이 아닐 때)에서만 아이보리 반투명 바를 깐다. */
 	#header.is-over-light {
-		background:rgba(255,249,247,.92) !important;
+		background:rgba(255,255,255,.92) !important;
 		-webkit-backdrop-filter:none;
 		backdrop-filter:none;
 		transition:color .4s var(--st-ease), background-color .3s var(--st-ease);
