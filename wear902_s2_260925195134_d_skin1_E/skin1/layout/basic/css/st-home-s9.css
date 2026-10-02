@@ -567,9 +567,15 @@ ul.prdList > li .prdList__item .thumbnail, .detailArea .imgArea .prdImg .thumbna
 @media (max-width:640px) { .st-tsb { gap:10px; padding:12px 12px; } .st-tsb__tt { display:none; } .st-tsb__lab { letter-spacing:.16em; } .st-tsb__c { gap:8px; } .st-tsb .st-u b { font-size:18px !important; } .st-tsb .st-u em { font-size:10px; } }
 
 /* 카드·사진 위 작은 배지 */
-.st-ts { display:inline-flex; align-items:center; gap:7px; padding:7px 12px 7px 10px; border-radius:999px; background:rgba(38,39,53,.84); color:#fff; box-shadow:0 8px 22px -8px rgba(0,0,0,.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); font-size:12px; font-weight:500; letter-spacing:-.01em; }
-.st-ts b { color:#e6dfe0; font-weight:700; letter-spacing:0; }
-@media (max-width:640px) { .st-ts { padding:6px 10px 6px 8px; font-size:11px; } }
+/* 타임세일 카드 배지 : 상세 배너와 같은 검정 띠 — 사진 아래쪽에 ● TIME SALE ········ 29일 08:10:51
+   (글자 "종료까지" 는 숨기고 TIME SALE 을 ::after 로, 순서는 order 로 맞춘다 — 스크립트는 그대로) */
+.st-ts { display:flex; align-items:center; gap:8px; left:0; right:0; top:auto; bottom:0; max-width:none; padding:10px 14px; border-radius:0; background:#111111; box-shadow:none; color:#fff; font-size:0 !important; letter-spacing:0; }
+.st-ts .st-dot { order:0; width:6px; height:6px; background:#fff; }
+.st-ts::after { content:'TIME SALE'; order:1; font:600 10px/1 'Jost','Archivo',sans-serif; letter-spacing:.22em; color:#fff; }
+.st-ts b { order:2; margin-left:auto; font:500 14px/1 'Jost','Archivo',sans-serif !important; letter-spacing:.02em; font-variant-numeric:tabular-nums; color:#fff; white-space:nowrap; }
+.detailArea .imgArea .st-ts { display:none; }	/* 상세는 사진 위 배너(.st-tsb)가 있으므로 사진 속 배지는 숨김 */
+@media (max-width:640px) { .st-ts { padding:8px 10px; gap:6px; } .st-ts::after { font-size:9px; letter-spacing:.14em; } .st-ts b { font-size:12px !important; } }
+@media (max-width:400px) { .st-ts::after { display:none; } }
 
 /* 재고 임박 */
 .st-stock { margin:0 0 16px; }
