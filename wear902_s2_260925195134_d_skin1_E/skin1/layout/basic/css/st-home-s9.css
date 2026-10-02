@@ -555,17 +555,16 @@ ul.prdList > li .prdList__item .thumbnail, .detailArea .imgArea .prdImg .thumbna
 @keyframes stShine { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
 .st-dot { display:inline-block; flex:none; width:7px; height:7px; border-radius:50%; background:#111111; animation:stPulse 1.6s infinite; }
 
-/* 타임세일 상세 배너 : 초 단위 카운트다운 카드 */
-.st-tsb { position:relative; overflow:hidden; margin:0 0 14px; padding:18px 14px 16px; border-radius:16px; background:linear-gradient(135deg,#20212c 0%,#2f3042 55%,#45465c 100%); color:#fff; text-align:center; box-shadow:0 14px 30px -14px rgba(32,33,44,.6); font-weight:400; }
-.st-tsb::before { content:''; position:absolute; inset:0; background:radial-gradient(120% 100% at 100% 0%,rgba(180,171,172,.30),transparent 55%); pointer-events:none; }
-.st-tsb::after { content:''; position:absolute; top:0; bottom:0; left:0; width:45%; background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.13) 50%,transparent 100%); animation:stSweep 5s ease-in-out infinite; pointer-events:none; }
-.st-tsb__lab { position:relative; z-index:1; display:inline-flex; align-items:center; gap:7px; font:700 11px/1 'Jost','Pretendard Variable',sans-serif; letter-spacing:.24em; color:#d9d3d4; }
-.st-tsb__tt { position:relative; z-index:1; margin:9px 0 13px; font-size:13px; font-weight:500; opacity:.88; }
-.st-tsb__c { position:relative; z-index:1; display:flex; justify-content:center; gap:8px; }
-.st-tsb .st-u { min-width:60px; padding:10px 6px 8px; border-radius:11px; background:rgba(255,255,255,.11); border:1px solid rgba(255,255,255,.16); }
-.st-tsb .st-u b { display:block; margin:0; font:700 26px/1 'Jost','Pretendard Variable',sans-serif; letter-spacing:0; font-variant-numeric:tabular-nums; color:inherit; }
-.st-tsb .st-u em { display:block; margin-top:6px; font-size:10px; font-style:normal; letter-spacing:.1em; opacity:.72; }
-@media (max-width:640px) { .st-tsb { padding:16px 10px 14px; border-radius:14px; } .st-tsb .st-u { min-width:52px; padding:9px 4px 7px; } .st-tsb .st-u b { font-size:22px; } }
+/* 타임세일 상세 배너 : 한 줄 · 사이트와 같은 흑백 (● TIME SALE | 타임세일 종료까지  29일 08시간 21분 13초) */
+.st-tsb { display:flex; align-items:center; justify-content:center; gap:18px; margin:0 0 14px; padding:14px 20px; border-radius:0; background:#111111; color:#fff; text-align:center; font-weight:400; }
+.st-tsb .st-tsb__lab { display:inline-flex; align-items:center; gap:8px; flex:none; white-space:nowrap; font:600 11px/1 var(--st-label,Jost,sans-serif) !important; letter-spacing:.24em; color:#fff; }
+.st-tsb__lab .st-dot { width:6px; height:6px; background:#fff; }
+.st-tsb__tt { flex:none; margin:0; padding-left:18px; border-left:1px solid rgba(255,255,255,.22); font-size:13px; font-weight:400; white-space:nowrap; color:rgba(255,255,255,.66); }
+.st-tsb__c { display:flex; align-items:baseline; gap:12px; flex:none; }
+.st-tsb .st-u { display:inline-flex; align-items:baseline; gap:3px; white-space:nowrap; }
+.st-tsb .st-u b { display:inline; margin:0; font:500 22px/1 Jost,Archivo,sans-serif !important; letter-spacing:.02em; font-variant-numeric:tabular-nums; color:inherit; }
+.st-tsb .st-u em { display:inline; margin:0; font-size:11px; font-style:normal; color:rgba(255,255,255,.55); }
+@media (max-width:640px) { .st-tsb { gap:10px; padding:12px 12px; } .st-tsb__tt { display:none; } .st-tsb__lab { letter-spacing:.16em; } .st-tsb__c { gap:8px; } .st-tsb .st-u b { font-size:18px !important; } .st-tsb .st-u em { font-size:10px; } }
 
 /* 카드·사진 위 작은 배지 */
 .st-ts { display:inline-flex; align-items:center; gap:7px; padding:7px 12px 7px 10px; border-radius:999px; background:rgba(38,39,53,.84); color:#fff; box-shadow:0 8px 22px -8px rgba(0,0,0,.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); font-size:12px; font-weight:500; letter-spacing:-.01em; }
