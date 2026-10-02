@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>wear902 countdown</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#111111;overflow:hidden}
+.cd{display:flex;justify-content:center;gap:2%;padding:4px 0}
+.box{flex:0 1 110px;height:96px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.num{font-family:'DM Sans',sans-serif;font-weight:700;font-size:clamp(28px,9vw,46px);line-height:1;color:#ffffff;font-variant-numeric:tabular-nums}
+.lab{margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0}
+</style>
+</head>
+<body>
+<div class="cd">
+  <div class="box"><span class="num" id="d">03</span><span class="lab">Days</span></div>
+  <div class="box"><span class="num" id="h">00</span><span class="lab">Hours</span></div>
+  <div class="box"><span class="num" id="m">00</span><span class="lab">Min</span></div>
+  <div class="box"><span class="num" id="s">00</span><span class="lab">Sec</span></div>
+</div>
+<script>
+(function () {
+  // 기준 시각 : 2026-10-02 00:00 (한국시간). 3일마다 마감 → 마감되면 바로 다시 3일
+  var START = Date.UTC(2026, 9, 1, 15, 0, 0);
+  var CYCLE = 3 * 24 * 60 * 60 * 1000;
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function set(id, v) { document.getElementById(id).textContent = pad(v); }
+  function tick() {
+    var passed = (Date.now() - START) % CYCLE;
+    if (passed < 0) passed += CYCLE;
+    var left = Math.floor((CYCLE - passed) / 1000);
+    set('d', Math.floor(left / 86400));
+    set('h', Math.floor(left % 86400 / 3600));
+    set('m', Math.floor(left % 3600 / 60));
+    set('s', left % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,600;1,500&display=swap" rel="stylesheet">
+<br><br>
+<div style="width:100%;max-width:860px;margin:0 auto 30px;padding:46px 20px 42px;box-sizing:border-box;background:#111111;border-radius:6px;text-align:center;font-family:'Noto Sans KR','Malgun Gothic',sans-serif;color:#ffffff;">
+
+  <p style="margin:0 0 6px;font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:20px;letter-spacing:.02em;color:#b0b0b0;">Limited Event</p>
+  <p style="margin:0 0 22px;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:12px;font-weight:700;letter-spacing:.32em;color:#ffffff;">● EVENT 진행중</p>
+
+  <div style="width:40px;height:1px;margin:0 auto 24px;background:#707070;"></div>
+
+  <p style="margin:0 0 10px;font-size:18px;font-weight:500;color:#b0b0b0;">지금 신청하시면</p>
+  <p style="margin:0 0 14px;font-size:clamp(22px,4.4vw,34px);font-weight:800;line-height:1.45;letter-spacing:-.03em;word-break:keep-all;">타임세일 <span style="color:#707070;font-weight:500;">·</span> 마감 카운트다운 <span style="color:#707070;font-weight:500;">·</span> 쿠폰 이벤트</p>
+  <p style="margin:0 0 30px;font-size:clamp(15px,2.6vw,19px);font-weight:400;line-height:1.6;color:#dddddd;word-break:keep-all;">커스텀 작업을 스킨에 추가해 드립니다.</p>
+
+  <div style="display:inline-block;padding:14px 40px;margin:0 0 34px;background:#ffffff;color:#111111;font-size:clamp(22px,4vw,30px);font-weight:800;letter-spacing:-.02em;border-radius:999px;">전부 무료</div>
+
+  <p style="margin:0 0 14px;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:13px;font-weight:700;letter-spacing:.2em;color:#b0b0b0;">혜택 마감까지 남은 시간</p>
+
+  <div id="w902-cd" style="font-size:0;line-height:0;">
+    <div style="display:inline-block;width:22%;max-width:110px;margin:0 1%;padding:16px 0 12px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;vertical-align:top;">
+      <span data-cd="d" style="display:block;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:#ffffff;">03</span>
+      <span style="display:block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0;">Days</span>
+    </div>
+    <div style="display:inline-block;width:22%;max-width:110px;margin:0 1%;padding:16px 0 12px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;vertical-align:top;">
+      <span data-cd="h" style="display:block;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:#ffffff;">00</span>
+      <span style="display:block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0;">Hours</span>
+    </div>
+    <div style="display:inline-block;width:22%;max-width:110px;margin:0 1%;padding:16px 0 12px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;vertical-align:top;">
+      <span data-cd="m" style="display:block;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:#ffffff;">00</span>
+      <span style="display:block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0;">Min</span>
+    </div>
+    <div style="display:inline-block;width:22%;max-width:110px;margin:0 1%;padding:16px 0 12px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;vertical-align:top;">
+      <span data-cd="s" style="display:block;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:#ffffff;">00</span>
+      <span style="display:block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0;">Sec</span>
+    </div>
+  </div>
+
+  <p style="margin:16px 0 0;font-size:13px;color:#707070;">3일마다 새 이벤트가 열립니다.</p>
+</div>
+
+<script>
+(function () {
+  // 기준 시각 : 2026-10-02 00:00 (한국시간). 여기서부터 3일 단위로 마감 → 마감되면 바로 다시 3일
+  var START = Date.UTC(2026, 9, 1, 15, 0, 0);
+  var CYCLE = 3 * 24 * 60 * 60 * 1000;
+  var box = document.getElementById('w902-cd');
+  if (!box) return;
+  var el = {};
+  var spans = box.getElementsByTagName('span');
+  for (var i = 0; i < spans.length; i++) {
+    var k = spans[i].getAttribute('data-cd');
+    if (k) el[k] = spans[i];
+  }
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function tick() {
+    var passed = (Date.now() - START) % CYCLE;
+    if (passed < 0) passed += CYCLE;
+    var left = Math.floor((CYCLE - passed) / 1000);
+    el.d.innerHTML = pad(Math.floor(left / 86400));
+    el.h.innerHTML = pad(Math.floor(left % 86400 / 3600));
+    el.m.innerHTML = pad(Math.floor(left % 3600 / 60));
+    el.s.innerHTML = pad(left % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+
+<p style="margin:0 0 30px;text-align:center;"><a href="https://ecudemo409091.cafe24.com/" target="_blank" rel="noopener" style="display:inline-block;padding:14px 34px;border-radius:999px;background:#111111;color:#ffffff;font-size:16px;font-weight:bold;text-decoration:none;">샘플 사이트 둘러보기 →</a></p>
+<br>
+
+<div style="max-width:922px;margin:0 auto;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-01.jpg" alt="wear902 상세 1 - Good wear.Good day. · 구매 후, 이렇게 쉽게 바꿔요 · 먼저 딱 한 번 해 볼까요? 세일 배너 문구를 우리 가게 문구로" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-02.jpg" alt="wear902 상세 2 - Good wear.Good day. · 구매 후, 이렇게 쉽게 바꿔요 · 먼저 딱 한 번 해 볼까요? 세일 배너 문구를 우리 가게 문구로 (이어서)" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-03.jpg" alt="wear902 상세 3 - 메인 화면, 위에서부터 하나씩 · 메인 첫 화면 (영상 · 사진)" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-04.jpg" alt="wear902 상세 4 - 이용 안내 (배송 · 교환 · 후기 · 문의)" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-05.jpg" alt="wear902 상세 5 - 오늘은 어떤 옷을 입을까요?" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-06.jpg" alt="wear902 상세 6 - 오늘은 어떤 옷을 입을까요? (이어서)" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-07.jpg" alt="wear902 상세 7 - 오늘은 무엇을 찾으세요?" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-08.jpg" alt="wear902 상세 8 - 상품 섹션 4곳 (추천 · 신상 · 인기 · 포토리뷰)" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<div style="overflow:hidden;max-width:922px;margin:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-09.jpg" alt="wear902 상세 9 - 오늘 나에게 어울리는 옷은?" style="display:block;width:100%;max-width:922px;height:auto;margin:0 0 -28.2%;border:0;">
+</div>
+<div style="position:relative;overflow:hidden;max-width:922px;margin:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-24.jpg" alt="wear902 상세 24 - 작업 진행 절차 안내 · 쇼핑몰의 첫인상부터구매를 돕는 작은 기능까지 · 좋은 발견은기다릴 때 더 설레니까" style="display:block;width:100%;max-width:922px;height:auto;margin:-23.6% 0 0;border:0;">
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSf26MVAAFBO6btjz97kuKnjw6jvWKNdJ21ET3jIUsov0NTR_g/viewform?usp=header" target="_blank" rel="noopener" title="주문서 접수하기" style="position:absolute;left:31.8%;top:28.1%;width:14.4%;height:3.6%;display:block;"></a>
+</div>
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-25.jpg" alt="wear902 상세 25 - Good finds.Easy days. · 이벤트 안내와 혜택을한 화면에 모아" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-26.jpg" alt="wear902 상세 26 - 쿠폰 뽑기의 설렘 · 참여는 간단하게, 적용은 편리하게 · 타임세일 혜택,상품에서도 바로 확인" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-27.jpg" alt="wear902 상세 27 - 목록에서 보고, 상세에서 다시 확인 · 운영에 필요한 편의 기능도꼼꼼하게 · 무료배송 진행바" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-28.jpg" alt="wear902 상세 28 - 한 벌로 완성하는 아우터 · 매일 입는 데일리 상의 · 지금 필요한 순간" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-29.jpg" alt="wear902 상세 29 - 옷 고민을 덜어주는실용적인 안내 · 입어 본 경험이 다음 선택으로이어지도록 · 포토리뷰로 나누는이번 시즌 옷장" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<img src="https://cdn.jsdelivr.net/gh/tlsdmsrud902/wear@db9fc6b/designcenter/wear902/detail-30.jpg" alt="wear902 상세 30 - 깨끗한 흑백과정돈된 구성 · 필요한 기능을 갖춘나만의 패션 쇼핑몰을 시작하세요" style="display:block;width:100%;max-width:922px;height:auto;margin:0;border:0;">
+<p style="margin:0;padding:22px 0;text-align:center;background:#111111;"><a href="https://ecudemo409091.cafe24.com/" target="_blank" rel="noopener" style="display:inline-block;padding:12px 26px;border-radius:999px;background:#ffffff;color:#111111;font-size:14px;font-weight:bold;text-decoration:none;">샘플 사이트 둘러보기</a></p>
+</div>
