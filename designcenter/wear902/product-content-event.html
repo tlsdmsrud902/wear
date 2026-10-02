@@ -7,63 +7,18 @@
 
   <div style="width:40px;height:1px;margin:0 auto 24px;background:#707070;"></div>
 
-  <p style="margin:0 0 10px;font-size:18px;font-weight:500;color:#b0b0b0;">지금 신청하시면</p>
+  <p style="margin:0 0 10px;font-size:18px;font-weight:500;color:#b0b0b0;">이벤트 기간 신청하시면</p>
   <p style="margin:0 0 14px;font-size:clamp(22px,4.4vw,34px);font-weight:800;line-height:1.45;letter-spacing:-.03em;word-break:keep-all;">타임세일 <span style="color:#707070;font-weight:500;">·</span> 마감 카운트다운 <span style="color:#707070;font-weight:500;">·</span> 쿠폰 이벤트</p>
-  <p style="margin:0 0 30px;font-size:clamp(15px,2.6vw,19px);font-weight:400;line-height:1.6;color:#dddddd;word-break:keep-all;">커스텀 작업을 스킨에 추가해 드립니다.</p>
+  <p style="margin:0 0 30px;font-size:clamp(15px,2.6vw,19px);font-weight:400;line-height:1.6;color:#dddddd;word-break:keep-all;">커스텀 작업을 스킨에 무료로 추가해 드립니다.</p>
 
   <div style="display:inline-block;padding:14px 40px;margin:0 0 34px;background:#ffffff;color:#111111;font-size:clamp(22px,4vw,30px);font-weight:800;letter-spacing:-.02em;border-radius:999px;">전부 무료</div>
 
-  <p style="margin:0 0 14px;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:13px;font-weight:700;letter-spacing:.2em;color:#b0b0b0;">혜택 마감까지 남은 시간</p>
+  <p style="margin:0 0 14px;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:13px;font-weight:700;letter-spacing:.2em;color:#b0b0b0;">이벤트 마감까지 남은 시간</p>
 
-  <div id="w902-cd" style="font-size:0;line-height:0;">
-    <div style="display:inline-block;width:22%;max-width:110px;margin:0 1%;padding:16px 0 12px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;vertical-align:top;">
-      <span data-cd="d" style="display:block;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:#ffffff;">03</span>
-      <span style="display:block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0;">Days</span>
-    </div>
-    <div style="display:inline-block;width:22%;max-width:110px;margin:0 1%;padding:16px 0 12px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;vertical-align:top;">
-      <span data-cd="h" style="display:block;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:#ffffff;">00</span>
-      <span style="display:block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0;">Hours</span>
-    </div>
-    <div style="display:inline-block;width:22%;max-width:110px;margin:0 1%;padding:16px 0 12px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;vertical-align:top;">
-      <span data-cd="m" style="display:block;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:#ffffff;">00</span>
-      <span style="display:block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0;">Min</span>
-    </div>
-    <div style="display:inline-block;width:22%;max-width:110px;margin:0 1%;padding:16px 0 12px;box-sizing:border-box;border:1px solid #444444;border-radius:6px;background:#1c1c1c;vertical-align:top;">
-      <span data-cd="s" style="display:block;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:#ffffff;">00</span>
-      <span style="display:block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1;color:#b0b0b0;">Sec</span>
-    </div>
-  </div>
+  <iframe src="https://rawcdn.githack.com/tlsdmsrud902/wear/7dccd36415e6fd3b98a8b61031a40f5f9636b91f/designcenter/wear902/countdown.html" title="이벤트 마감 카운트다운" scrolling="no" frameborder="0" style="display:block;width:100%;max-width:480px;height:104px;margin:0 auto;border:0;background:#111111;"></iframe>
 
-  <p style="margin:16px 0 0;font-size:13px;color:#707070;">3일마다 새 이벤트가 열립니다.</p>
+  <p style="margin:16px 0 0;font-size:13px;color:#707070;">마감 후 이벤트가 종료됩니다.</p>
 </div>
-
-<script>
-(function () {
-  // 기준 시각 : 2026-10-02 00:00 (한국시간). 여기서부터 3일 단위로 마감 → 마감되면 바로 다시 3일
-  var START = Date.UTC(2026, 9, 1, 15, 0, 0);
-  var CYCLE = 3 * 24 * 60 * 60 * 1000;
-  var box = document.getElementById('w902-cd');
-  if (!box) return;
-  var el = {};
-  var spans = box.getElementsByTagName('span');
-  for (var i = 0; i < spans.length; i++) {
-    var k = spans[i].getAttribute('data-cd');
-    if (k) el[k] = spans[i];
-  }
-  function pad(n) { return n < 10 ? '0' + n : '' + n; }
-  function tick() {
-    var passed = (Date.now() - START) % CYCLE;
-    if (passed < 0) passed += CYCLE;
-    var left = Math.floor((CYCLE - passed) / 1000);
-    el.d.innerHTML = pad(Math.floor(left / 86400));
-    el.h.innerHTML = pad(Math.floor(left % 86400 / 3600));
-    el.m.innerHTML = pad(Math.floor(left % 3600 / 60));
-    el.s.innerHTML = pad(left % 60);
-  }
-  tick();
-  setInterval(tick, 1000);
-})();
-</script>
 
 <p style="margin:0 0 30px;text-align:center;"><a href="https://ecudemo409091.cafe24.com/" target="_blank" rel="noopener" style="display:inline-block;padding:14px 34px;border-radius:999px;background:#111111;color:#ffffff;font-size:16px;font-weight:bold;text-decoration:none;">샘플 사이트 둘러보기 →</a></p>
 <br>
