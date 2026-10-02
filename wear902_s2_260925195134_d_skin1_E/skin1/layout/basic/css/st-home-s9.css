@@ -335,7 +335,7 @@ html.s9-fx .s9-film__video { transform:scale(var(--fs, 1.12)); will-change:trans
 #contents .ec-base-product ul.prdList > li .description ul.spec { display:flex; flex-wrap:wrap; align-items:baseline; column-gap:6px; row-gap:2px; margin:0; padding:0; }
 #contents .ec-base-product ul.prdList > li .description ul.spec > li { display:contents; }
 #contents .ec-base-product ul.prdList > li .description ul.spec > li:has(.st-rate) > span:not(.st-rate) { flex:0 0 100%; order:0; font-size:12px !important; color:#b0b0b0 !important; }
-#contents .ec-base-product ul.prdList > li .description ul.spec .st-rate { order:1; font-size:15px; font-weight:700; color:var(--st-red); margin:0; }
+#contents .ec-base-product ul.prdList > li .description ul.spec .st-rate { order:1; font-size:15px; font-weight:700; color:#e5383b; margin:0; }
 #contents .ec-base-product ul.prdList > li .description ul.spec > li:not(:has(.st-rate)) > span:not([id]) { order:2; font-size:15px !important; font-weight:700 !important; color:var(--st-ink) !important; }
 #contents .ec-base-product ul.prdList > li .description ul.spec strong.title { display:none; }
 #contents .ec-base-product ul.prdList > li .description ul.spec [id^="span_product_tax_type_text"] { order:3; }
@@ -576,6 +576,10 @@ ul.prdList > li .prdList__item .thumbnail, .detailArea .imgArea .prdImg .thumbna
 .detailArea .imgArea .st-ts { display:none; }	/* 상세는 사진 위 배너(.st-tsb)가 있으므로 사진 속 배지는 숨김 */
 @media (max-width:640px) { .st-ts { padding:8px 10px; gap:6px; } .st-ts::after { font-size:9px; letter-spacing:.14em; } .st-ts b { font-size:12px !important; } }
 @media (max-width:400px) { .st-ts::after { display:none; } }
+/* 타임세일 스티커 : 타임세일 상품 사진 오른쪽 위 빨간 원 (사이트의 원형 스티커처럼 살짝 기울임) */
+.thumbnail:has(> .st-ts)::before { content:'TIME\A SALE'; white-space:pre; position:absolute; top:12px; right:12px; z-index:5; display:flex; align-items:center; justify-content:center; width:60px; height:60px; border-radius:50%; background:#e5383b; color:#fff; text-align:center; font:700 10px/1.25 'Jost','Archivo',sans-serif; letter-spacing:.16em; text-indent:.16em; transform:rotate(-10deg); box-shadow:0 6px 16px -6px rgba(0,0,0,.45); pointer-events:none; }
+.detailArea .thumbnail:has(> .st-ts)::before { display:none; }
+@media (max-width:640px) { .thumbnail:has(> .st-ts)::before { top:8px; right:8px; width:46px; height:46px; font-size:8px; letter-spacing:.12em; text-indent:.12em; } }
 
 /* 재고 임박 */
 .st-stock { margin:0 0 16px; }

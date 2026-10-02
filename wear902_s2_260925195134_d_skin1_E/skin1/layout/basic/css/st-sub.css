@@ -212,6 +212,8 @@
 	border-top:1px solid var(--st-ink);
 	border-bottom:1px solid var(--st-ink-12);
 }
+/* 상품검색 화면처럼 상세검색 항목이 하나도 없으면(숨은 칸만) 빈 줄 두 개만 남으므로 숨김 */
+#contents .searchCondition:not(:has(> :not([type=hidden]))) { display:none; }
 #contents .searchCondition .searchArea { display:flex; flex-wrap:wrap; gap:10px 24px; align-items:flex-start; }
 #contents .searchCondition .searchArea .title {
 	flex:0 0 auto;
@@ -1057,7 +1059,7 @@
 	font-weight:700;
 	line-height:1;
 	letter-spacing:.01em;
-	color:var(--st-red);
+	color:#e5383b;
 	vertical-align:baseline;
 	font-variant-numeric:tabular-nums;
 	text-decoration:none;
