@@ -1,0 +1,246 @@
+{
+ "brand": "wear902",
+ "accent": "#ffffff",
+ "accentText": "#111111",
+ "frames": "../../../_deploy/kmong/howto/frames",
+ "scenes": [
+  {
+   "img": "intro",
+   "kicker": "CAFE24 THEME · HOW TO",
+   "title": "코딩 없이<br>글자 · 사진 바꾸기",
+   "sub": "바꾸고, 저장하고, 언제든 되돌리기까지",
+   "sec": 3.5
+  },
+  {
+   "img": "s01-main",
+   "badge": "STEP 1",
+   "title": "쇼핑몰 메인 화면이에요",
+   "sub": "이 화면의 글자와 사진을 직접 바꿔 볼게요.",
+   "sec": 4
+  },
+  {
+   "img": "s02-editmode",
+   "badge": "STEP 2",
+   "title": "관리 모드에서 [✏️ 첫 화면 고치기]를 누르세요",
+   "sub": "구매 후 알려 드리는 관리자 전용 주소로 열면, 영역마다 고치기 버튼이 보여요.",
+   "sec": 5,
+   "ring": [
+    8,
+    131,
+    136,
+    30
+   ],
+   "cursor": [
+    128,
+    152
+   ],
+   "click": true
+  },
+  {
+   "img": "s03-editor",
+   "badge": "STEP 3",
+   "title": "「첫 화면」 편집 창이 열렸어요",
+   "sub": "칸마다 설명이 붙어 있어 처음이어도 쉬워요.",
+   "sec": 4
+  },
+  {
+   "img": "s04a-fields",
+   "badge": "STEP 4",
+   "title": "제목 칸을 클릭하고 새 문구를 입력해요",
+   "sub": "줄을 바꾸면 실제 화면에서도 줄이 바뀌어요.",
+   "sec": 2.2,
+   "ring": [
+    204,
+    352,
+    1148,
+    56
+   ],
+   "cursor": [
+    700,
+    382
+   ],
+   "click": true
+  },
+  {
+   "img": "s04b-selected",
+   "badge": "STEP 4",
+   "title": "제목 칸을 클릭하고 새 문구를 입력해요",
+   "sub": "줄을 바꾸면 실제 화면에서도 줄이 바뀌어요.",
+   "sec": 1.4,
+   "fade": 0.15,
+   "cursor": [
+    700,
+    382
+   ]
+  },
+  {
+   "img": "s04c-typing",
+   "badge": "STEP 4",
+   "title": "제목 칸을 클릭하고 새 문구를 입력해요",
+   "sub": "줄을 바꾸면 실제 화면에서도 줄이 바뀌어요.",
+   "sec": 1.2,
+   "fade": 0.15,
+   "cursor": [
+    700,
+    382
+   ]
+  },
+  {
+   "img": "s04d-typed",
+   "badge": "STEP 4",
+   "title": "제목 칸을 클릭하고 새 문구를 입력해요",
+   "sub": "‘가볍게 걸쳐도 / 하루가 달라집니다.’ — 바뀐 칸은 왼쪽에 검은 줄이 생겨요.",
+   "sec": 3,
+   "fade": 0.15,
+   "cursor": [
+    700,
+    382
+   ]
+  },
+  {
+   "img": "s05a-photo",
+   "badge": "STEP 5",
+   "title": "[사진 바꾸기]로 내 사진을 올려요",
+   "sub": "내 컴퓨터의 사진을 고르면 카페24에 올라가요.",
+   "sec": 3,
+   "ring": [
+    413,
+    361,
+    77,
+    32
+   ],
+   "cursor": [
+    452,
+    380
+   ],
+   "click": true
+  },
+  {
+   "img": "s05b-photo-new",
+   "badge": "STEP 5",
+   "title": "새 사진으로 바로 바뀌었어요",
+   "sub": "권장 크기와 맞는지 자동으로 알려 줘요.",
+   "sec": 3.5
+  },
+  {
+   "img": "s05b-photo-new",
+   "badge": "STEP 6",
+   "title": "다 바꿨으면 [저장하기]를 누르세요",
+   "sub": "저장하면 메인 화면에 바로 반영돼요.",
+   "sec": 3.5,
+   "ring": [
+    1269,
+    62,
+    84,
+    33
+   ],
+   "cursor": [
+    1312,
+    82
+   ],
+   "click": true
+  },
+  {
+   "img": "s07-result",
+   "badge": "RESULT",
+   "badgeBg": "#4da3ff",
+   "title": "메인 화면에 바로 반영됐어요!",
+   "sub": "새 사진과 새 문구가 적용됐어요.",
+   "sec": 4.5
+  },
+  {
+   "img": "s08a-undo-editor",
+   "badge": "UNDO",
+   "title": "예전 화면으로 되돌리고 싶다면?",
+   "sub": "[🕘 이전 저장본 불러오기]에서 원하는 날짜를 고르세요.",
+   "sec": 4,
+   "ring": [
+    469,
+    160,
+    160,
+    33
+   ],
+   "cursor": [
+    550,
+    180
+   ],
+   "click": true
+  },
+  {
+   "img": "s08b-undo-text",
+   "badge": "UNDO",
+   "title": "글자가 예전 문구로 돌아왔어요",
+   "sub": "‘매일 손이 가는 옷이…’ 원래 제목 그대로예요.",
+   "sec": 3.5,
+   "ring": [
+    204,
+    352,
+    1148,
+    56
+   ]
+  },
+  {
+   "img": "s08c-undo-photo",
+   "badge": "UNDO",
+   "title": "사진과 영상도 예전 그대로 돌아왔어요",
+   "sub": "문구, 사진, 링크까지 한 번에 복구돼요.",
+   "sec": 3.5,
+   "ring": [
+    204,
+    249,
+    1148,
+    195
+   ]
+  },
+  {
+   "img": "s08c-undo-photo",
+   "badge": "UNDO",
+   "title": "[저장하기]를 누르면 복구 끝!",
+   "sub": "저장 기록이 남아 있어 언제든 다시 불러올 수 있어요.",
+   "sec": 3,
+   "ring": [
+    1269,
+    62,
+    84,
+    33
+   ],
+   "cursor": [
+    1312,
+    82
+   ],
+   "click": true
+  },
+  {
+   "img": "s01-main",
+   "badge": "DONE",
+   "badgeBg": "#4da3ff",
+   "title": "원래 화면으로 돌아왔어요",
+   "sub": "실수해도 걱정 없는 원클릭 복구",
+   "sec": 4
+  },
+  {
+   "img": "outro",
+   "kicker": "EASY EDIT",
+   "title": "실수해도 괜찮아요<br>원클릭 복구",
+   "sub": "PC · 모바일 어디서든 쉽게 관리하세요.",
+   "sec": 3.5
+  }
+ ],
+ "zoom": [
+  1.3,
+  776,
+  0
+ ],
+ "zoomScenes": [
+  "s03-editor",
+  "s04a-fields",
+  "s04b-selected",
+  "s04c-typing",
+  "s04d-typed",
+  "s05a-photo",
+  "s05b-photo-new",
+  "s08a-undo-editor",
+  "s08b-undo-text",
+  "s08c-undo-photo"
+ ]
+}
