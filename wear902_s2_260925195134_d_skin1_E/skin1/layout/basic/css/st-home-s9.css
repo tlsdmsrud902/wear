@@ -577,9 +577,9 @@ ul.prdList > li .prdList__item .thumbnail, .detailArea .imgArea .prdImg .thumbna
 @media (max-width:640px) { .st-ts { padding:8px 10px; gap:6px; } .st-ts::after { font-size:9px; letter-spacing:.14em; } .st-ts b { font-size:12px !important; } }
 @media (max-width:400px) { .st-ts::after { display:none; } }
 /* 타임세일 스티커 : 타임세일 상품 사진 오른쪽 위 빨간 원 (사이트의 원형 스티커처럼 살짝 기울임) */
-.thumbnail:has(> .st-ts)::before { content:'TIME\A SALE'; white-space:pre; position:absolute; top:12px; right:12px; z-index:5; display:flex; align-items:center; justify-content:center; width:60px; height:60px; border-radius:50%; background:#e5383b; color:#fff; text-align:center; font:700 10px/1.25 'Jost','Archivo',sans-serif; letter-spacing:.16em; text-indent:.16em; transform:rotate(-10deg); box-shadow:0 6px 16px -6px rgba(0,0,0,.45); pointer-events:none; }
-.detailArea .thumbnail:has(> .st-ts)::before { display:none; }
-@media (max-width:640px) { .thumbnail:has(> .st-ts)::before { top:8px; right:8px; width:46px; height:46px; font-size:8px; letter-spacing:.12em; text-indent:.12em; } }
+.thumbnail:has(> .st-ts)::after { content:'TIME\A SALE'; white-space:pre; position:absolute; top:12px; right:12px; z-index:5; display:flex; align-items:center; justify-content:center; width:60px; height:60px; border-radius:50%; background:#e5383b; color:#fff; text-align:center; font:700 10px/1.25 'Jost','Archivo',sans-serif; letter-spacing:.16em; text-indent:.16em; transform:rotate(-10deg); box-shadow:0 6px 16px -6px rgba(0,0,0,.45); pointer-events:none; }
+.detailArea .thumbnail:has(> .st-ts)::after { display:none; }
+@media (max-width:640px) { .thumbnail:has(> .st-ts)::after { top:8px; right:8px; width:46px; height:46px; font-size:8px; letter-spacing:.12em; text-indent:.12em; } }
 
 /* 재고 임박 */
 .st-stock { margin:0 0 16px; }
