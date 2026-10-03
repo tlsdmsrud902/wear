@@ -2,7 +2,7 @@
 #   v2 의 빠른 컷 · 3초 훅은 그대로, 노랑 상자 · 흔들림 · 플래시를 빼고
 #   단색 바탕 위 「글 칸 + 실제 화면 카드(창 · 휴대폰)」 편집 구성으로 글자가 화면(UI) 위에 얹히지 않게 했다.
 #   1) 실제 화면 촬영 (한 번만) : node docs/tools/serve.js &  →  FONTS=<폴더> NODE_PATH=$(npm root -g) node docs/tools/promo/capture-v2.js
-#   2) 영상 만들기              : FONTS=<폴더> python3 docs/tools/promo/promo-video-v3.py [v|h]
+#   2) 영상 만들기              : FONTS=<폴더> python3 docs/tools/promo/promo-video-v3.py [v|vb|vc|h]   (v = 세로 A, vb · vc = 훅 변형 B · C)
 #   FONTS : npm pack pretendard@1.3.9 @fontsource/jost @fontsource/playfair-display 를 풀어 둔 폴더
 #   결과 (video/promo/) : wearpick-v3-reels-15s(.mp4 | -silent.mp4) 1080×1920 · wearpick-v3-16x9-30s(.mp4 | -silent.mp4) 1920×1080
 #   원본 프레임 읽기 · 카메라 · 이징 · 효과음 합성은 promo-video-v2.py 의 것을 그대로 쓴다.
@@ -112,8 +112,9 @@ def line_img(runs, kind, size, on_dark):
 
 class Block:
     """글 묶음. lines : [(종류, [(글, 표시)])]. t_in / t_out : 구간 안 시각(초). xy : 왼쪽 위(align='l') 또는 가운데 위(align='c')"""
-    def __init__(self, t_in, t_out, lines, xy, size, align='l', stagger=.07, gap=None, vcenter=False):
+    def __init__(self, t_in, t_out, lines, xy, size, align='l', stagger=.07, gap=None, vcenter=False, times=None):
         self.t_in, self.t_out, self.lines, self.xy, self.size, self.align = t_in, t_out, lines, xy, size, align
+        self.times = times   # 줄마다 나오는 시각 (없으면 t_in 부터 stagger 간격)
         self.stagger, self.vcenter = stagger, vcenter
         self.gap = gap if gap is not None else int(size * .16)
 
@@ -127,7 +128,7 @@ class Block:
         events = []
         for n, (a, b, marks, H, base, fs) in enumerate(imgs):
             kind = self.lines[n][0]
-            ti = self.t_in + n * self.stagger
+            ti = self.times[n] if self.times else self.t_in + n * self.stagger
             k_in = expo((tl - ti) / .55)
             k_out = EASE['in'](clamp((tl - self.t_out - n * .03) / .22))
             x = x0 if self.align == 'l' else x0 - a.width / 2
@@ -217,8 +218,8 @@ def draw_screen(c, arr, rect, style, cam, bg, scale=1.0):
 
 class Cut:
     """구간 안의 한 컷 : 실제 화면 하나를 rect 자리에 보여 준다"""
-    def __init__(self, t0, t1, src, t, cam, rect, style='card', bump=None):
-        self.t0, self.t1, self.src, self.t, self.cam, self.rect, self.style, self.bump = t0, t1, src, t, cam, rect, style, bump
+    def __init__(self, t0, t1, src, t, cam, rect, style='card', bump=None, wipe=False):
+        self.t0, self.t1, self.src, self.t, self.cam, self.rect, self.style, self.bump, self.wipe = t0, t1, src, t, cam, rect, style, bump, wipe
     def needs(self): return [(self.src, self.t)]
     def draw(self, c, tl, bg):
         u = clamp((tl - self.t0) / (self.t1 - self.t0))
@@ -230,6 +231,7 @@ class Cut:
 
 
 class Devices:
+    wipe = False
     """반응형 : PC 창 + 휴대폰을 한 화면에"""
     def __init__(self, t0, t1, pc, pc_t, ph, ph_t, win_rect, ph_rect, pc_cam=None, ph_cam=None):
         self.t0, self.t1, self.pc, self.pc_t, self.ph, self.ph_t = t0, t1, pc, pc_t, ph, ph_t
@@ -253,9 +255,20 @@ class Section:
 
     def frame(self, W, H, tl):
         c = Image.new('RGBA', (W, H), self.bg + (255,))
-        for cut in self.cuts:
+        for n, cut in enumerate(self.cuts):
             if cut.t0 <= tl < cut.t1 or (cut is self.cuts[-1] and tl >= cut.t1) or (cut is self.cuts[0] and tl < cut.t0):
-                cut.draw(c, tl, self.bg); break
+                WD = .2
+                if cut.wipe and n and tl - cut.t0 < WD:
+                    # 앞 컷을 그리고, 새 컷을 왼쪽부터 마스크로 연다
+                    self.cuts[n - 1].draw(c, tl, self.bg)
+                    top = Image.new('RGBA', c.size, self.bg + (255,)); cut.draw(top, tl, self.bg)
+                    x0, _, w, _ = [int(v) for v in getattr(cut, 'rect', (0, 0, W, 0))]
+                    xm = int(x0 - 40 + (w + 80) * expo((tl - cut.t0) / WD))
+                    m = Image.new('L', c.size, 0); ImageDraw.Draw(m).rectangle((0, 0, xm, H), fill=255)
+                    c.paste(top, (0, 0), m)
+                else:
+                    cut.draw(c, tl, self.bg)
+                break
         if self.extra: self.extra(c, tl)
         for b in self.blocks: b.draw(c, tl, self.bg)
         return c
@@ -370,7 +383,22 @@ def cta_extra(layout):
 # ======================================================================================
 #  세로 15초 : 위쪽 = 글 칸(단색 바탕), 아래쪽 = 실제 화면 카드
 # ======================================================================================
-def vertical():
+def scaled(sec, ev, k):
+    """구간을 k 배 길이로 (컷 · 글 · 효과음 시각만 늘이고 줄인다. 원본 재생 구간은 그대로 = 빨라지거나 느려진다)"""
+    sec.dur *= k
+    for c in sec.cuts: c.t0 *= k; c.t1 *= k
+    for b in sec.blocks:
+        b.t_in *= k; b.t_out *= k
+        if b.times: b.times = [t * k for t in b.times]
+        else: b.stagger *= min(1, k)
+    # 줄이면 앞 글이 다 빠지기 전에 다음 글이 들어올 수 있어, 앞 글을 조금 일찍 내보낸다
+    for a, b in zip(sec.blocks, sec.blocks[1:]):
+        a.t_out = min(a.t_out, b.t_in - .3)
+    return sec, [(n, t * k, g) for n, t, g in ev]
+
+
+def vertical(variant='a'):
+    """variant : 'a' = 사장님 부르기 + 쿠폰 훅(v3 원본) · 'b' = 고민(코딩 없이 수정) 훅 · 'c' = 완성된 쇼핑몰 몽타주 훅"""
     W, H = 1080, 1920
     fm = Film(W, H)
     M = 'cap-m-'
@@ -379,53 +407,106 @@ def vertical():
     B = lambda t0, t1, lines, **k: Block(t0, t1, lines, (TX, TY), SZ, **k)
     C = lambda t0, t1, src, t, cam, **k: Cut(t0, t1, src, t, cam, k.pop('rect', CARD), **k)
 
-    # 0 ~ 3초 : 훅 (사장님 부르기 → 한 줄 요약 → 50% 공개)
-    fm.add(Section(3.0, PAPER, [
-        C(0, .5, M + 'coupon', [(0, 1.55), (1, 2.6, 'lin')], [(0, (1.32, .5, .53)), (1, (1.24, .5, .53), 'out')]),
-        C(.5, 1.0, M + 'coupon', [(0, 2.6), (1, 3.95, 'lin')], [(0, (1.24, .5, .53)), (1, (1.3, .5, .53), 'out')]),
-        C(1.0, 1.5, M + 'coupon', [(0, 4.47), (1, 4.97, 'lin')], [(0, (1.3, .5, .5)), (1, (1.34, .5, .5), 'lin')]),
-        C(1.5, 2.3, M + 'coupon', [(0, 4.97), (1, 5.5, 'lin')], [(0, (1.36, .5, .5)), (1, (1.6, .5, .5), 'io')]),
-        C(2.3, 3.0, M + 'coupon', [(0, 5.51), (.3, 5.62, 'lin'), (1, 6.4, 'lin')], [(0, (1.5, .5, .5)), (1, (1.42, .5, .5), 'out')], bump=0),
-    ], [
-        B(-.35, 1.32, [('k', [('For Cafe24 fashion stores', None)]), ('h', [('카페24 의류몰', None)]), ('h', [('사장님', 'inv')])]),
-        B(1.5, 2.15, [('k', [('One skin, everything', None)]), ('h', [('쿠폰 · 타임세일 · 편집', None)]), ('h', [('스킨 하나로', 'ul')])], stagger=.05),
-        B(2.3, 3.2, [('s', [('Lucky coupon', None)]), ('h', [('고객이 직접 뽑는', None)]), ('h', [('랜덤 쿠폰 ', None), ('5~50%', 'inv')])], stagger=.05),
-    ]))
-    # 3 ~ 5초 : 마감 카운트다운 · 세일 페이지 (검정 바탕)
-    fm.add(Section(2.0, INK, [
-        C(0, .75, M + 'sale', [(0, .3), (1, 1.35, 'lin')], [(0, (1.0, .5, .3)), (1, (1.1, .5, .26), 'out')]),
-        C(.75, 1.4, M + 'sale', [(0, 1.35), (1, 2.35, 'lin')], [(0, (1.1, .5, .5)), (1, (1.02, .5, .5), 'out')]),
-        C(1.4, 2.0, M + 'sale', [(0, 5.9), (1, 7.9, 'io')], [(0, (1.0, .5, .5)), (1, (1.08, .5, .5))]),
-    ], [
-        B(.15, 1.15, [('k', [('Time sale', None)]), ('h', [('이벤트 마감까지', None)]), ('h', [('카운트다운', 'inv')])], stagger=.05),
-        B(1.3, 2.2, [('k', [('Sale page', None)]), ('h', [('세일 페이지도', None)]), ('h', [('그대로 완성', 'ul')])], stagger=.05),
-    ], push='up'))
-    # 5 ~ 9.6초 : 코딩 없이 클릭으로 수정 (흰 바탕)
-    fm.add(Section(4.6, WHITE, [
-        C(0, .8, M + 'edit', [(0, .6), (1, 1.75, 'lin')], [(0, (1.0, .5, .4)), (1, (1.42, .3, .33), 'io')]),
-        C(.8, 1.3, M + 'editor', [(0, .15), (1, .8, 'lin')], [(0, (1.15, .5, .22)), (1, (1.08, .5, .23), 'out')]),
-        C(1.3, 2.55, M + 'editor', [(0, 2.5), (.15, 2.75, 'lin'), (1, 4.62, 'lin')], [(0, (1.12, .5, .43)), (1, (1.3, .48, .43), 'out')]),
-        C(2.55, 3.05, M + 'editor', [(0, 5.55), (1, 6.2, 'lin')], [(0, (1.45, .5, .37)), (1, (1.3, .5, .37), 'out')]),
-        C(3.05, 4.6, M + 'after', [(0, 1.12), (1, 3.4, 'lin')], [(0, (1.0, .5, .64)), (1, (1.3, .32, .7), 'io')]),
-    ], [
-        B(.12, 1.25, [('s', [('No code.', None)]), ('h', [('코딩 없이', 'inv')]), ('h', [('클릭으로 수정', None)])], stagger=.05),
-        B(1.4, 3.0, [('k', [('Click · Type · Save', None)]), ('h', [('글자만 바꾸고', None)]), ('h', [('저장', 'inv')])], stagger=.05),
-        B(3.1, 4.8, [('k', [('Instantly', None)]), ('h', [('새로고침하면', None)]), ('h', [('바로 반영', 'ul')])], stagger=.05),
-    ], push='left'))
-    # 9.6 ~ 12초 : 반응형 (연회색 바탕)
-    fm.add(Section(2.4, PAPER2, [
-        Devices(0, 1.3, 'cap-p-home', [(0, 1.0), (1, 2.6, 'lin')], M + 'home', [(0, 1.0), (1, 2.6, 'lin')], (60, 760, 960, 574), (690, 900, 330, 600)),
-        C(1.3, 2.4, M + 'home', [(0, 2.75), (1, 7.4, 'io')], [(0, (1.0, .5, .45)), (1, (1.05, .5, .5))]),
-    ], [
-        B(.12, 1.25, [('k', [('Responsive', None)]), ('h', [('PC · 모바일', None)]), ('h', [('자동 반응형', 'inv')])], stagger=.05),
-        B(1.38, 2.6, [('s', [('Made for fashion', None)]), ('h', [('여성 의류몰', None)]), ('h', [('전용 디자인', 'ul')])], stagger=.05),
-    ], push='up'))
-    # 12 ~ 15초 : 마지막 장면
-    fm.add(Section(3.0, INK, [], [], push='left', extra=cta_extra('v')))
+    # ---------- 구간 (시각은 구간 안) : (Section, 효과음) ----------
+    def coupon_hook():     # A 0~3초 : 사장님 부르기 → 한 줄 요약 → 50% 공개
+        return Section(3.0, PAPER, [
+            C(0, .5, M + 'coupon', [(0, 1.55), (1, 2.6, 'lin')], [(0, (1.32, .5, .53)), (1, (1.24, .5, .53), 'out')]),
+            C(.5, 1.0, M + 'coupon', [(0, 2.6), (1, 3.95, 'lin')], [(0, (1.24, .5, .53)), (1, (1.3, .5, .53), 'out')]),
+            C(1.0, 1.5, M + 'coupon', [(0, 4.47), (1, 4.97, 'lin')], [(0, (1.3, .5, .5)), (1, (1.34, .5, .5), 'lin')]),
+            C(1.5, 2.3, M + 'coupon', [(0, 4.97), (1, 5.5, 'lin')], [(0, (1.36, .5, .5)), (1, (1.6, .5, .5), 'io')]),
+            C(2.3, 3.0, M + 'coupon', [(0, 5.51), (.3, 5.62, 'lin'), (1, 6.4, 'lin')], [(0, (1.5, .5, .5)), (1, (1.42, .5, .5), 'out')], bump=0),
+        ], [
+            B(-.35, 1.32, [('k', [('For Cafe24 fashion stores', None)]), ('h', [('카페24 의류몰', None)]), ('h', [('사장님', 'inv')])]),
+            B(1.5, 2.15, [('k', [('One skin, everything', None)]), ('h', [('쿠폰 · 타임세일 · 편집', None)]), ('h', [('스킨 하나로', 'ul')])], stagger=.05),
+            B(2.3, 3.2, [('s', [('Lucky coupon', None)]), ('h', [('고객이 직접 뽑는', None)]), ('h', [('랜덤 쿠폰 ', None), ('5~50%', 'inv')])], stagger=.05),
+        ]), [('tap', 1.21, .55), ('chime', 2.3, .8)]
 
-    ev = [('tap', 1.21, .55), ('tap', 5.53, .55), ('tap', 7.65, .6), ('chime', 2.3, .8), ('chime', 12.95, .5)]
-    ev += [('key', 6.47 + i * .08, .35) for i in range(13)]
-    ev += [('key', 13.7 + i * .062, .3) for i in range(8)]
+    def coupon_feature(push):   # B · C : 쿠폰 뽑기 (훅이 아닐 때)
+        return Section(3.0, PAPER, [
+            C(0, .7, M + 'coupon', [(0, 2.0), (1, 3.95, 'lin')], [(0, (1.24, .5, .53)), (1, (1.3, .5, .53), 'out')]),
+            C(.7, 1.15, M + 'coupon', [(0, 4.4), (1, 4.97, 'lin')], [(0, (1.3, .5, .5)), (1, (1.34, .5, .5), 'lin')]),
+            C(1.15, 1.6, M + 'coupon', [(0, 4.97), (1, 5.5, 'lin')], [(0, (1.36, .5, .5)), (1, (1.55, .5, .5), 'io')]),
+            C(1.6, 3.0, M + 'coupon', [(0, 5.51), (.2, 5.62, 'lin'), (1, 6.8, 'lin')], [(0, (1.5, .5, .5)), (1, (1.4, .5, .5), 'out')], bump=0),
+        ], [
+            B(.12, 1.55, [('s', [('Lucky coupon', None)]), ('h', [('고객이 직접 뽑는', None)]), ('h', [('랜덤 쿠폰 ', None), ('5~50%', 'inv')])], stagger=.05),
+            B(1.7, 3.2, [('k', [('Members only', None)]), ('h', [('뽑으면 바로', None)]), ('h', [('마이쿠폰 발급', 'ul')])], stagger=.05),
+        ], push=push), [('tap', .89, .55), ('chime', 1.6, .8)]
+
+    def sale(push='up'):
+        return Section(2.0, INK, [
+            C(0, .75, M + 'sale', [(0, .3), (1, 1.35, 'lin')], [(0, (1.0, .5, .3)), (1, (1.1, .5, .26), 'out')]),
+            C(.75, 1.4, M + 'sale', [(0, 1.35), (1, 2.35, 'lin')], [(0, (1.1, .5, .5)), (1, (1.02, .5, .5), 'out')]),
+            C(1.4, 2.0, M + 'sale', [(0, 5.9), (1, 7.9, 'io')], [(0, (1.0, .5, .5)), (1, (1.08, .5, .5))]),
+        ], [
+            B(.15, 1.15, [('k', [('Time sale', None)]), ('h', [('이벤트 마감까지', None)]), ('h', [('카운트다운', 'inv')])], stagger=.05),
+            B(1.3, 2.2, [('k', [('Sale page', None)]), ('h', [('세일 페이지도', None)]), ('h', [('그대로 완성', 'ul')])], stagger=.05),
+        ], push=push), []
+
+    def edit():
+        return Section(4.6, WHITE, [
+            C(0, .8, M + 'edit', [(0, .6), (1, 1.75, 'lin')], [(0, (1.0, .5, .4)), (1, (1.42, .3, .33), 'io')]),
+            C(.8, 1.3, M + 'editor', [(0, .15), (1, .8, 'lin')], [(0, (1.15, .5, .22)), (1, (1.08, .5, .23), 'out')]),
+            C(1.3, 2.55, M + 'editor', [(0, 2.5), (.15, 2.75, 'lin'), (1, 4.62, 'lin')], [(0, (1.12, .5, .43)), (1, (1.3, .48, .43), 'out')]),
+            C(2.55, 3.05, M + 'editor', [(0, 5.55), (1, 6.2, 'lin')], [(0, (1.45, .5, .37)), (1, (1.3, .5, .37), 'out')]),
+            C(3.05, 4.6, M + 'after', [(0, 1.12), (1, 3.4, 'lin')], [(0, (1.0, .5, .64)), (1, (1.3, .32, .7), 'io')]),
+        ], [
+            B(.12, 1.25, [('s', [('No code.', None)]), ('h', [('코딩 없이', 'inv')]), ('h', [('클릭으로 수정', None)])], stagger=.05),
+            B(1.4, 3.0, [('k', [('Click · Type · Save', None)]), ('h', [('글자만 바꾸고', None)]), ('h', [('저장', 'inv')])], stagger=.05),
+            B(3.1, 4.8, [('k', [('Instantly', None)]), ('h', [('새로고침하면', None)]), ('h', [('바로 반영', 'ul')])], stagger=.05),
+        ], push='left'), [('tap', .53, .55), ('tap', 2.65, .6)] + [('key', 1.47 + i * .08, .35) for i in range(13)]
+
+    def edit_hook():       # B 0~3초 : 고민(배너 글자 하나에 업체?) → 클릭 · 입력 · 저장 → 바로 반영
+        return Section(3.0, WHITE, [
+            C(0, .55, M + 'edit', [(0, 1.0), (1, 1.62, 'lin')], [(0, (1.22, .3, .35)), (1, (1.42, .3, .33), 'out')]),
+            C(.55, 1.5, M + 'editor', [(0, .15), (1, 1.9, 'lin')], [(0, (1.15, .5, .24)), (1, (1.08, .5, .3), 'io')], wipe=True),
+            C(1.5, 2.1, M + 'editor', [(0, 2.75), (1, 4.62, 'lin')], [(0, (1.2, .5, .43)), (1, (1.32, .48, .43), 'out')]),
+            C(2.1, 2.45, M + 'editor', [(0, 5.55), (1, 6.0, 'lin')], [(0, (1.45, .5, .37)), (1, (1.38, .5, .37), 'out')]),
+            C(2.45, 3.0, M + 'after', [(0, 1.12), (1, 2.2, 'lin')], [(0, (1.12, .4, .68)), (1, (1.25, .34, .7), 'out')], wipe=True),
+        ], [
+            B(-.35, 1.22, [('k', [('No code', None)]), ('h', [('배너 글자 하나', None)]), ('h', [('업체 부르세요?', 'inv')])]),
+            B(1.5, 3.2, [('k', [('Click · Type · Save', None)]), ('h', [('클릭하고, 쓰고, 저장', None)]), ('h', [('바로 반영', 'inv')])], times=[1.5, 1.55, 2.45]),
+        ]), [('tap', .42, .55), ('tap', 2.25, .6), ('chime', 2.47, .35)] + [('key', 1.55 + i * .042, .3) for i in range(13)]
+
+    def montage_hook():    # C 0~3초 : 완성된 쇼핑몰 몽타주 (0.375초 = 16분음표 3개마다 컷)
+        d = .375
+        cuts = [
+            C(0, d, M + 'home', [(0, 1.0), (1, 1.6, 'lin')], [(0, (1.0, .5, .5)), (1, (1.08, .5, .5), 'out')]),
+            C(d, 2 * d, M + 'sale', [(0, .5), (1, .9, 'lin')], [(0, (1.0, .5, .3)), (1, (1.08, .5, .28), 'out')], wipe=True),
+            C(2 * d, 3 * d, M + 'sale', [(0, 1.7), (1, 2.1, 'lin')], [(0, (1.05, .5, .55)), (1, (1.14, .5, .55), 'out')], wipe=True),
+            C(3 * d, 4 * d, M + 'sale', [(0, 3.6), (1, 3.85, 'lin')], [(0, (1.0, .5, .45)), (1, (1.08, .5, .45), 'out')], wipe=True),
+            C(4 * d, 5 * d, M + 'sale', [(0, 6.4), (1, 6.8, 'lin')], [(0, (1.05, .5, .5)), (1, (1.14, .5, .5), 'out')], wipe=True),
+            C(5 * d, 6 * d + .1, M + 'coupon', [(0, 5.51), (.3, 5.62, 'lin'), (1, 6.0, 'lin')], [(0, (1.5, .5, .5)), (1, (1.42, .5, .5), 'out')], bump=0, wipe=True),
+            Devices(6 * d + .1, 8 * d, 'cap-p-home', [(0, 1.2), (1, 2.0, 'lin')], M + 'home', [(0, 1.2), (1, 2.0, 'lin')], (60, 760, 960, 574), (690, 900, 330, 600)),
+        ]
+        return Section(3.0, PAPER, cuts, [
+            B(-.35, 3.2, [('k', [('A Cafe24 shop skin', None)]), ('h', [('이 쇼핑몰,', None)]), ('h', [('스킨 하나로', 'inv')]), ('h', [('완성했어요', None)])],
+              times=[-.35, -.3, .75, 1.5]),
+        ]), [('tick', i * d, .5) for i in range(1, 8)] + [('chime', 5 * d, .6)]
+
+    def resp(single=False):
+        blocks = [
+            B(.12, 1.25, [('k', [('Responsive', None)]), ('h', [('PC · 모바일', None)]), ('h', [('자동 반응형', 'inv')])], stagger=.05),
+            B(1.38, 2.6, [('s', [('Made for fashion', None)]), ('h', [('여성 의류몰', None)]), ('h', [('전용 디자인', 'ul')])], stagger=.05),
+        ]
+        if single: blocks = [B(.12, 2.6, blocks[0].lines, stagger=.05)]
+        return Section(2.4, PAPER2, [
+            Devices(0, 1.3, 'cap-p-home', [(0, 1.0), (1, 2.6, 'lin')], M + 'home', [(0, 1.0), (1, 2.6, 'lin')], (60, 760, 960, 574), (690, 900, 330, 600)),
+            C(1.3, 2.4, M + 'home', [(0, 2.75), (1, 7.4, 'io')], [(0, (1.0, .5, .45)), (1, (1.05, .5, .5))]),
+        ], blocks, push='up'), []
+
+    def cta():
+        return Section(3.0, INK, [], [], push='left', extra=cta_extra('v')), [('chime', .95, .5)] + [('key', 1.7 + i * .062, .3) for i in range(8)]
+
+    if variant == 'a':
+        plan = [coupon_hook(), sale(), edit(), resp(), cta()]
+    elif variant == 'b':   # 편집은 훅으로 옮겼으니 뒤에서 다시 보여 주지 않는다
+        plan = [edit_hook(), scaled(*coupon_feature('up'), 1.0), scaled(*sale('left'), 1.3), scaled(*resp(), 3.4 / 2.4), cta()]   # 3 + 3 + 2.6 + 3.4 = 12초
+    else:
+        # 기능 구간을 조금씩 줄여 12초에 맞춘다 : 3 + 2.25 + 2.0 + 2.76 + 1.99
+        plan = [montage_hook(), scaled(*coupon_feature('up'), .75), sale('left'), scaled(*edit(), .6), scaled(*resp(True), (12.0 - 3 - 2.25 - 2.0 - 2.76) / 2.4), cta()]
+    ev = []
+    for sec, e in plan:
+        fm.add(sec); ev += [(n, sec.start + t, g) for n, t, g in e]
     ev += fm.sfx
     return fm, ev
 
@@ -540,7 +621,7 @@ def mix(dur, events, path):
             put(music, s_pad(chords[bar], BEAT * 4, 1.0), t)
         b += 1; t += BEAT
     for name, t, g in events:
-        x = {'tap': pv.s_tap, 'key': pv.s_key, 'whoosh': pv.s_whoosh, 'chime': s_chime}[name](g)
+        x = {'tap': pv.s_tap, 'key': pv.s_key, 'whoosh': pv.s_whoosh, 'chime': s_chime, 'tick': s_tick}[name](g)
         put(fx, x, t)
     e = pv.lp_fast(np.abs(fx), 30, 1); duck = 1 - np.clip(e * 1.2, 0, .4)
     out = music * .6 * duck + fx * .75
@@ -553,8 +634,11 @@ def mix(dur, events, path):
 
 
 def build(which):
-    fm, ev = vertical() if which == 'v' else horizontal()
-    name = 'wearpick-v3-reels-15s' if which == 'v' else 'wearpick-v3-16x9-30s'
+    # v = 세로 A(원본) · vb · vc = 세로 훅 변형 B · C (Meta A/B 테스트용) · h = 가로
+    if which == 'h': fm, ev = horizontal()
+    else: fm, ev = vertical({'v': 'a', 'va': 'a', 'vb': 'b', 'vc': 'c'}[which])
+    name = {'h': 'wearpick-v3-16x9-30s', 'v': 'wearpick-v3-reels-15s', 'va': 'wearpick-v3-reels-15s',
+            'vb': 'wearpick-v3b-reels-15s', 'vc': 'wearpick-v3c-reels-15s'}[which]
     tmpv = os.path.join(OUT, '.' + name + '-video.mp4'); wav = os.path.join(OUT, '.' + name + '.wav')
     print(name, f'{fm.t:.2f}s')
     if os.environ.get('ONLY') != 'audio': fm.render(tmpv)
