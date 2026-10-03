@@ -36,45 +36,78 @@
 
   /* ---------- 1. 게시판 읽기 ---------- */
   function articleNo(href) { var m = String(href || '').match(/\/article\/[^/]+\/\d+\/(\d+)/) || String(href || '').match(/[?&]no=(\d+)/); return m ? m[1] : ''; }
+  // 글쓴이 칸 : 목록 표의 4번째 칸(board/free/list.html 의 {$writer})
+  function writerOf(a) { var tr = a.closest('tr'), td = tr && tr.querySelectorAll('td')[3]; return td ? trim(td.textContent) : ''; }
   function parseList(text) {
     var doc = new DOMParser().parseFromString(text, 'text/html'), out = [], seen = {};
     doc.querySelectorAll('a[href*="/article/"], a[href*="read.html"]').forEach(function (a) {
       var no = articleNo(a.getAttribute('href')), subject = trim(a.textContent);
       if (!no || !subject || seen[no]) return;
-      seen[no] = 1; out.push({ no: no, subject: subject, href: a.getAttribute('href') });
+      seen[no] = 1; out.push({ no: no, subject: subject, href: a.getAttribute('href'), writer: writerOf(a) });
     });
     return out;
   }
+  // store-content.js 의 cms.writers 에 이름을 적으면 그 글쓴이의 글만 화면에 쓴다
+  // (게시판 쓰기 권한을 실수로 '회원'·'모두'로 바꿔도 손님이 쓴 글이 메인을 바꾸지 못하게)
+  var WRITERS = (CFG.writers || []).map(norm).filter(Boolean);
+  function trusted(p) { return !WRITERS.length || WRITERS.some(function (w) { return norm(p.writer).indexOf(w) > -1; }); }
   // 글 본문 : 손님도 보는 공개 글 페이지(스킨의 board/free/read.html 의 [data-wear902-content])에서 읽는다.
   //          못 읽으면 카페24 기본 스킨이 쓰는 글 읽기 주소로 한 번 더 시도한다.
-  function getPost(p) {
-    if (!p.href) return getJSON(p.no);
+  function getPost(p, board) {
+    board = board || BOARD;
+    if (!p.href) return getJSON(p.no, board);
     return fetch(p.href, { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (t) {
       var box = t && new DOMParser().parseFromString(t, 'text/html').querySelector('[data-wear902-content], [module^="board_read"] .detail');
-      return box && box.innerHTML.trim() ? { content: box.innerHTML } : getJSON(p.no);
-    }).catch(function () { return getJSON(p.no); });
+      return box && box.innerHTML.trim() ? { content: box.innerHTML } : getJSON(p.no, board);
+    }).catch(function () { return getJSON(p.no, board); });
   }
-  function getJSON(no) {
-    return fetch('/exec/front/board/product/' + BOARD + '?no=' + no + '&board_no=' + BOARD + '&pass_check=F', { credentials: 'same-origin' })
+  function getJSON(no, board) {
+    board = board || BOARD;
+    return fetch('/exec/front/board/product/' + board + '?no=' + no + '&board_no=' + board + '&pass_check=F', { credentials: 'same-origin' })
       .then(function (r) { return r.json(); })
       .then(function (d) { return d && d.read ? { subject: trim(d.read.subject), content: String(d.read.content || '') } : null; })
       .catch(function () { return null; });
   }
   /* 목록 → 제목이 영역 이름과 맞는 글만 본문을 읽는다 (같은 영역 글이 여럿이면 최신 글) */
   // 카페24는 짧은 시간에 요청이 몰리면 접속을 잠시 막는다 → 목록은 필요한 만큼만, 본문은 2개씩 차례로, 바뀐 글만 읽는다
-  function getList(p) {
-    return fetch('/board/free/list.html?board_no=' + BOARD + '&page=' + p, { credentials: 'same-origin' })
+  function getList(p, board) {
+    return fetch('/board/free/list.html?board_no=' + (board || BOARD) + '&page=' + p, { credentials: 'same-origin' })
       .then(function (r) { return r.ok ? r.text() : ''; }).catch(function () { return ''; });
   }
+  var MAX_PAGES = Math.max(1, Number(CFG.maxPages) || 8);
+  function pause(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  /* 게시판 목록을 여러 페이지 읽는다. 사장님이 같은 게시판에 공지를 계속 올려 화면 관리 글이 뒤 페이지로 밀려도 찾을 수 있게
+     — 첫 페이지 글 수보다 적게 나온 페이지(마지막 페이지)에서, 또는 done(지금까지 읽은 글) 이 true 를 돌려주면 멈춘다.
+     페이지 사이에 잠깐 쉬어 카페24의 잦은 요청 차단을 피한다. → { list, blocked } */
+  function listBoard(board, done) {
+    var all = [], seen = {}, size = 0, blocked = false;
+    function page(n) {
+      return getList(n, board).then(function (t) {
+        if (n === 1) blocked = /사용할 수 없습니다|존재하지 않는 게시판/.test(t);
+        var got = parseList(t), fresh = got.filter(function (p) { return !seen[p.no]; });
+        fresh.forEach(function (p) { seen[p.no] = 1; all.push(p); });
+        if (n === 1) size = got.length;
+        // 공지·고정 글은 페이지마다 다시 나오므로 '새 글'이 없으면 끝
+        if (!fresh.length || got.length < size || size < 5 || n >= MAX_PAGES || (done && done(all))) return;
+        return pause(250).then(function () { return page(n + 1); });
+      });
+    }
+    return page(1).then(function () { return { list: all, blocked: blocked }; });
+  }
   function load(names, prev, outer) {
-    return getList(1).then(function (t1) {
+    // 지난번에 찾은 글 중 가장 오래된 글 번호 : 그보다 오래된 글까지 내려가면 더 찾을 글이 없다
+    // (새로 만든 영역 글은 늘 앞 페이지에 생긴다). 처음 읽을 때는 최대 MAX_PAGES 페이지까지
+    var oldest = 0;
+    Object.keys(prev || {}).forEach(function (k) { var n = +prev[k].no; if (n && (!oldest || n < oldest)) oldest = n; });
+    return listBoard(BOARD, function (list) {
+      // 찾는 영역 글을 다 찾았으면 더 읽지 않는다 (최신 글이 앞 페이지에 있으므로 먼저 찾은 것이 최신)
+      var found = {}, low = Infinity;
+      list.forEach(function (p) { var n = trusted(p) && match(p.subject, names); if (n) found[n] = 1; if (+p.no < low) low = +p.no; });
+      return Object.keys(found).length >= names.length || (oldest && low < oldest);
+    }).then(function (r) {
       // 게시판이 '사용 안함·표시 안함'이거나 없으면 카페24가 목록 대신 경고만 돌려준다
-      state.blocked = /사용할 수 없습니다|존재하지 않는 게시판/.test(t1);
-      var first = parseList(t1);
-      return (first.length >= 10 ? getList(2) : Promise.resolve('')).then(function (t2) { return first.concat(parseList(t2)); });
-    }).then(function (list) {
-      var posts = [], seen = {};
-      list.forEach(function (p) { if (!seen[p.no]) { seen[p.no] = 1; posts.push(p); } });
+      state.blocked = r.blocked;
+      var posts = r.list.filter(trusted);
       posts.sort(function (a, b) { return b.no - a.no; });
       var pick = {};
       posts.forEach(function (p) { var n = match(p.subject, names); if (n && !pick[n]) pick[n] = p; });
@@ -409,6 +442,28 @@
   }
   function saleObj(key) { return function () { var s = SC.sale = SC.sale || {}; return (s[key] = s[key] || {}); }; }
   var POPUP_MAX = 5, KAKAO_KEY = 'wear902-cms-kakao';
+  /* 쇼핑 도우미 글의 칸 : [칸 이름, 설정 이름, 지금 값 읽기] */
+  var HELPER_KEY = 'wear902-helper-cfg', HELPER_MAX = 60;
+  function lines(v) { return Array.isArray(v) ? v.join('\n') : (v == null ? '' : String(v)); }
+  var HELPER_FIELDS = [
+    ['보이기', 'enabled', function (c) { return c.enabled === false ? '아니오' : '예'; }],
+    ['이름', 'name', function (c) { return c.name || ''; }],
+    ['인사말', 'greeting', function (c) { return c.greeting || ''; }],
+    ['첫 화면 버튼', 'starters', function (c) { return lines(c.starters); }],
+    ['못 찾았을 때', 'fallback', function (c) { return c.fallback || ''; }],
+    ['운영 시간', 'hours', function (c) { return c.hours || ''; }],
+    ['상담 연결 주소', 'contact', function (c) { return c.contact || ''; }],
+    ['문의 남기기 주소', 'askLink', function (c) { return c.askLink || ''; }],
+    ['배울 게시판 번호', 'faqBoard', function (c) { return c.faqBoard == null ? '' : String(c.faqBoard); }],
+    ['같은 말', 'synonyms', function (c) { return lines(c.synonyms); }]
+  ];
+  var HELPER_ITEM = [
+    ['질문', 'q', function (q) { return q.q || ''; }],
+    ['키워드', 'keywords', function (q) { return lines(q.keywords).replace(/\n/g, ', '); }],
+    ['답변', 'a', function (q) { return q.a || ''; }],
+    ['버튼', 'buttons', function (q) { return lines(q.buttons); }],
+    ['이어서', 'next', function (q) { return lines(q.next).replace(/\n/g, ' / '); }]
+  ];
   /* 세일 쿠폰 뽑기 카드 앞면 사진 3장 (product/list.html 의 runCoupon 이 sale.coupon.cards 를 쓴다) */
   function withCards(base) {
     return {
@@ -491,6 +546,41 @@
         lsSet(KAKAO_KEY, f.kakao);
         var a = document.querySelector('[data-s9="kakao"]');
         if (a) a.href = f.kakao || 'https://pf.kakao.com/';
+      }
+    },
+    // 오른쪽 아래 「쇼핑 도우미」(wear-helper.js). 설정 · 질문과 답을 이 글 하나에 적는다 → 모든 페이지가 이 브라우저 기억으로 쓴다
+    helper: {
+      labels: HELPER_FIELDS.map(function (f) { return f[0]; }).concat(HELPER_ITEM.map(function (f) { return f[0]; })),
+      draft: function () {
+        var H = window.WEAR902_HELPER, c = H ? H.config() : {}, add = H && H.takeTeach && H.takeTeach();
+        var all = c.qnaAll || c.qna || [], items = all.slice(0, HELPER_MAX).map(function (q) {
+          return { label: '질문과 답', fields: HELPER_ITEM.map(function (f) { return [f[0], f[2](q)]; }) };
+        });
+        // 도우미 창의 [이 질문 가르치기] : 같은 질문 칸이 있으면 그대로, 없으면 맨 끝에 새 칸
+        if (add && !all.some(function (q) { return norm(q.q) === norm(add); }) && items.length < HELPER_MAX) {
+          items.push({ label: '새로 가르치기', fields: HELPER_ITEM.map(function (f) { return [f[0], f[0] === '질문' ? add : '']; }) });
+        }
+        return {
+          note: '쇼핑 도우미의 이름 · 인사말과 「질문과 답」을 정해요. 칸을 늘리려면 번호 묶음의 [복사해서 추가]를, 줄이려면 [삭제]를 눌러요 (최대 ' + HELPER_MAX + '개). '
+            + '키워드는 쉼표로 나눠 써요 (예: 환불, 반품, 돌려받기). 버튼은 한 줄에 「이름 주소」 하나씩 (예: 주문 조회 /myshop/order/list.html). '
+            + '이어서 물어볼 것은 / 로 나눠 써요. 처음부터 들어 있던 기본 답을 쓰지 않으려면 그 칸의 답변만 비워요 (칸을 지우면 기본 답이 다시 나와요). 같은 말은 한 줄에 「환불 = 반품 = 돌려받기」처럼 써요. '
+            + '자주묻는질문 게시판 글(제목 = 질문, 본문 = 답)도 도우미가 자동으로 배워요 — 그 게시판 번호를 적어 두세요(0 이면 끔).',
+          fields: HELPER_FIELDS.map(function (f) { return [f[0], f[2](c)]; }),
+          items: items
+        };
+      },
+      apply: function (data) {
+        var o = { qna: [] }, f = data.fields;
+        HELPER_FIELDS.forEach(function (d) { var v = f[norm(d[0])]; if (v != null) o[d[1]] = v; });
+        if (f[norm('보이기')] != null) o.enabled = !isOff(f[norm('보이기')]);
+        data.items.forEach(function (it) {
+          if (!it) return;
+          var q = {};
+          HELPER_ITEM.forEach(function (d) { var v = it.fields[norm(d[0])]; if (v != null) q[d[1]] = v; });
+          if (trim(q.q || '') || trim(q.keywords || '')) o.qna.push(q);
+        });
+        lsSet(HELPER_KEY, { t: Date.now(), cfg: o });
+        if (window.WEAR902_HELPER) window.WEAR902_HELPER.setBoardConfig(o);
       }
     },
     popup: {
@@ -1115,6 +1205,24 @@
       }).catch(function () { return ''; });
     },
     kakaoKey: KAKAO_KEY,
+    helperKey: HELPER_KEY,
+    // 화면 관리 영역이 없는 페이지에서 글 하나를 통째로 읽는다 (쇼핑 도우미 설정) → { fields, imgs, items } 또는 null
+    fetchData: function (name, labels) {
+      if (!BOARD) return Promise.resolve(null);
+      return load([name], null, true).then(function (map) {
+        var p = map[name], known = {};
+        (labels || []).forEach(function (l) { known[norm(l)] = 1; });
+        return p ? parse(p.content, known) : null;
+      }).catch(function () { return null; });
+    },
+    helperLabels: function () { return ADAPTERS.helper.labels.slice(); },
+    applyHelper: function (data) { ADAPTERS.helper.apply(data); },
+    // 다른 게시판 읽기 (쇼핑 도우미가 자주묻는질문 게시판을 배울 때) : 여러 페이지 · 글쓴이 확인 포함
+    listBoard: function (board, done) { return listBoard(board, done).then(function (r) { return r.list.filter(trusted); }); },
+    readPost: function (p, board) { return getPost(p, board); },
+    norm: norm,
+    // 손님 화면의 게시판 목록에서 숨길 화면 관리 글의 제목 앞머리 (board/free/list.html)
+    pageLabels: function () { return [PREFIX.replace(/[\[\]]/g, ''), '세일 페이지', '가이드 페이지', '목록 공통', '모든 페이지']; },
     // 영역 하나에만 기억해 둔 최신 내용을 바로 넣는다 (페이지를 다 읽기 전에 그리는 목록 위 배너용).
     // 기억이 최신이면 true — 그 영역 글이 없으면 기본값이 곧 최종 내용이다.
     applyCachedSection: function (sec) {
