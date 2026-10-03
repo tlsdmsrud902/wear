@@ -449,7 +449,7 @@
     ['보이기', 'enabled', function (c) { return c.enabled === false ? '아니오' : '예'; }],
     ['이름', 'name', function (c) { return c.name || ''; }],
     ['인사말', 'greeting', function (c) { return c.greeting || ''; }],
-    ['첫 화면 버튼', 'starters', function (c) { return lines(c.starters); }],
+    ['메뉴', 'menu', function (c) { return lines(c.menu); }],
     ['못 찾았을 때', 'fallback', function (c) { return c.fallback || ''; }],
     ['운영 시간', 'hours', function (c) { return c.hours || ''; }],
     ['상담 연결 주소', 'contact', function (c) { return c.contact || ''; }],
@@ -458,6 +458,7 @@
     ['같은 말', 'synonyms', function (c) { return lines(c.synonyms); }]
   ];
   var HELPER_ITEM = [
+    ['분류', 'cat', function (q) { return q.cat || ''; }],
     ['질문', 'q', function (q) { return q.q || ''; }],
     ['키워드', 'keywords', function (q) { return lines(q.keywords).replace(/\n/g, ', '); }],
     ['답변', 'a', function (q) { return q.a || ''; }],
@@ -561,7 +562,7 @@
           items.push({ label: '새로 가르치기', fields: HELPER_ITEM.map(function (f) { return [f[0], f[0] === '질문' ? add : '']; }) });
         }
         return {
-          note: '쇼핑 도우미의 이름 · 인사말과 「질문과 답」을 정해요. 칸을 늘리려면 번호 묶음의 [복사해서 추가]를, 줄이려면 [삭제]를 눌러요 (최대 ' + HELPER_MAX + '개). '
+          note: '쇼핑 도우미를 열면 「메뉴」가 먼저 나오고, 메뉴를 고르면 그 「분류」의 질문이 나와요. 메뉴는 한 줄에 「이름 | 설명」(예: 배송 안내 | 출고 일정 · 배송비), 질문과 답의 분류 칸에는 메뉴 이름을 그대로 적어요. 칸을 늘리려면 번호 묶음의 [복사해서 추가]를, 줄이려면 [삭제]를 눌러요 (최대 ' + HELPER_MAX + '개). '
             + '키워드는 쉼표로 나눠 써요 (예: 환불, 반품, 돌려받기). 버튼은 한 줄에 「이름 주소」 하나씩 (예: 주문 조회 /myshop/order/list.html). '
             + '이어서 물어볼 것은 / 로 나눠 써요. 처음부터 들어 있던 기본 답을 쓰지 않으려면 그 칸의 답변만 비워요 (칸을 지우면 기본 답이 다시 나와요). 같은 말은 한 줄에 「환불 = 반품 = 돌려받기」처럼 써요. '
             + '자주묻는질문 게시판 글(제목 = 질문, 본문 = 답)도 도우미가 자동으로 배워요 — 그 게시판 번호를 적어 두세요(0 이면 끔).',
