@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta property="og:site_name" content="DEMO SHOP">
+<title>쇼핑 도우미 데모</title>
+<style>
+  body{margin:0;min-height:100vh;font-family:system-ui,sans-serif;background:#fafafa;color:#222}
+  main{max-width:720px;margin:0 auto;padding:64px 24px}
+  h1{font-size:28px;margin:0 0 12px}p{line-height:1.7;color:#555}
+  code{background:#eee;padding:2px 6px;border-radius:4px}
+</style>
+<!-- 1) 설정 2) 기능 — 카페24 스킨에서도 이 두 줄만 넣으면 된다 -->
+<script src="shop-helper.config.js"></script>
+<script>window.SHOP_HELPER_CONFIG.faqBoard = 0;   /* 데모 : 카페24 게시판이 없으므로 끔 */</script>
+<script src="shop-helper.js"></script>
+</head>
+<body>
+<main>
+  <h1>쇼핑 도우미 데모</h1>
+  <p>오른쪽 아래 검은 말풍선을 눌러 보세요. 카페24 없이 이 폴더만으로 열리는 시험 화면이에요.</p>
+  <p>색을 바꿔 보려면 <code>shop-helper.config.js</code> 의 <code>colors</code> 를 고치고 새로고침하세요.</p>
+</main>
+</body>
+</html>

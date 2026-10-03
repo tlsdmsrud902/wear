@@ -549,7 +549,7 @@
         if (a) a.href = f.kakao || 'https://pf.kakao.com/';
       }
     },
-    // 오른쪽 아래 「쇼핑 도우미」(wear-helper.js). 설정 · 질문과 답을 이 글 하나에 적는다 → 모든 페이지가 이 브라우저 기억으로 쓴다
+    // 오른쪽 아래 「쇼핑 도우미」(/addons/shop-helper/shop-helper.js — 단독 기능, 없으면 이 어댑터는 쓰이지 않는다). 설정 · 질문과 답을 이 글 하나에 적는다 → 모든 페이지가 이 브라우저 기억으로 쓴다
     helper: {
       labels: HELPER_FIELDS.map(function (f) { return f[0]; }).concat(HELPER_ITEM.map(function (f) { return f[0]; })),
       draft: function () {

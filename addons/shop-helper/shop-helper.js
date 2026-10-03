@@ -1,19 +1,27 @@
-/* wear902 쇼핑 도우미 — AI 없이, 사장님이 적어 둔 질문과 답으로 대답하는 채팅 도우미           BUYER EDITABLE(설정만)
+/* 쇼핑 도우미 (Shop Helper) — 카페24 스킨에 넣고 빼는 단독 기능                         v1.0
    ----------------------------------------------------------------------------------------------
-   · 오른쪽 아래 말풍선 버튼 → 채팅 창. 버튼으로 고르거나 직접 물어보면 가장 가까운 답을 찾아 보여 준다.
-   · 외부 서비스 · 월 이용료 없음. 답은 아래 네 곳에서 모아 쓴다 (사장님이 카페24 안에서 가르친다)
-       1) 화면 관리 게시판의 「[모든 페이지] 쇼핑 도우미」 글 — 메인 주소 ?edit=1 → [쇼핑 도우미 고치기]
-          이름 · 인사말 · 첫 화면 버튼 · 운영 시간 · 상담 연결 · 같은 말 · 「질문과 답」(키워드 · 답변 · 버튼 · 이어서)
-       2) 자주묻는질문 게시판 글 (제목 = 질문, 본문 = 답). 본문에 「키워드: …」 · 「버튼: 이름 주소」 줄을 쓰면 더 잘 찾는다
-       3) 메인 「자주 묻는 질문」 영역의 질문 · 답
-       4) 상품 분류 메뉴 · 상품 검색 (답이 없으면 「○○ 상품 찾아보기」로 연결)
-   · 편집 모드(?edit=1)에서 열면 「교육 모드」 : 답마다 어디서 온 답인지 보여 주고, 못 찾은 질문은 [이 질문 가르치기]
-   · 기본 설정(글이 없을 때) : store-content.js 의 helper. 디자인은 이 파일 맨 아래 CSS. */
+   AI · 외부 서비스 · 월 이용료 없이, 사장님이 적어 둔 메뉴와 질문 · 답으로 손님을 안내하는 상담 창.
+   손님이 오른쪽 아래 말풍선을 누르면 메뉴(배송 안내 · 교환·반품·환불 · 상품 상담 …) → 질문 → 안내 + 바로가기 버튼.
+   「상담원 연결」은 카카오톡 채널 1:1 채팅(실시간)과 문의 게시판으로 잇는다.
+
+   [넣기]  이 파일을 스킨 폴더 /addons/shop-helper/ 에 올리고, layout.html 의 </body> 바로 앞에 한 줄
+             <script src="/addons/shop-helper/shop-helper.js?v=1"></script>
+           설정 파일(shop-helper.config.js)을 쓰면 그 줄 바로 앞에 한 줄 더.
+   [빼기]  위 줄을 지운다 (또는 설정의 enabled: false). 스킨의 다른 화면에는 영향이 없다.
+
+   [가르치기 — 카페24 안에서]
+     1) 설정 : window.SHOP_HELPER_CONFIG (shop-helper.config.js) — 이름 · 인사말 · 메뉴 · 운영 시간 · 상담 주소 · 질문과 답 · 색
+     2) 자주묻는질문 게시판(기본 3번) 글 = 「자주 묻는 질문」 메뉴 (제목 = 질문, 본문 = 답, 본문에 「키워드: …」 「버튼: 이름 주소」 줄)
+     3) (선택) 설정 게시판 글 「[모든 페이지] 쇼핑 도우미」 — 본문에 「이름: …」 「메뉴: …」 「── 1번 ──」 형식으로 쓰면 설정보다 먼저 쓴다
+     4) wear902 계열 스킨의 화면 편집 모드(?edit=1)가 있으면 [쇼핑 도우미 고치기] 편집 창 · 교육 모드와 함께 동작
+   자세한 내용은 같은 폴더의 README.md */
 (function () {
   'use strict';
-  var SC = window.STORE_CONTENT || {}, CMS = window.WEAR902_CMS;
+  if (window.SHOP_HELPER && window.SHOP_HELPER.version) return;     // 두 번 넣어도 한 번만
+  var SC = window.STORE_CONTENT || {}, CMS = window.WEAR902_CMS;    // wear902 계열 스킨이면 함께 쓴다 (없어도 동작)
+  var UC = window.SHOP_HELPER_CONFIG || SC.helper || {};              // 사장님 설정
   var NAME = '쇼핑 도우미';                                   // 화면 관리 게시판 글 이름 : [모든 페이지] 쇼핑 도우미
-  var CFG_KEY = (CMS && CMS.helperKey) || 'wear902-helper-cfg', KB_KEY = 'wear902-helper-kb', CHAT_KEY = 'wear902-helper-chat', TEACH_KEY = 'wear902-helper-teach';
+  var CFG_KEY = (CMS && CMS.helperKey) || 'shop-helper-cfg', KB_KEY = 'shop-helper-kb', CHAT_KEY = 'shop-helper-chat', TEACH_KEY = 'shop-helper-teach';
   var EDIT = /[?&]edit=1\b/.test(location.search);
   var CFG_TTL = 30 * 60000, KB_TTL = 60 * 60000;
   var html = document.documentElement;
@@ -27,14 +35,18 @@
   function won(n) { return Number(n || 0).toLocaleString('ko-KR'); }
 
   /* ---------- 1. 기본 설정 · 기본 답 (게시판 글이 없을 때) ---------- */
-  var SALE = (SC.sale && SC.sale.categoryNo) || 27;
-  var FREE = (SC.shipping && SC.shipping.freeOver) || 0;
+  var FREE = UC.freeShipping || (SC.shipping && SC.shipping.freeOver) || 0;
+  // 업종마다 다른 바로가기 : 설정에 있을 때만 버튼이 생긴다
+  var COUPON = UC.couponLink != null ? UC.couponLink : (SC.sale && SC.sale.categoryNo ? '/product/list.html?cate_no=' + SC.sale.categoryNo : '');
+  var SIZE = UC.sizeGuide || '', GUIDE = UC.guideLink || '';
+  function opt(label, url) { return url ? label + ' ' + url : ''; }
+  function lines2() { return [].slice.call(arguments).filter(Boolean).join('\n'); }
   var BASE = {
     enabled: true,
     name: '쇼핑 도우미',
     greeting: '안녕하세요! {brand} 쇼핑 도우미예요.\n궁금한 내용을 골라 주세요.',
     // 첫 화면 메뉴 : 「이름 | 설명」. 질문과 답의 「분류」가 이 이름과 같으면 그 메뉴 안에 들어간다
-    menu: ['배송 안내 | 출고 일정 · 배송비 · 배송 조회', '교환 · 반품 · 환불 | 신청 방법 · 기간 · 환불 시점', '상품 상담 | 사이즈 · 소재 · 세탁 · 재입고',
+    menu: ['배송 안내 | 출고 일정 · 배송비 · 배송 조회', '교환 · 반품 · 환불 | 신청 방법 · 기간 · 환불 시점', '상품 상담 | 사이즈 · 옵션 · 재입고 · 상품 문의',
       '쿠폰 · 이벤트 | 쿠폰 받기 · 쓰는 법', '주문 · 결제 | 주문 조회 · 취소 · 결제 수단', '회원 · 적립금 | 가입 혜택 · 적립금 · 아이디 찾기', '상담원 연결 | 카카오톡 실시간 상담 · 문의 남기기'],
     fallback: '딱 맞는 답을 찾지 못했어요. 아래에서 골라 보시거나 상담원에게 물어봐 주세요.',
     hours: '평일 10:00 – 17:00 (점심 12:00 – 13:00, 주말 · 공휴일 휴무)',
@@ -49,20 +61,20 @@
       { cat: '배송 안내', q: '배송은 언제 와요?', keywords: '배송, 도착, 출고, 언제', a: '평일 오후 2시 전 주문은 당일 출고해 1~2일 안에 받아 보실 수 있어요.\n주문 제작 상품은 상세페이지의 출고 일정을 확인해 주세요.', buttons: '주문 · 배송 조회 /myshop/order/list.html' },
       { cat: '배송 안내', q: '배송비는 얼마예요?', keywords: '배송비, 무료배송, 택배비', a: FREE ? won(FREE) + '원 이상 구매하시면 무료배송이에요. 장바구니에서 무료배송까지 남은 금액을 볼 수 있어요.' : '배송비는 주문서에서 확인할 수 있어요.', buttons: '장바구니 /order/basket.html' },
       { cat: '배송 안내', q: '배송 조회는 어디서 해요?', keywords: '배송 조회, 송장, 운송장, 어디쯤', a: '주문 조회에서 주문을 누르면 송장 번호와 배송 상태를 볼 수 있어요.\n출고 당일에는 택배사 조회가 늦게 뜰 수 있어요.', buttons: '주문 · 배송 조회 /myshop/order/list.html' },
-      { cat: '교환 · 반품 · 환불', q: '교환 · 반품은 어떻게 해요?', keywords: '교환, 반품, 반송', a: '받으신 날부터 7일 안에, 착용 흔적이나 택 제거가 없는 상품이면 교환 · 반품할 수 있어요.\n주문 조회에서 신청하신 뒤 안내에 따라 보내 주세요.', buttons: '교환 · 반품 신청 (주문 조회) /myshop/order/list.html' },
+      { cat: '교환 · 반품 · 환불', q: '교환 · 반품은 어떻게 해요?', keywords: '교환, 반품, 반송', a: '받으신 날부터 7일 안에, 사용 흔적이 없고 택 · 구성품이 그대로인 상품이면 교환 · 반품할 수 있어요.\n주문 조회에서 신청하신 뒤 안내에 따라 보내 주세요.', buttons: '교환 · 반품 신청 (주문 조회) /myshop/order/list.html' },
       { cat: '교환 · 반품 · 환불', q: '환불은 언제 돼요?', keywords: '환불, 환불 언제, 돈 언제', a: '반품 상품이 도착해 확인되면 결제하신 수단으로 환불해 드려요.\n카드는 카드사에 따라 3~7영업일 정도 걸릴 수 있어요.' },
       { cat: '교환 · 반품 · 환불', q: '불량 · 오배송이에요', keywords: '불량, 오배송, 잘못 왔, 하자, 찢어', a: '불편을 드려 죄송해요. 상품 사진과 함께 문의를 남겨 주시면 확인 후 다시 보내 드리거나 환불해 드려요. 왕복 배송비는 저희가 부담해요.', buttons: '문의 남기기 {문의}\n카카오톡 상담 {상담}' },
-      { cat: '교환 · 반품 · 환불', q: '사이즈가 안 맞아요', keywords: '안 맞, 작아요, 커요, 사이즈 교환', a: '받으신 날부터 7일 안에 착용 흔적이 없으면 다른 사이즈로 교환할 수 있어요.', buttons: '교환 신청 (주문 조회) /myshop/order/list.html' },
-      { cat: '상품 상담', q: '사이즈는 어떻게 골라요?', keywords: '사이즈, 어깨, 가슴, 총장, 키, 몸무게, 추천', a: '상품 상세페이지의 실측 사이즈(어깨 · 가슴단면 · 총장)를 가지고 계신 옷과 비교해 보세요.\n모델 키와 착용 사이즈도 함께 적어 두었어요.', buttons: '사이즈 재는 법 보기 /#cz-size' },
-      { cat: '상품 상담', q: '세탁 · 관리는 어떻게 해요?', keywords: '세탁, 빨래, 드라이, 관리, 보풀', a: '상품마다 세탁 방법이 달라요. 상세페이지의 세탁 안내를 먼저 확인해 주세요.\n니트는 찬물 손세탁 후 눕혀 말리면 오래 입을 수 있어요.', buttons: '옷 관리 가이드 /wear/guide.html' },
+      { cat: '교환 · 반품 · 환불', q: '사이즈가 안 맞아요', keywords: '안 맞, 작아요, 커요, 사이즈 교환', a: '받으신 날부터 7일 안에 사용 흔적이 없으면 다른 사이즈 · 옵션으로 교환할 수 있어요.', buttons: '교환 신청 (주문 조회) /myshop/order/list.html' },
+      { cat: '상품 상담', q: '사이즈는 어떻게 골라요?', keywords: '사이즈, 치수, 어깨, 가슴, 총장, 키, 몸무게, 추천', a: '상품 상세페이지의 사이즈 표(실측)를 가지고 계신 상품과 비교해 보세요.\n고민되시면 상품 문의로 키 · 평소 사이즈를 남겨 주시면 추천해 드려요.', buttons: lines2(opt('사이즈 가이드 보기', SIZE), '상품 문의 남기기 {문의}') },
+      { cat: '상품 상담', q: '사용 · 관리 방법이 궁금해요', keywords: '세탁, 빨래, 드라이, 관리, 보관, 사용법', a: '상품마다 사용 · 관리 방법이 달라요. 상세페이지의 안내를 먼저 확인해 주세요.\n더 궁금하시면 상품 문의로 남겨 주세요.', buttons: lines2(opt('관리 가이드', GUIDE), '상품 문의 남기기 {문의}') },
       { cat: '상품 상담', q: '품절 상품은 다시 들어와요?', keywords: '품절, 재입고, 재고', a: '재입고 일정은 상품마다 달라요. 상품 문의로 남겨 주시면 확인해 알려 드릴게요.', buttons: '문의 남기기 {문의}' },
       { cat: '상품 상담', q: '상품에 대해 물어보고 싶어요', keywords: '상품 문의, 소재, 색상, 두께, 비침', a: '상품 상세페이지 아래 「상품 문의」에 남겨 주시면 꼼꼼히 확인해 답해 드려요.\n바로 이야기하고 싶으시면 카카오톡 상담을 이용해 주세요.', buttons: '상품 문의 남기기 {문의}\n카카오톡 상담 {상담}' },
-      { cat: '쿠폰 · 이벤트', q: '쿠폰은 어디서 받아요?', keywords: '쿠폰, 할인, 세일, 이벤트', a: '세일 페이지에서 회원이면 랜덤 쿠폰(최대 50%)을 직접 뽑을 수 있어요.\n받은 쿠폰은 마이쿠폰에서 확인해요.', buttons: '쿠폰 뽑으러 가기 /product/list.html?cate_no=' + SALE + '\n내 쿠폰함 /myshop/coupon/coupon.html' },
+      { cat: '쿠폰 · 이벤트', q: '쿠폰은 어디서 받아요?', keywords: '쿠폰, 할인, 세일, 이벤트', a: UC.couponText || (COUPON ? '진행 중인 이벤트 페이지에서 쿠폰을 받을 수 있어요.\n받은 쿠폰은 마이쿠폰에서 확인해요.' : '진행 중인 쿠폰은 회원 가입 · 이벤트로 받을 수 있어요.\n받은 쿠폰은 마이쿠폰에서 확인해요.'), buttons: lines2(opt('쿠폰 받으러 가기', COUPON), '내 쿠폰함 /myshop/coupon/coupon.html') },
       { cat: '쿠폰 · 이벤트', q: '쿠폰은 어떻게 써요?', keywords: '쿠폰 사용, 쿠폰 적용, 쿠폰 쓰', a: '주문서의 「할인 · 쿠폰」에서 쿠폰을 골라 적용하면 돼요. 쿠폰마다 사용 기간과 최소 금액이 달라요.', buttons: '내 쿠폰함 /myshop/coupon/coupon.html' },
       { cat: '주문 · 결제', q: '주문 내역을 보고 싶어요', keywords: '주문 조회, 주문 내역, 주문 확인', a: '로그인하시면 주문 조회에서 결제 · 배송 상태를 볼 수 있어요.\n비회원 주문은 주문번호로 조회해요.', buttons: '주문 조회 /myshop/order/list.html' },
       { cat: '주문 · 결제', q: '주문을 취소하고 싶어요', keywords: '취소, 주문 취소', a: '배송 준비 전이라면 주문 조회에서 직접 취소할 수 있어요.\n이미 출고된 주문은 받으신 뒤 반품으로 진행해 주세요.', buttons: '주문 조회 /myshop/order/list.html' },
       { cat: '주문 · 결제', q: '결제는 어떻게 해요?', keywords: '결제, 카드, 무통장, 입금, 계좌', a: '신용카드 · 무통장 입금 등 주문서에 나오는 결제 수단으로 결제할 수 있어요.\n무통장 입금은 주문 후 안내된 계좌로 기한 안에 입금해 주세요.' },
-      { cat: '회원 · 적립금', q: '회원 가입 혜택이 있나요?', keywords: '회원가입, 가입, 혜택, 신규', a: '회원이 되시면 세일 페이지 쿠폰 뽑기에 참여할 수 있고, 구매 금액에 따라 적립금이 쌓여요.', buttons: '회원 가입 /member/agreement.html\n로그인 /member/login.html' },
+      { cat: '회원 · 적립금', q: '회원 가입 혜택이 있나요?', keywords: '회원가입, 가입, 혜택, 신규', a: '회원이 되시면 회원 전용 쿠폰 · 이벤트에 참여할 수 있고, 구매 금액에 따라 적립금이 쌓여요.', buttons: '회원 가입 /member/agreement.html\n로그인 /member/login.html' },
       { cat: '회원 · 적립금', q: '적립금은 어떻게 써요?', keywords: '적립금, 포인트', a: '쌓인 적립금은 주문서에서 사용할 수 있어요. 적립 내역은 마이페이지에서 확인해요.', buttons: '적립금 내역 /myshop/mileage/historyList.html' },
       { cat: '회원 · 적립금', q: '아이디 · 비밀번호를 잊었어요', keywords: '아이디, 비밀번호, 비번, 로그인 안', a: '아래에서 가입하신 정보로 아이디와 비밀번호를 찾을 수 있어요.', buttons: '아이디 찾기 /member/id/find_id.html\n비밀번호 찾기 /member/passwd/find_passwd_info.html' },
       { cat: '상담원 연결', q: '상담원과 이야기하고 싶어요', keywords: '상담, 상담원, 문의, 연락, 전화, 카톡, 사람', a: '카카오톡으로 실시간 상담하실 수 있어요. 운영 시간이 아니면 문의를 남겨 주시면 순서대로 답해 드려요.\n운영 시간 : {운영시간}', buttons: '카카오톡 실시간 상담 {상담}\n문의 남기기 {문의}' }
@@ -72,13 +84,15 @@
   /* 설정 : 기본값 ← store-content.js 의 helper ← 화면 관리 게시판 글(이 브라우저가 기억한 것) */
   var boardCfg = (get(CFG_KEY) || {}).cfg || null;
   function config() {
-    var c = {}, k, sc = SC.helper || {};
+    var c = {}, k, sc = UC;
     for (k in BASE) c[k] = BASE[k];
     for (k in sc) if (sc[k] != null && sc[k] !== '') c[k] = sc[k];
     if (boardCfg) for (k in boardCfg) if (k !== 'qna' && boardCfg[k] != null && boardCfg[k] !== '') c[k] = boardCfg[k];
     if (typeof c.faqBoard === 'string') c.faqBoard = parseInt(c.faqBoard, 10) || 0;
+    // 같은 말은 기본 + 설정 + 게시판 글을 모두 합친다 (설정에 몇 줄만 써도 기본 묶음이 사라지지 않게)
+    c.synonyms = list(BASE.synonyms).concat(list(sc.synonyms), list(boardCfg && boardCfg.synonyms));
     // 질문과 답 : 사장님이 쓴 것 + (같은 질문이 없는) 기본 답. 답변을 비운 칸은 그 질문을 끄는 표시
-    var base = (sc.qna && sc.qna.length ? sc.qna : BASE.qna), own = (boardCfg && boardCfg.qna) || [], have = {};
+    var base = (sc.qna && sc.qna.length ? sc.qna : BASE.qna).concat(sc.addQna || []), own = (boardCfg && boardCfg.qna) || [], have = {};
     own.forEach(function (q) { have[flat(q.q)] = 1; });
     c.qnaAll = own.map(function (q) { return copy(q, 'board'); }).concat(base.filter(function (q) { return !have[flat(q.q)]; }).map(function (q) { return copy(q, 'base'); }));
     c.qnaAll.forEach(function (q, i) { q.idx = i; });
@@ -88,13 +102,17 @@
   function copy(q, src) { var o = {}; for (var k in q) if (k.charAt(0) !== '_') o[k] = q[k]; o.src = src; return o; }
   function fill(s) {
     var c = config();
-    return String(s || '').replace(/\{brand\}/g, (SC.brand && SC.brand.name) || '').replace(/\{운영시간\}/g, c.hours || '')
+    return String(s || '').replace(/\{brand\}/g, brandName()).replace(/\{운영시간\}/g, c.hours || '')
       .replace(/\{무료배송\}/g, FREE ? won(FREE) + '원' : '');
+  }
+  function brandName() {
+    var m = document.querySelector('meta[property="og:site_name"]');
+    return UC.brand || (SC.brand && SC.brand.name) || (m && m.content) || '';
   }
   function contactUrl() {
     var c = config();
     if (/^https?:\/\//.test(c.contact || '')) return c.contact;
-    var kk = document.querySelector('[data-s9="kakao"]');
+    var kk = document.querySelector('[data-s9="kakao"], a[href*="pf.kakao.com/_"]');
     return (kk && /^https?:/.test(kk.href) && kk.href) || (SC.floating && SC.floating.kakao) || 'https://pf.kakao.com/';
   }
   function linkOf(u) {
@@ -176,12 +194,43 @@
     });
     return { q: subject.replace(/^\s*\[[^\]]*\]\s*/, ''), keywords: kw.join(', '), a: rest.join('\n').trim(), buttons: btn.join('\n'), next: next, src: 'faq', no: no };
   }
+  /* 게시판 읽기 : wear902 화면 관리(wear-cms.js)가 있으면 그것을, 없으면 이 파일의 간단한 읽기로 */
+  function articleNo(h) { var m = String(h || '').match(/\/article\/[^/]+\/\d+\/(\d+)/) || String(h || '').match(/[?&]no=(\d+)/); return m ? m[1] : ''; }
+  function ownList(board) {
+    var all = [], seen = {}, size = 0;
+    function page(n) {
+      return fetch('/board/free/list.html?board_no=' + board + '&page=' + n, { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (t) {
+        var doc = new DOMParser().parseFromString(t, 'text/html'), got = [];
+        doc.querySelectorAll('a[href*="/article/"], a[href*="read.html"]').forEach(function (a) {
+          var no = articleNo(a.getAttribute('href')), sub = trim(a.textContent);
+          if (no && sub && !seen[no]) { seen[no] = 1; got.push({ no: no, subject: sub, href: a.getAttribute('href') }); }
+        });
+        all = all.concat(got);
+        if (n === 1) size = got.length;
+        if (!got.length || got.length < size || size < 5 || n >= 8) return;
+        return new Promise(function (r) { setTimeout(r, 250); }).then(function () { return page(n + 1); });
+      });
+    }
+    return page(1).then(function () { return all; }).catch(function () { return all; });
+  }
+  function ownRead(p, board) {
+    return fetch(p.href, { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (t) {
+      var box = t && new DOMParser().parseFromString(t, 'text/html').querySelector('[data-wear902-content], [module^="board_read"] .detail, .boardView .detail, .detail');
+      if (box && box.innerHTML.trim()) return { content: box.innerHTML };
+      return fetch('/exec/front/board/product/' + board + '?no=' + p.no + '&board_no=' + board + '&pass_check=F', { credentials: 'same-origin' })
+        .then(function (r) { return r.json(); }).then(function (d) { return d && d.read ? { content: String(d.read.content || '') } : null; });
+    }).catch(function () { return null; });
+  }
+  var BOARD = {
+    list: function (b) { return CMS && CMS.listBoard ? CMS.listBoard(b) : ownList(b); },
+    read: function (p, b) { return CMS && CMS.readPost ? CMS.readPost(p, b) : ownRead(p, b); }
+  };
   function loadFaq() {
     var c = config(), board = c.faqBoard;
     var cached = get(KB_KEY);
     if (cached && cached.board === board && Date.now() - cached.t < KB_TTL && !EDIT) { KB.faq = cached.items || []; return Promise.resolve(); }
-    if (!board || !CMS || !CMS.listBoard) { KB.faq = []; return Promise.resolve(); }
-    return CMS.listBoard(board).then(function (posts) {
+    if (!board) { KB.faq = []; return Promise.resolve(); }
+    return BOARD.list(board).then(function (posts) {
       posts = posts.slice(0, 80);
       var old = {}, items = [], i = 0;
       ((cached && cached.items) || []).forEach(function (x) { old[x.no] = x; });
@@ -189,7 +238,7 @@
         if (i >= posts.length) return Promise.resolve();
         var p = posts[i++];
         if (old[p.no] && old[p.no].q === p.subject.replace(/^\s*\[[^\]]*\]\s*/, '') && !EDIT) { items.push(old[p.no]); return worker(); }
-        return CMS.readPost(p, board).then(function (b) { if (b && b.content) items.push(fromPost(p.subject, b.content, p.no)); return worker(); });
+        return BOARD.read(p, board).then(function (b) { if (b && b.content) items.push(fromPost(p.subject, b.content, p.no)); return worker(); });
       }
       return Promise.all([worker(), worker()]).then(function () {
         KB.faq = items.filter(function (x) { return x.q && x.a; });
@@ -227,7 +276,31 @@
     return kbLoading;
   }
   // 화면 관리 영역이 없는 페이지(상품 상세 등)에서 처음 열면 게시판 설정 글을 읽어 온다
+  /* 설정 게시판 글 「[모든 페이지] 쇼핑 도우미」 본문 → 설정 (wear-cms.js 없이 쓸 때)
+     「칸 이름: 값」 줄, 다음 줄은 이어 쓰기, 「── 1번 ──」 부터는 질문과 답 묶음 */
+  var F_TOP = { '보이기': 'enabled', '이름': 'name', '인사말': 'greeting', '메뉴': 'menu', '못찾았을때': 'fallback', '운영시간': 'hours', '상담연결주소': 'contact', '문의남기기주소': 'askLink', '배울게시판번호': 'faqBoard', '같은말': 'synonyms' };
+  var F_ITEM = { '분류': 'cat', '질문': 'q', '키워드': 'keywords', '답변': 'a', '버튼': 'buttons', '이어서': 'next' };
+  function parseSettings(htmlStr) {
+    var o = { qna: [] }, cur = o, key = null;
+    textOf(htmlStr).split('\n').forEach(function (l) {
+      if (/^※/.test(l)) return;
+      if (/^[\s─━—\-=]*\d{1,2}\s*번/.test(l)) { cur = {}; o.qna.push(cur); key = null; return; }
+      var m = l.match(/^([^:：]{1,14})\s*[:：]\s?(.*)$/), map = cur === o ? F_TOP : F_ITEM, k = m && map[m[1].replace(/\s/g, '')];
+      if (k) { key = k; cur[k] = m[2]; } else if (key && trim(l)) cur[key] += '\n' + l;
+    });
+    if (o.enabled != null) o.enabled = !/^(아니|아니오|아니요|숨김|끔|no|off|false)$/i.test(trim(o.enabled));
+    o.qna = o.qna.filter(function (q) { return trim(q.q || ''); });
+    return o;
+  }
   function refreshCfg() {
+    var c0 = get(CFG_KEY), sb = UC.settingsBoard;
+    if (!CMS && sb && !(c0 && Date.now() - c0.t < CFG_TTL)) {
+      return ownList(sb).then(function (posts) {
+        var p = posts.filter(function (x) { return x.subject.replace(/^\s*\[[^\]]*\]\s*/, '').replace(/\s/g, '') === NAME.replace(/\s/g, ''); }).sort(function (a, b) { return b.no - a.no; })[0];
+        if (!p) { put(CFG_KEY, { t: Date.now(), cfg: null }); return; }
+        return ownRead(p, sb).then(function (b) { if (b) { var o = parseSettings(b.content); put(CFG_KEY, { t: Date.now(), cfg: o }); api.setBoardConfig(o); } });
+      });
+    }
     var c = get(CFG_KEY);
     if ((c && Date.now() - c.t < CFG_TTL && !EDIT) || !CMS || !CMS.fetchData || document.querySelector('[data-cms="' + NAME + '"]')) return Promise.resolve();
     return CMS.fetchData(NAME, CMS.helperLabels()).then(function (data) {
@@ -434,11 +507,11 @@
     return now >= m[1] * 60 + +m[2] && now < m[3] * 60 + +m[4];
   }
   function headHtml(c) {
-    var live = onAir(c.hours), brand = (SC.brand && SC.brand.name) || '';
-    return '<div class="wh-head__bar"><span class="wh-head__brand">' + esc((brand ? brand + ' · ' : '') + 'Concierge') + '</span>'
+    var live = onAir(c.hours), brand = brandName();
+    return '<div class="wh-head__bar"><span class="wh-head__brand">' + esc((brand ? brand + ' · ' : '') + (UC.label || 'Concierge')) + '</span>'
       + '<button type="button" class="wh-icon" data-act="home" aria-label="처음 메뉴">' + icon('home') + '</button>'
       + '<button type="button" class="wh-icon" data-act="close" aria-label="닫기">' + icon('close') + '</button></div>'
-      + '<p class="wh-head__kicker">How can we help?</p><h2 class="wh-head__title">' + esc(c.name || BASE.name) + '</h2>'
+      + '<p class="wh-head__kicker">' + esc(UC.kicker || 'How can we help?') + '</p><h2 class="wh-head__title">' + esc(c.name || BASE.name) + '</h2>'
       + (c.hours ? '<p class="wh-head__status' + (live === true ? ' is-live' : '') + '"><i></i>' + esc(live === true ? '지금 상담 가능' : live === false ? '지금은 상담 시간이 아니에요' : '상담 시간') + '<span>' + esc(c.hours) + '</span></p>' : '');
   }
   function build() {
@@ -486,18 +559,19 @@
     var c = config(), f = document.getElementById('s9Float');
     if (c.enabled === false && !EDIT) return;
     fab = document.createElement('button');
-    fab.type = 'button'; fab.className = 's9-float__btn s9-float__btn--helper'; fab.setAttribute('data-s9', 'helper');
+    fab.type = 'button'; fab.className = 'wh-fab' + (f ? ' s9-float__btn s9-float__btn--helper' : ' wh-fab--solo'); fab.setAttribute('data-s9', 'helper');
     fab.setAttribute('aria-label', c.name || BASE.name); fab.setAttribute('aria-expanded', 'false');
-    fab.innerHTML = '<span class="wh-fab__i wh-fab__i--chat">' + icon('chat') + '</span><span class="wh-fab__i wh-fab__i--x">' + icon('close') + '</span><span class="displaynone">' + esc(c.name || BASE.name) + '</span>';
+    fab.innerHTML = '<span class="wh-fab__i wh-fab__i--chat">' + icon('chat') + '</span><span class="wh-fab__i wh-fab__i--x">' + icon('close') + '</span><span class="wh-sr">' + esc(c.name || BASE.name) + '</span>';
     fab.addEventListener('click', function (e) { if (html.classList.contains('cms-edit') && e.target.closest('.cms-btn')) return; toggle(); });
-    if (f) f.insertBefore(fab, f.firstChild); else { fab.classList.add('wh-fab-solo'); document.body.appendChild(fab); }
+    if (f) f.insertBefore(fab, f.firstChild); else document.body.appendChild(fab);   // wear902 계열 스킨이면 오른쪽 아래 버튼 줄 맨 위, 아니면 혼자
+    fonts(); theme();
     // 화면 관리 영역이 있는 페이지 : 편집 모드에서 [쇼핑 도우미 고치기]가 막대에 나오도록 (카카오톡 버튼과 같은 방식)
     if (CMS && CMS.board && document.querySelector('[data-cms]')) {
       fab.setAttribute('data-cms', NAME); fab.setAttribute('data-cms-adapter', 'helper'); fab.setAttribute('data-cms-page', '모든 페이지'); fab.setAttribute('data-cms-bar', '');
     }
     // 처음 온 손님에게 한 번만 : 버튼 옆에 「무엇을 도와드릴까요?」 (5초 뒤 사라짐)
-    if (!get('wear902-helper-hint', 'sessionStorage') && !EDIT) {
-      put('wear902-helper-hint', 1, 'sessionStorage');
+    if (!get('shop-helper-hint', 'sessionStorage') && !EDIT && UC.hint !== false) {
+      put('shop-helper-hint', 1, 'sessionStorage');
       setTimeout(function () {
         if (opened) return;
         var t = document.createElement('button'); t.type = 'button'; t.className = 'wh-hint'; t.textContent = '무엇을 도와드릴까요?';
@@ -513,7 +587,8 @@
   }
 
   /* ---------- 7. 바깥에서 쓰는 것 (wear-cms.js 의 helper 어댑터) ---------- */
-  window.WEAR902_HELPER = {
+  var api = window.SHOP_HELPER = window.WEAR902_HELPER = {
+    version: '1.0',
     config: config,
     // 화면 관리 게시판 글을 읽었을 때 : 설정을 바꾸고 이름 · 버튼 글자도 새로
     setBoardConfig: function (o) {
@@ -530,34 +605,48 @@
   };
 
   /* ---------- 8. 디자인 (흑백 · Pretendard, 사이트 톤) ---------- */
+  // 글꼴 : 페이지에 없을 때만 불러온다 (Pretendard · Jost · Fraunces). 설정 fonts: false 면 페이지 글꼴 그대로
+  function fonts() {
+    if (UC.fonts === false) return;
+    var hrefs = Array.from(document.querySelectorAll('link[href]')).map(function (l) { return l.href; }).join(' ');
+    function add(h) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = h; document.head.appendChild(l); }
+    if (!/pretendard/i.test(hrefs)) add('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+    if (!/Jost/.test(hrefs) || !/Fraunces/.test(hrefs)) add('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,400&family=Jost:wght@500&display=swap');
+  }
+  // 색 : 설정 colors { ink: 진한 색(머리글 · 버튼), soft: 연한 바탕(말풍선), line: 선 } — 기본 흑백
+  function theme() {
+    var c = UC.colors || {}, st = document.createElement('style');
+    st.textContent = '.wh,.wh-fab,.wh-hint{--wh-ink:' + (c.ink || '#111') + ';--wh-on:' + (c.onInk || '#fff') + ';--wh-soft:' + (c.soft || '#f5f5f5') + ';--wh-line:' + (c.line || '#ededed') + '}';
+    document.head.appendChild(st);
+  }
   function css() {
     if (document.getElementById('wh-css')) return;
     var s = document.createElement('style'); s.id = 'wh-css';
     var E = 'cubic-bezier(.2,.75,.2,1)';
     s.textContent = [
       /* 버튼 (오른쪽 아래 떠 있는 버튼 줄의 맨 위) */
-      '.s9-float__btn--helper{position:relative;width:52px;height:52px;margin-left:-3px;background:#111;border-color:#111;color:#fff;cursor:pointer;padding:0;box-shadow:0 10px 26px -10px rgba(0,0,0,.45);transition:transform .35s ' + E + ',background .25s,color .25s}',
-      '.s9-float__btn--helper:hover{transform:translateY(-2px)}',
+      '.wh-fab{position:relative;display:grid;place-items:center;width:52px;height:52px;padding:0;border:1px solid var(--wh-ink);border-radius:50%;background:var(--wh-ink);color:var(--wh-on);cursor:pointer;box-shadow:0 10px 26px -10px rgba(0,0,0,.45);transition:transform .35s ' + E + '}',
+      '.wh-fab:hover{transform:translateY(-2px)}.s9-float__btn--helper{margin-left:-3px}',
+      '.wh-fab--solo{position:fixed;right:clamp(12px,1.6vw,24px);bottom:clamp(16px,2vw,32px);z-index:990}',
       '.wh-fab__i{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .25s,transform .35s ' + E + '}',
       '.wh-fab__i--x{opacity:0;transform:rotate(-90deg)}',
       '.wh-open .wh-fab__i--chat{opacity:0;transform:rotate(90deg)}.wh-open .wh-fab__i--x{opacity:1;transform:none}',
-      '.wh-fab-solo{position:fixed;right:16px;bottom:16px;z-index:990;border-radius:50%}',
-      '.wh-hint{position:fixed;z-index:989;padding:9px 16px;border:1px solid #ededed;border-radius:999px;background:#fff;color:#111;font:600 13px/1.2 Pretendard,"Pretendard Variable",system-ui,sans-serif;letter-spacing:-.01em;box-shadow:0 12px 26px -16px rgba(36,36,36,.35);cursor:pointer;opacity:0;transform:translateX(8px);transition:opacity .35s,transform .45s ' + E + '}',
+      '.wh-hint{position:fixed;z-index:989;padding:9px 16px;border:1px solid var(--wh-line);border-radius:999px;background:#fff;color:var(--wh-ink);font:600 13px/1.2 Pretendard,"Pretendard Variable",system-ui,sans-serif;letter-spacing:-.01em;box-shadow:0 12px 26px -16px rgba(36,36,36,.35);cursor:pointer;opacity:0;transform:translateX(8px);transition:opacity .35s,transform .45s ' + E + '}',
       '.wh-hint.is-in{opacity:1;transform:none}',
       /* 창 */
       '.wh{position:fixed;right:clamp(12px,1.6vw,24px);bottom:calc(clamp(16px,2vw,32px) + 66px);z-index:1001;width:392px;height:min(660px,calc(100vh - 130px));display:flex;flex-direction:column;',
-      'background:#fff;color:#111;border-radius:24px;box-shadow:0 30px 80px -24px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06);overflow:hidden;',
+      'background:#fff;color:var(--wh-ink);border-radius:24px;box-shadow:0 30px 80px -24px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06);overflow:hidden;',
       'font:14px/1.6 Pretendard,"Pretendard Variable",system-ui,sans-serif;letter-spacing:-.015em;opacity:0;transform:translateY(14px) scale(.97);transform-origin:100% 100%;transition:opacity .22s,transform .4s ' + E + '}',
       '.wh.is-in{opacity:1;transform:none}.wh[hidden]{display:none}',
       '.wh *{box-sizing:border-box}',
       /* 머리글 : 검정 · 세리프 이탤릭 소제목 · 굵은 한글 제목 (사이트 섹션 머리와 같은 순서) */
-      '.wh-head{flex:none;padding:16px 16px 22px 24px;background:#111;color:#fff;transition:padding .35s ' + E + '}',
+      '.wh-head{flex:none;padding:16px 16px 22px 24px;background:var(--wh-ink);color:var(--wh-on);transition:padding .35s ' + E + '}',
       '.wh-head__bar{display:flex;align-items:center;gap:2px}',
       '.wh-head__brand{flex:1;min-width:0;font:500 10.5px/1 Jost,Archivo,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
       '.wh-icon{flex:none;width:36px;height:36px;border:0;border-radius:50%;background:none;color:inherit;display:grid;place-items:center;cursor:pointer;transition:background .2s}.wh-icon:hover{background:rgba(255,255,255,.12)}',
       '.wh-icon svg{width:18px;height:18px}',
       '.wh-head__kicker{margin:18px 0 4px;font:italic 400 19px/1.2 Fraunces,"Times New Roman",serif;color:rgba(255,255,255,.72);letter-spacing:0;transition:all .35s ' + E + '}',
-      '.wh-head__title{margin:0;font-size:22px;font-weight:700;line-height:1.3;letter-spacing:-.03em;color:#fff;transition:all .35s ' + E + '}',
+      '.wh-head__title{margin:0;font-size:22px;font-weight:700;line-height:1.3;letter-spacing:-.03em;color:var(--wh-on);transition:all .35s ' + E + '}',
       '.wh-head__status{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:12px 0 0;font-size:12px;color:rgba(255,255,255,.75)}',
       '.wh-head__status i{width:7px;height:7px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6)}.wh-head__status.is-live i{background:#fff;border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.14)}',
       '.wh-head__status span{color:rgba(255,255,255,.5)}.wh-head__status span::before{content:"·";margin-right:8px}',
@@ -566,53 +655,53 @@
       '.wh.is-compact .wh-head__kicker{margin:0;height:0;opacity:0;overflow:hidden}',
       '.wh.is-compact .wh-head__title{font-size:15px;margin-top:6px}',
       '.wh.is-compact .wh-head__status{margin-top:4px}',
-      '.wh-edu{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding:10px 20px;background:#f5f5f5;border-bottom:1px solid #ededed;font-size:12px;line-height:1.5;color:#242424}',
-      '.wh-edu b{font:500 10.5px/1 Jost,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#111}',
-      '.wh-edu button{padding:4px 12px;border:1px solid #111;border-radius:999px;background:#111;color:#fff;font:600 12px/1.4 inherit;cursor:pointer}',
+      '.wh-edu{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding:10px 20px;background:var(--wh-soft);border-bottom:1px solid var(--wh-line);font-size:12px;line-height:1.5;color:#242424}',
+      '.wh-edu b{font:500 10.5px/1 Jost,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--wh-ink)}',
+      '.wh-edu button{padding:4px 12px;border:1px solid var(--wh-ink);border-radius:999px;background:var(--wh-ink);color:var(--wh-on);font:600 12px/1.4 inherit;cursor:pointer}',
       /* 대화 */
       '.wh-log{position:relative;flex:1;overflow-y:auto;padding:22px 20px 10px;overscroll-behavior:contain;background:#fff;scrollbar-width:thin}',
       '.wh-msg{display:flex;flex-direction:column;align-items:flex-start;margin:0 0 16px;animation:wh-up .45s ' + E + '}',
       '@keyframes wh-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}',
       '.wh-msg--me{align-items:flex-end}',
-      '.wh-bubble{max-width:88%;margin:0;padding:12px 16px;border-radius:18px 18px 18px 6px;background:#f5f5f5;color:#111;word-break:keep-all;overflow-wrap:anywhere}',
-      '.wh-msg--me .wh-bubble{border-radius:18px 18px 6px 18px;background:#111;color:#fff}',
+      '.wh-bubble{max-width:88%;margin:0;padding:12px 16px;border-radius:18px 18px 18px 6px;background:var(--wh-soft);color:var(--wh-ink);word-break:keep-all;overflow-wrap:anywhere}',
+      '.wh-msg--me .wh-bubble{border-radius:18px 18px 6px 18px;background:var(--wh-ink);color:var(--wh-on)}',
       '.wh-bubble a{color:inherit;text-decoration:underline;text-underline-offset:3px}.wh-bubble em{font-family:Fraunces,serif;font-style:italic}',
       '.wh-lead{margin:0 0 4px;font-size:14px;line-height:1.65;color:#242424;word-break:keep-all}',
       /* 메뉴 · 질문 목록 : 번호 · 얇은 선 · 동그라미 화살표 */
       '.wh-msg--list{align-items:stretch}',
-      '.wh-menu{display:flex;flex-direction:column;margin:10px 0 0;border-top:1px solid #111}',
-      '.wh-item{display:flex;align-items:center;gap:14px;width:100%;padding:15px 2px 15px 0;border:0;border-bottom:1px solid #ededed;background:none;color:#111;text-align:left;font:inherit;cursor:pointer}',
+      '.wh-menu{display:flex;flex-direction:column;margin:10px 0 0;border-top:1px solid var(--wh-ink)}',
+      '.wh-item{display:flex;align-items:center;gap:14px;width:100%;padding:15px 2px 15px 0;border:0;border-bottom:1px solid var(--wh-line);background:none;color:var(--wh-ink);text-align:left;font:inherit;cursor:pointer}',
       '.wh-item__no{flex:none;width:22px;font:500 11px/1 Jost,sans-serif;letter-spacing:.06em;color:#9a9a9a;transition:color .25s}',
-      '.wh-item__no--q{font:italic 400 15px/1 Fraunces,serif;letter-spacing:0;color:#111}',
+      '.wh-item__no--q{font:italic 400 15px/1 Fraunces,serif;letter-spacing:0;color:var(--wh-ink)}',
       '.wh-item__t{flex:1;min-width:0}.wh-item__t b{display:block;font-size:15px;font-weight:600;line-height:1.4;letter-spacing:-.02em}',
       '.wh-item__t small{display:block;margin-top:3px;font-size:12px;line-height:1.45;color:#8a8a8a}',
-      '.wh-item__ic{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid #ededed;display:grid;place-items:center;transition:background .3s,border-color .3s,color .3s,transform .45s ' + E + '}',
+      '.wh-item__ic{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid var(--wh-line);display:grid;place-items:center;transition:background .3s,border-color .3s,color .3s,transform .45s ' + E + '}',
       '.wh-item__ic svg{width:14px;height:14px}',
-      '.wh-item:hover .wh-item__ic,.wh-item:focus-visible .wh-item__ic{background:#111;border-color:#111;color:#fff;transform:rotate(45deg)}',
-      '.wh-item:hover .wh-item__no{color:#111}',
+      '.wh-item:hover .wh-item__ic,.wh-item:focus-visible .wh-item__ic{background:var(--wh-ink);border-color:var(--wh-ink);color:var(--wh-on);transform:rotate(45deg)}',
+      '.wh-item:hover .wh-item__no{color:var(--wh-ink)}',
       '.wh-menu--q .wh-item{padding:13px 2px 13px 0}.wh-menu--q .wh-item__t b{font-weight:500}',
       /* 바로가기 버튼 : 사이트 .cz-btn 과 같은 모양 */
       '.wh-links{display:flex;flex-direction:column;gap:8px;width:88%;margin-top:10px}',
-      '.wh-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:5px 5px 5px 20px;border:1.5px solid #111;border-radius:999px;background:#111;color:#fff!important;text-decoration:none!important;transition:transform .35s ' + E + ',box-shadow .35s}',
+      '.wh-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:5px 5px 5px 20px;border:1.5px solid var(--wh-ink);border-radius:999px;background:var(--wh-ink);color:var(--wh-on)!important;text-decoration:none!important;transition:transform .35s ' + E + ',box-shadow .35s}',
       '.wh-btn b{font-size:13.5px;font-weight:600;letter-spacing:-.02em}',
       '.wh-btn__ic{flex:none;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.16);display:grid;place-items:center;transition:transform .45s ' + E + '}.wh-btn__ic svg{width:15px;height:15px}',
       '.wh-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px -16px rgba(36,36,36,.45)}.wh-btn:hover .wh-btn__ic{transform:rotate(45deg)}',
-      '.wh-btn--soft{background:#fff;color:#111!important;border-color:rgba(36,36,36,.14)}.wh-btn--soft .wh-btn__ic{background:#ededed}',
+      '.wh-btn--soft{background:#fff;color:var(--wh-ink)!important;border-color:rgba(36,36,36,.14)}.wh-btn--soft .wh-btn__ic{background:var(--wh-line)}',
       /* 이어서 물어보기 */
       '.wh-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;max-width:100%}',
-      '.wh-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #d9d9d9;border-radius:999px;background:#fff;color:#111;font:500 13px/1.3 inherit;letter-spacing:-.02em;cursor:pointer;transition:border-color .2s,background .2s,color .2s}',
-      '.wh-chip:hover{border-color:#111}',
-      '.wh-chip--home{border-color:#111}.wh-chip--home:hover{background:#111;color:#fff}.wh-chip--home svg{width:14px;height:14px}',
+      '.wh-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #d9d9d9;border-radius:999px;background:#fff;color:var(--wh-ink);font:500 13px/1.3 inherit;letter-spacing:-.02em;cursor:pointer;transition:border-color .2s,background .2s,color .2s}',
+      '.wh-chip:hover{border-color:var(--wh-ink)}',
+      '.wh-chip--home{border-color:var(--wh-ink)}.wh-chip--home:hover{background:var(--wh-ink);color:var(--wh-on)}.wh-chip--home svg{width:14px;height:14px}',
       '.wh-typing{display:flex;gap:4px;padding:15px 16px}.wh-typing i{width:6px;height:6px;border-radius:50%;background:#9a9a9a;animation:wh-dot 1s infinite}.wh-typing i:nth-child(2){animation-delay:.15s}.wh-typing i:nth-child(3){animation-delay:.3s}',
       '@keyframes wh-dot{0%,80%,100%{opacity:.3;transform:none}40%{opacity:1;transform:translateY(-3px)}}',
       '.wh-teach{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:#8a8a8a}',
-      '.wh-teach button{padding:3px 10px;border:1px dashed #111;border-radius:999px;background:#fff;color:#111;font:600 11px/1.4 inherit;cursor:pointer}',
+      '.wh-teach button{padding:3px 10px;border:1px dashed var(--wh-ink);border-radius:999px;background:#fff;color:var(--wh-ink);font:600 11px/1.4 inherit;cursor:pointer}',
       /* 입력 */
-      '.wh-form{flex:none;display:flex;gap:8px;padding:12px 14px 14px;border-top:1px solid #ededed;background:#fff}',
-      '.wh .wh-form #wh-in{flex:1;min-width:0;width:auto;height:46px!important;margin:0;padding:0 18px!important;border:1px solid #ededed!important;border-radius:999px!important;background:#f5f5f5!important;box-shadow:none!important;outline:none!important;-webkit-appearance:none;appearance:none;font-family:inherit;font-size:16px!important;line-height:1.4;color:#111;transition:border-color .2s,background .2s}',
+      '.wh-form{flex:none;display:flex;gap:8px;padding:12px 14px 14px;border-top:1px solid var(--wh-line);background:#fff}',
+      '.wh .wh-form #wh-in{flex:1;min-width:0;width:auto;height:46px!important;margin:0;padding:0 18px!important;border:1px solid var(--wh-line)!important;border-radius:999px!important;background:var(--wh-soft)!important;box-shadow:none!important;outline:none!important;-webkit-appearance:none;appearance:none;font-family:inherit;font-size:16px!important;line-height:1.4;color:var(--wh-ink);transition:border-color .2s,background .2s}',
       '.wh .wh-form #wh-in::placeholder{color:#9a9a9a}',
-      '.wh .wh-form #wh-in:focus{border-color:#111!important;background:#fff!important;box-shadow:none!important}',
-      '.wh-form button{flex:none;width:46px;height:46px;border:0;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;cursor:pointer;transition:transform .35s ' + E + '}.wh-form button:hover{transform:translateY(-2px)}',
+      '.wh .wh-form #wh-in:focus{border-color:var(--wh-ink)!important;background:#fff!important;box-shadow:none!important}',
+      '.wh-form button{flex:none;width:46px;height:46px;border:0;border-radius:50%;background:var(--wh-ink);color:var(--wh-on);display:grid;place-items:center;cursor:pointer;transition:transform .35s ' + E + '}.wh-form button:hover{transform:translateY(-2px)}',
       '.wh-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}',
       '@media (max-width:640px),(max-height:560px){.wh{inset:auto 0 0 0;top:0;width:auto;height:100vh;height:100dvh;border-radius:0;transform:translateY(24px)}.wh.is-in{transform:none}.wh-open body{overflow:hidden}',
       '.wh-head{padding-top:max(14px,env(safe-area-inset-top))}.wh-form{padding-bottom:max(14px,env(safe-area-inset-bottom))}.wh-links{width:100%}.wh-hint{display:none}}',
