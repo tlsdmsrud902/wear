@@ -198,7 +198,7 @@ def band_img(W, h, a, align, x0):
 class Caption:
     """lines : [[(단어, 스타일)], …] / t_in, t_out : 전체 시각 / at : 화면에서 글 묶음의 가운데 (x, y) / align : center|left
        단어는 t_in 부터 stagger 간격으로 하나씩 튀어나온다. times 를 주면 단어별 시각을 직접 정한다."""
-    def __init__(self, t_in, t_out, lines, at, size=96, stagger=0.12, anim='pop', align='center', times=None, gap=None, out='cut', band=150):
+    def __init__(self, t_in, t_out, lines, at, size=96, stagger=0.12, anim='pop', align='center', times=None, gap=None, out='cut', band=225):
         self.t_in, self.t_out, self.lines, self.at, self.size, self.band = t_in, t_out, lines, at, size, band
         self.stagger, self.anim, self.align, self.times, self.out = stagger, anim, align, times, out
         self.gap = gap if gap is not None else int(size * .14)
