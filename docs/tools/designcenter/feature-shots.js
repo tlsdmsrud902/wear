@@ -81,7 +81,12 @@ function demoSheet() {
 
 const shots = {
   /* 첫 화면 (PC · 휴대폰) */
-  'home-pc': async pg => { await open(pg, '/', PC); },
+  // 첫 화면 1번 장면(트렌치 모델 영상)은 쓰지 않는다 — 스크롤해서 2번 장면(블루 수트 · Layer up)으로
+  'home-pc': async pg => {
+    await open(pg, '/', PC); await noFloat(pg);
+    const t = await rect(pg, '.pe-hero-track');
+    await pg.evaluate(y => window.scrollTo(0, y), Math.round(t.y + t.height * 0.38)); await sleep(2500);
+  },
   // 휴대폰은 첫 화면 · 팝업과 다른 장면 (같은 트렌치 모델이 되풀이되지 않게) : 상의 목록
   'home-mobile': async pg => { await open(pg, '/product/list.html?cate_no=25', MOBILE); },
 
@@ -109,6 +114,11 @@ const shots = {
   'countdown-pop': async pg => {
     await open(pg, '/', PC, { keepPop: true }); await sleep(1500);
     await click(pg, '.cz-pop__dots button'); await sleep(1200);   // 타이머가 붙은 첫 장
+    await pg.evaluate(() => { for (let i = 1; i < 5000; i++) clearInterval(i); });   // 다음 장으로 넘어가지 않게 (타이머 숫자도 멈춤)
+    // 팝업 사진(트렌치 모델)은 다른 상세 사진과 겹쳐서 블라우스(수영장 · 선글라스) 장면으로 바꿔 찍는다 (사진은 사장님이 설정에서 바꾸는 칸)
+    await pg.evaluate(() => { const box = document.querySelector('.cz-pop__slide--timer .cz-pop__img'); const im = box && box.querySelector('img'); const u = 'https://ecimg.cafe24img.com/pg3434b74016291004/wear902/wear/scene-blouse.webp';
+      if (im) { im.removeAttribute('srcset'); im.src = u; im.style.objectPosition = '50% 40%'; } else if (box) box.style.backgroundImage = 'url(' + u + ')'; });
+    await sleep(2000);
     const r = await rect(pg, '.cz-pop__box');
     return { clip: { x: r.x - 30, y: r.y - 30, width: r.width + 60, height: r.height + 60 } };
   },
@@ -158,7 +168,7 @@ const shots = {
 
   /* 7. 24시 챗봇 */
   'chat': async pg => { await open(pg, '/', MOBILE); await click(pg, '.wh-fab'); await sleep(3500); },
-  'chat-pc': async pg => { await open(pg, '/', PC); await click(pg, '.wh-fab'); await sleep(3500); },
+  'chat-pc': async pg => { await open(pg, '/product/list.html?cate_no=28', PC); await click(pg, '.wh-fab'); await sleep(3500); },   // 첫 화면이 아닌 전체 상품 목록 위에서
 
   /* 8. 상담 · CRM 관리 페이지 ([예시] 기록) */
   'admin': async pg => {
