@@ -27,7 +27,7 @@ body{overflow:hidden;font-family:Pretendard,'Malgun Gothic',sans-serif;letter-sp
 const B = [['🎁', '쿠폰·타임세일', 'y'], ['💬', '24시 무료 챗봇', 'y'], ['👥', '고객관리 CRM', 'b']];
 const sticker = (x, y, d, f) => `<div class="st" style="left:${x}px;top:${y}px;width:${d}px;height:${d}px;font-size:${f}px"><span><small style="font-size:${Math.round(f * .68)}px">카페24</small>올인원<br>스킨</span></div>`;
 const pc = (x, y, w) => `<div class="pc" style="left:${x}px;top:${y}px;width:${w}px"><img src="${img('home-pc')}"></div>`;
-const ph = (x, y, w) => `<div class="ph" style="left:${x}px;top:${y}px;width:${w}px"><img src="${img('welcome-page')}"></div>`;
+const ph = (x, y, w) => `<div class="ph" style="left:${x}px;top:${y}px;width:${w}px"><img src="${img('home-mobile-2')}"></div>`;
 
 const V = {
   // 대표 (정사각형) : 위 제목 · 가운데 PC + 휴대폰 · 아래 배지 한 줄

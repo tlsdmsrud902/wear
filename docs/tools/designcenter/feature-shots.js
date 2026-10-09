@@ -88,6 +88,15 @@ const shots = {
     await pg.evaluate(y => window.scrollTo(0, y), Math.round(t.y + t.height * 0.38)); await sleep(2500);
   },
   // 휴대폰은 첫 화면 · 팝업과 다른 장면 (같은 트렌치 모델이 되풀이되지 않게) : 상의 목록
+  // 등록 이미지용 : PC 와 같은 2번 장면(블루 수트)을 휴대폰으로
+  'home-mobile-2': async pg => {
+    await open(pg, '/', MOBILE); await noFloat(pg);
+    const t = await rect(pg, '.pe-hero-track');
+    await pg.evaluate(y => window.scrollTo(0, y), Math.round(t.y + t.height * (+process.env.F || 0.38))); await sleep(2500);
+    // 휴대폰은 모델이 왼쪽 끝에 잘려서, 사진 보이는 자리만 모델 쪽으로 옮긴다 (사장님이 편집에서 정하는 값과 같은 것)
+    await pg.evaluate(pos => document.querySelectorAll('.pe-world-image').forEach(e => e.style.setProperty('object-position', pos, 'important')), process.env.POS || '47% 50%');
+    await pg.addStyleTag({ content: '.s9-float,#s9Float,.wh-fab,.wh-hint,[class*="s9-float"]{display:none!important}' }); await sleep(800);
+  },
   'home-mobile': async pg => { await open(pg, '/product/list.html?cate_no=25', MOBILE); },
 
   /* 1. 무료회원 웰컴 쿠폰팩 : 플로팅 쿠폰 버튼 → 작은 창 */
