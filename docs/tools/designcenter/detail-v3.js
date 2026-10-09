@@ -49,7 +49,8 @@ function page(kmong, src) {
   const h2 = (t, color = C.ink) => S(`margin:0 0 18px;font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.3;letter-spacing:-.04em;color:${color};word-break:keep-all;`, t, 'h2');
   const lead = (t, color = C.sub) => S(`margin:0;font-size:clamp(15px,2.2vw,18px);line-height:1.75;color:${color};word-break:keep-all;`, t, 'p');
   const img = (n, alt, extra = '') => `<img src="${src(n)}" alt="${alt}" style="display:block;width:100%;height:auto;margin:0;border:0;${extra}">`;
-  const browser = (n, alt) => S(`margin:0;border:1px solid ${C.line};border-radius:14px;overflow:hidden;background:#ffffff;box-shadow:0 24px 48px -28px rgba(0,0,0,.28);`,
+  // 디자인센터 상세 칸은 64KB 안팎이 한계라 dc 는 모양을 줄인다 (창 틀 점 · 번호 동그라미 대신 글자). 크몽 이미지는 그대로
+  const browser = (n, alt) => dc ? S(`border:1px solid ${C.line};border-top:12px solid #f1f1ee;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 24px 48px -28px rgba(0,0,0,.28);`, img(n, alt)) : S(`margin:0;border:1px solid ${C.line};border-radius:14px;overflow:hidden;background:#ffffff;box-shadow:0 24px 48px -28px rgba(0,0,0,.28);`,
     S(`height:30px;padding:0 14px;background:#f1f1ee;border-bottom:1px solid ${C.line};line-height:30px;font-size:0;`, ['#e3e3df', '#e3e3df', '#e3e3df'].map(c => `<span style="display:inline-block;width:9px;height:9px;margin:10px 6px 0 0;border-radius:50%;background:${c};vertical-align:top;"></span>`).join('')) + img(n, alt));
   const phone = (n, alt, w = '100%') => S(`width:${w};max-width:300px;margin:0 auto;border:7px solid #111111;border-radius:34px;overflow:hidden;background:#111111;box-shadow:0 24px 48px -26px rgba(0,0,0,.4);box-sizing:border-box;`, img(n, alt, 'border-radius:27px;'));
   const cap = t => S(`margin:12px 0 0;font-size:13.5px;line-height:1.6;color:${C.faint};text-align:center;word-break:keep-all;`, t, 'p');
@@ -57,8 +58,9 @@ function page(kmong, src) {
   const row = (cells, gap = 22, basis = 300) => `<div style="display:flex;flex-wrap:wrap;gap:${gap}px;align-items:flex-start;">${cells.map(c => `<div style="flex:1 1 ${typeof c === 'object' ? c.basis : basis}px;min-width:0;">${typeof c === 'object' ? c.html : c}</div>`).join('')}</div>`;
   const box = (html, bg = C.soft, pad = '26px 26px') => S(`height:100%;padding:${pad};border-radius:18px;background:${bg};box-sizing:border-box;`, html);
   const listTitle = t => S(`margin:0 0 14px;font-size:16px;font-weight:800;letter-spacing:-.02em;color:${C.ink};`, t, 'p');
-  const steps = xs => listTitle('이렇게 써요') + xs.map((x, i) => `<div style="display:flex;gap:12px;margin:0 0 12px;"><span style="flex:none;display:inline-block;width:24px;height:24px;border-radius:50%;background:${C.ink};color:#ffffff;${EN};font-size:13px;font-weight:600;line-height:24px;text-align:center;">${i + 1}</span><span style="flex:1;font-size:15px;line-height:1.65;color:#333333;word-break:keep-all;">${x}</span></div>`).join('');
-  const effects = xs => listTitle('이런 효과가 있어요') + xs.map(x => `<div style="display:flex;gap:10px;margin:0 0 12px;"><span style="flex:none;display:inline-block;width:22px;height:22px;margin-top:1px;border-radius:50%;background:${C.pt};color:#ffffff;font-size:13px;font-weight:800;line-height:22px;text-align:center;">✓</span><span style="flex:1;font-size:15px;line-height:1.65;color:#333333;word-break:keep-all;">${x}</span></div>`).join('');
+  const listC = (rows, mark) => `<div style="font-size:15px;line-height:1.65;color:#333">${rows.map((x, i) => `<p style="display:flex;gap:9px;margin:0 0 11px"><b style="flex:none;color:${C.pt}">${mark(i)}</b><span>${x}</span></p>`).join('')}</div>`;
+  const steps = dc ? xs => listTitle('이렇게 써요') + listC(xs, i => '①②③④⑤⑥'[i]) : xs => listTitle('이렇게 써요') + xs.map((x, i) => `<div style="display:flex;gap:12px;margin:0 0 12px;"><span style="flex:none;display:inline-block;width:24px;height:24px;border-radius:50%;background:${C.ink};color:#ffffff;${EN};font-size:13px;font-weight:600;line-height:24px;text-align:center;">${i + 1}</span><span style="flex:1;font-size:15px;line-height:1.65;color:#333333;word-break:keep-all;">${x}</span></div>`).join('');
+  const effects = dc ? xs => listTitle('이런 효과가 있어요') + listC(xs, () => '✓') : xs => listTitle('이런 효과가 있어요') + xs.map(x => `<div style="display:flex;gap:10px;margin:0 0 12px;"><span style="flex:none;display:inline-block;width:22px;height:22px;margin-top:1px;border-radius:50%;background:${C.pt};color:#ffffff;font-size:13px;font-weight:800;line-height:22px;text-align:center;">✓</span><span style="flex:1;font-size:15px;line-height:1.65;color:#333333;word-break:keep-all;">${x}</span></div>`).join('');
   const tip = t => S(`margin:22px 0 0;padding:18px 22px;border-left:3px solid ${C.pt};border-radius:0 14px 14px 0;background:${C.ptSoft};font-size:15px;line-height:1.7;color:#1d2a55;word-break:keep-all;`, `<b style="color:${C.pt};">처음이라면 TIP</b>&nbsp;&nbsp;${t}`, 'p');
   const code = t => `<span style="display:inline-block;padding:2px 8px;border-radius:6px;background:#ffffff;border:1px solid ${C.line};${EN};font-size:13.5px;color:${C.ink};white-space:nowrap;">${t}</span>`;
   const head = (no, tag, title, desc) =>
@@ -199,7 +201,14 @@ function page(kmong, src) {
   if (dc) out.push(`<div style="margin:0;padding:40px 20px;text-align:center;background:${C.ptSoft};"><p style="margin:0 0 8px;font-size:22px;font-weight:800;color:${C.ink};">구매하셨다면 주문서를 작성해 주세요</p><p style="margin:0 0 22px;font-size:15px;color:#4a5260;">쇼핑몰 정보를 받는 대로 1일 안에 적용해 드려요.</p><a href="${FORM}" target="_blank" rel="noopener" style="display:inline-block;padding:16px 40px;border-radius:999px;background:${C.pt};color:#ffffff;font-size:18px;font-weight:bold;text-decoration:none;">주문서 작성하기</a></div>`);
 
   const fonts = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap">';
-  return fonts + '\n' + `<div style="max-width:922px;margin:0 auto;${F};color:${C.ink};text-align:left;-webkit-font-smoothing:antialiased;">\n` + out.join('\n') + '\n</div>';
+  // dc : 상속되는 word-break 는 맨 바깥 한 번, 색 · 글꼴 이름을 줄인다
+  const mini = x => !dc ? x : x.split('word-break:keep-all;').join('').replace(/#ffffff\b/g, '#fff').replace(/#111111\b/g, '#111').replace(/#333333\b/g, '#333')
+    .split(F + ';').join('').split(EN).join('font-family:Jost,Pretendard,sans-serif').replace(/<div style="margin:0;/g, '<div style="')
+    .replace(/line-height:1\.6[05]?;/g, '').replace(/letter-spacing:-\.02em;/g, '').replace(/padding:15px 14px;border-bottom:1px solid #e6e6e2;font-size:14\.5px;/g, '')
+    .replace(/<table style="/g, '<table cellpadding="14" style="font-size:14.5px;').replace(/<tr>/g, '<tr style="border-bottom:1px solid #e6e6e2">')
+    // 블록 태그의 글자색 #111 은 맨 바깥에서 물려받는다 (b · span · a 는 부모 색이 달라서 그대로 둔다)
+    .replace(/<(p|h[1-3]|div) style="([^"]*)"/g, (m, t, st) => `<${t} style="${st.replace(/(^|;)color:#111;/g, '$1')}"`);
+  return fonts + '\n' + `<div style="max-width:922px;margin:0 auto;${F};color:${C.ink};text-align:left;-webkit-font-smoothing:antialiased;${dc ? 'word-break:keep-all;line-height:1.6;' : ''}">\n` + mini(out.join('\n')) + '\n</div>';
 }
 
 /* ---------- 3. 크몽 : 가로 860 으로 그려 구역마다 자른다 ---------- */
