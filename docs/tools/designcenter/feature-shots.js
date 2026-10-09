@@ -82,11 +82,12 @@ function demoSheet() {
 const shots = {
   /* 첫 화면 (PC · 휴대폰) */
   'home-pc': async pg => { await open(pg, '/', PC); },
-  'home-mobile': async pg => { await open(pg, '/', MOBILE); },
+  // 휴대폰은 첫 화면 · 팝업과 다른 장면 (같은 트렌치 모델이 되풀이되지 않게) : 상의 목록
+  'home-mobile': async pg => { await open(pg, '/product/list.html?cate_no=25', MOBILE); },
 
   /* 1. 무료회원 웰컴 쿠폰팩 : 플로팅 쿠폰 버튼 → 작은 창 */
   'welcome-pc': async pg => {
-    await open(pg, '/', PC);
+    await open(pg, '/product/list.html?cate_no=26', PC);   // 첫 화면이 아닌 원피스/스커트 목록 위에서 연다
     await click(pg, '.s9-float__btn--wp'); await sleep(3500);
   },
   'welcome-page': async pg => { await open(pg, '/wear/welcome.html?pop=1', MOBILE); return { full: true }; },

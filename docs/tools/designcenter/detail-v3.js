@@ -21,7 +21,7 @@ const CROPS = {
   'welcome-pc': { w: 1600 }, 'welcome-page': { w: 600 },
   'coupon-pick': { w: 1600, crop: [0, 0, 1280, 1000] }, 'coupon-pick-mobile': { w: 600 },
   'countdown-sale': { w: 1600, crop: [0, 0, 1280, 560] }, 'countdown-pop': { w: 600, crop: [30, 30, 400, 632] },
-  'timesale-card': { w: 1600, crop: [90, 0, 1150, 400] }, 'timesale-detail': { w: 1600, crop: [0, 0, 1280, 520] }, 'timesale-detail-mobile': { w: 600 },
+  'timesale-card': { w: 1600, crop: [90, 0, 1150, 400] }, 'timesale-detail': { w: 1600, crop: [0, 0, 1280, 520] },
   'revisit': { w: 600 },
   'looks': { w: 1600, crop: [0, 110, 1280, 650] }, 'looks-qv': { w: 1600, crop: [0, 110, 1280, 650] },
   'chat': { w: 600 }, 'chat-pc': { w: 1600 },
@@ -128,7 +128,7 @@ function page(kmong, src) {
     tip: '오픈 기념 세일은 <b>3일</b>처럼 짧게 잡으세요. 기간이 짧을수록 타이머의 힘이 커져요.' }));
 
   out.push(feature({ no: '04', tag: '한정 할인', title: '타임세일', desc: '상품마다 끝나는 시각을 걸면, 상품 목록 사진 위에 “TIME SALE 남은 시간” 띠가, 상세 페이지 맨 위에는 카운트다운 배너가 붙어요.',
-    media: browser('timesale-card', '상품 목록 카드 사진 아래쪽 TIME SALE 남은 시간 띠') + cap('상품 목록 : 사진 위 TIME SALE 띠 · 할인율') + S('height:22px;', '') + row([{ basis: 480, html: browser('timesale-detail', '상품 상세 페이지 맨 위 타임세일 종료까지 배너') + cap('상세 페이지 : 타임세일 종료까지') }, { basis: 200, html: phone('timesale-detail-mobile', '휴대폰 상품 상세 타임세일 배너') + cap('휴대폰에서도 그대로') }], 24),
+    media: browser('timesale-card', '상품 목록 카드 사진 아래쪽 TIME SALE 남은 시간 띠') + cap('상품 목록 : 사진 위 TIME SALE 띠 · 할인율') + S('height:22px;', '') + browser('timesale-detail', '상품 상세 페이지 맨 위 타임세일 종료까지 배너') + cap('상세 페이지 : 맨 위에 타임세일 종료까지 남은 시간'),
     steps: ['상품 수정 › 상품 요약설명에 ' + code('#타임세일 2026-10-31 23:59') + ' 한 줄을 적어요.', '할인 금액은 카페24 상품 할인 설정을 그대로 써요.', '시간이 끝나면 띠와 배너가 저절로 사라져요.'],
     effects: ['목록에서 눈에 띄어 그 상품의 클릭이 늘어요.', '재고 정리 · 신상품 첫 주 판매에 딱 맞아요.', '배너 · 띠 색은 쇼핑몰 톤에 맞춰 바꿀 수 있어요.'],
     tip: '“매주 금요일 저녁 6시 ~ 일요일 자정”처럼 시간을 정해 두면 단골이 그 시간을 기다려요.' }, C.soft));
