@@ -73,7 +73,7 @@ function page(kmong, src) {
   out.push(sec(
     S('text-align:center;', kicker('Cafe24 All-in-one Skin · wear902')
       + S(`margin:0 0 22px;font-size:clamp(34px,6.4vw,58px);font-weight:800;line-height:1.22;letter-spacing:-.05em;color:${C.ink};word-break:keep-all;`, '오픈 첫날부터<br><span style="color:' + C.pt + ';">팔리는 쇼핑몰</span>', 'h1')
-      + lead('따로 개발하면 <b style="color:' + C.ink + ';">수백~수천만 원</b>이 드는 마케팅 · 고객관리 기능 8가지를<br>스킨 하나에 담았어요. 상품만 올리면 손님을 모으고, 사게 하고, 다시 오게 하는 장치가 바로 돌아갑니다.'))
+      + lead('따로 개발하면 <b style="color:' + C.ink + ';">비용이 큰</b> 마케팅 · 고객관리 기능 8가지를<br>스킨 하나에 담았어요. 상품만 올리면 손님을 모으고, 사게 하고, 다시 오게 하는 장치가 바로 돌아갑니다.'))
     + S('position:relative;margin:48px 0 0;padding:0 7% 34px 0;', browser('home-pc', 'wear902 PC 첫 화면')
       + S('position:absolute;right:0;bottom:0;width:23%;', phone('home-mobile', 'wear902 휴대폰 첫 화면')))
     + S('margin:46px 0 0;', row([
